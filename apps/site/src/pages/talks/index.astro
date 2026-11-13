@@ -3,9 +3,8 @@ import Shell from '../../layouts/Shell.astro';
 import SiteNav from '../../components/SiteNav.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import TalkTile from '../../components/TalkTile.astro';
-import { past, talksAt, longDate, eventSlug, eventName } from '../../lib/data';
-const nights = past.filter((e) => talksAt(e).length);
-const fades = ['right', 'left', 'radial'] as const;
+import { events, talksAt, longDate, eventSlug, eventName } from '../../lib/data';
+const nights = events.filter((e) => talksAt(e).length);
 ---
 <Shell title="Talks | Agentic Engineering" description="Every talk from Agentic Engineering Lisbon: the video, a summary and the full transcript." class="bg-soft-white text-panel-navy">
   <SiteNav />
@@ -19,7 +18,7 @@ const fades = ['right', 'left', 'radial'] as const;
           <span class="text-panel-navy/60">{longDate(e.date)}, {e.venue}</span>
         </a>
         <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {talksAt(e).map((t, i) => <li class="reveal"><TalkTile talk={t} fade={fades[i % 3]} /></li>)}
+          {talksAt(e).map((t, i) => <li class="reveal"><TalkTile talk={t} index={i} /></li>)}
         </ul>
       </section>
     ))}

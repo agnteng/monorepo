@@ -257,14 +257,13 @@ importers:
         version: 5.9.3
 
   packages/brand:
-    dependencies:
-      react:
-        specifier: ^19.2.7
-        version: 19.3.1
     devDependencies:
       '@types/react':
         specifier: ^19.2.17
         version: 19.3.0
+      react:
+        specifier: ^19.3.1
+        version: 19.3.1
 
 packages:
 

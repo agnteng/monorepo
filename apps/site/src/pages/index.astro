@@ -7,12 +7,10 @@ import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
 import Pill from '@agnteng/brand/components/Pill.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { nextEvent, past, talks, talksAt, speakers, links, longDate, shortDate, eventSlug, eventName } from '../lib/data';
+import { nextEvent, past, talks, talksAt, speakers, links, register, longDate, shortDate, startTime, eventSlug, eventName, plural } from '../lib/data';
 import { latestPosts } from '../lib/newsletter';
 
-const register = nextEvent?.luma?.url ?? links.luma;
-const posts = await latestPosts(3);
-const fades = ['right', 'left', 'radial', 'up', 'down', 'none'] as const;
+const posts = await latestPosts();
 const night = [
   { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: '/assets/photos/community/slide2-group-photo.jpg', alt: 'People talking before the talks start' },
   { time: '19:45', title: 'Three talks', body: 'Ten minutes each, on something the speaker built or broke. Product pitches get turned down.', photo: '/assets/photos/community/slide2-laptop-demo.jpg', alt: 'A speaker presenting with a live demo on screen' },
@@ -48,18 +46,26 @@ const night = [
         <p class="rise mt-6 max-w-[44ch] text-lg leading-relaxed text-soft-white/80" style="--i:1">A Lisbon meetup. Three ten-minute talks on what actually shipped, then questions.</p>
       </div>
       {nextEvent && (
-        <div class="rise rounded-2xl bg-white p-6 text-panel-navy shadow-xl shadow-deep-navy/40 md:col-span-5 md:w-full md:max-w-sm md:justify-self-end" style="--i:2">
+        <div data-next-event data-starts={nextEvent.luma?.startAt ?? `${nextEvent.date}T23:59:00Z`} class="rise rounded-2xl bg-white p-6 text-panel-navy shadow-xl shadow-deep-navy/40 md:col-span-5 md:w-full md:max-w-sm md:justify-self-end" style="--i:2">
           <div class="flex items-center gap-3">
             <span class="rounded-full bg-electric-blue px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-white">{eventName(nextEvent)}</span>
             <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-electric-blue">upcoming</span>
           </div>
           <div class="mt-5 flex flex-col gap-2.5 font-mono text-sm">
-            <span class="flex items-center gap-2.5"><Icon name="Calendar" size={16} class="text-electric-blue" />{longDate(nextEvent.date)}, 19:00</span>
+            <span class="flex items-center gap-2.5"><Icon name="Calendar" size={16} class="text-electric-blue" />{longDate(nextEvent.date)}{startTime(nextEvent) && `, ${startTime(nextEvent)}`}</span>
             <span class="flex items-center gap-2.5"><Icon name="MapPin" size={16} class="text-electric-blue" />{nextEvent.venue}</span>
           </div>
           <Button variant="primary" href={register} class="mt-6 w-full">Register on Luma</Button>
         </div>
       )}
+      <script is:inline>
+        // The site is rebuilt only on deploy: once this event has started, point to Luma instead.
+        for (const card of document.querySelectorAll('[data-next-event]')) {
+          if (Date.parse(card.dataset.starts) + 4 * 3600e3 < Date.now()) {
+            card.innerHTML = '<p class="font-mono text-sm">The next date is on its way.</p><a class="mt-4 inline-flex rounded-full bg-electric-blue px-[26px] py-3.5 font-semibold text-white" href="https://luma.com/agnteng">Follow on Luma</a>';
+          }
+        }
+      </script>
     </div>
   </section>
 
@@ -84,7 +90,7 @@ const night = [
     </div>
     <ul class="mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 md:px-[max(2rem,calc((100vw-80rem)/2+2rem))]">
       {talks.map((t, i) => (
-        <li class="w-[82vw] shrink-0 snap-start sm:w-[22rem]"><TalkTile talk={t} fade={fades[i % fades.length]} /></li>
+        <li class="w-[82vw] shrink-0 snap-start sm:w-[22rem]"><TalkTile talk={t} index={i} /></li>
       ))}
     </ul>
   </section>
@@ -94,7 +100,7 @@ const night = [
     <ul class="mt-12 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
       {speakers.map((s, i) => (
         <li class:list={['reveal', i % 2 === 1 && 'lg:translate-y-8']}>
-          <a href={`/talks/${s.talks[0].id}`} class="group block">
+          <a href={s.href} class="group block">
             {s.photo && <img src={s.photo} alt="" class="aspect-[3/4] w-full rounded-2xl object-cover transition duration-300 group-hover:-translate-y-1" loading="lazy" />}
             <p class="mt-3 font-sans font-bold leading-tight">{s.name}</p>
             {s.title && <p class="mt-0.5 text-sm text-panel-navy/60">{s.title}</p>}
@@ -144,7 +150,7 @@ const night = [
                     <Pill>#{e.number}</Pill>
                     <span><span class="font-semibold group-hover:text-electric-blue">{shortDate(e.date)}</span><span class="block text-sm text-panel-navy/60">{e.venue}</span></span>
                   </span>
-                  <span class="font-mono text-xs uppercase tracking-wider text-panel-navy/50">{n ? `${n} talks` : 'not filmed'}</span>
+                  <span class="font-mono text-xs uppercase tracking-wider text-panel-navy/50">{n ? plural(n, 'talk') : 'talks not online'}</span>
                 </a>
               </li>
             );

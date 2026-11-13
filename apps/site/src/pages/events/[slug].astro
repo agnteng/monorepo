@@ -6,7 +6,7 @@ import TalkTile from '../../components/TalkTile.astro';
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { events, talksAt, questionsAt, longDate, eventSlug, eventName, links, type Event } from '../../lib/data';
+import { events, talksAt, questionsAt, longDate, eventSlug, eventName, links, plural, type Event } from '../../lib/data';
 
 export function getStaticPaths() {
   return events.filter((e) => talksAt(e).length).map((event) => ({ params: { slug: eventSlug(event) }, props: { event } }));
@@ -14,7 +14,6 @@ export function getStaticPaths() {
 const { event: e } = Astro.props as { event: Event };
 const talks = talksAt(e);
 const questions = questionsAt(e);
-const fades = ['right', 'left', 'radial'] as const;
 ---
 <Shell title={`${eventName(e)}, ${longDate(e.date)} | Agentic Engineering`} description={`Agentic Engineering ${eventName(e)} at ${e.venue}: ${talks.map((t) => t.title).join(', ')}.`} class="bg-soft-white text-panel-navy">
   <section class="relative isolate overflow-hidden bg-deep-navy text-soft-white">
@@ -25,7 +24,7 @@ const fades = ['right', 'left', 'radial'] as const;
       <div class="rise mt-6 flex flex-col gap-2.5 font-mono text-sm text-soft-white/80" style="--i:1">
         <span class="flex items-center gap-2.5"><Icon name="Calendar" size={16} class="text-periwinkle" />{longDate(e.date)}</span>
         <span class="flex items-center gap-2.5"><Icon name="MapPin" size={16} class="text-periwinkle" />{e.venue}</span>
-        <span class="flex items-center gap-2.5"><Icon name="Users" size={16} class="text-periwinkle" />{talks.length} talks{questions.length > 0 && `, ${questions.length} questions`}</span>
+        <span class="flex items-center gap-2.5"><Icon name="Users" size={16} class="text-periwinkle" />{plural(talks.length, 'talk')}{questions.length > 0 && `, ${plural(questions.length, 'question')}`}</span>
       </div>
     </div>
   </section>
@@ -33,7 +32,7 @@ const fades = ['right', 'left', 'radial'] as const;
   <main class="mx-auto max-w-7xl px-4 md:px-8">
     <section class="py-16 md:py-24">
       <h2 class="font-mono text-3xl font-semibold tracking-tight md:text-4xl">The talks</h2>
-      <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{talks.map((t, i) => <li class="reveal"><TalkTile talk={t} fade={fades[i % 3]} /></li>)}</ul>
+      <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{talks.map((t, i) => <li class="reveal"><TalkTile talk={t} index={i} /></li>)}</ul>
     </section>
 
     {questions.length > 0 && (
@@ -51,9 +50,9 @@ const fades = ['right', 'left', 'radial'] as const;
                   <span class="mt-1 font-mono text-sm text-electric-blue transition group-open:rotate-45">+</span>
                 </summary>
                 <div class="space-y-4 pb-6">
-                  {q.answers.map((a) => (
-                    <p class="leading-relaxed text-panel-navy/80"><span class="font-semibold text-panel-navy">{a.speaker}:</span> {a.text}</p>
-                  ))}
+                  {q.answers.map((a) => a.text.split('\n\n').map((para, i) => (
+                    <p class="leading-relaxed text-panel-navy/80">{i === 0 && <span class="font-semibold text-panel-navy">{a.speaker}: </span>}{para}</p>
+                  )))}
                 </div>
               </details>
             ))}

@@ -1,11 +1,9 @@
 ---
-// Mark + wordmark, as in the brand Navbar. `overlay` sits on the hero's dither;
-// otherwise the bar is deep navy.
+// `overlay` sits on the hero's dither; otherwise the bar is deep navy.
 import Button from '@agnteng/brand/components/Button.astro';
-import { nextEvent, links } from '../lib/data';
+import { register } from '../lib/data';
 interface Props { overlay?: boolean }
 const { overlay = false } = Astro.props;
-const register = nextEvent?.luma?.url ?? links.luma;
 const items = [
   { label: 'Talks', href: '/talks' },
   { label: 'Events', href: '/#events' },
@@ -22,6 +20,9 @@ const items = [
     <nav class="hidden items-center gap-7 md:flex">
       {items.map((i) => <a href={i.href} class="font-sans text-sm text-soft-white/70 transition-colors hover:text-soft-white">{i.label}</a>)}
     </nav>
-    <Button variant="primary" href={register} class="!px-5 !py-2.5 !text-sm">Register</Button>
+    <div class="flex items-center gap-5">
+      <a href="/talks" class="font-sans text-sm text-soft-white/70 hover:text-soft-white md:hidden">Talks</a>
+      <Button variant="primary" href={register} class="!px-5 !py-2.5 !text-sm">Register</Button>
+    </div>
   </div>
 </header>

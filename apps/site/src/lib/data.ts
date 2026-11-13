@@ -33,8 +33,7 @@ export type Speaker = {
   name: string;
   title?: string;
   photo?: string;
-  links: Link[];
-  talks: Talk[];
+  href: string; // their first talk, or the event's Luma page if no talk is published
 };
 
 export type Talk = TalkFile & {
@@ -53,21 +52,34 @@ const dateOf = (path: string) => path.match(/(\d{4}-\d\d-\d\d)\//)![1];
 
 export const events: Event[] = Object.values(eventFiles).sort((a, b) => b.date.localeCompare(a.date));
 
+// Upcoming and past as of the build. The home page also hides a next event
+// whose start has passed in the browser, since the site is only rebuilt on deploy.
 const today = new Date().toISOString().slice(0, 10);
-export const upcoming = events.filter((e) => e.date >= today).reverse();
 export const past = events.filter((e) => e.date < today);
-export const nextEvent: Event | undefined = upcoming[0];
+export const nextEvent: Event | undefined = events.filter((e) => e.date >= today).at(-1);
 
-// The deck may use a short form of a speaker's name ("Andy Nik" for "Andy Nikulin").
+export const links = {
+  luma: 'https://luma.com/agnteng',
+  youtube: 'https://www.youtube.com/@agnteng',
+  substack: 'https://agnteng.substack.com',
+  telegram: 'https://t.me/agntacc',
+  sponsors: 'https://sponsors.agnteng.com',
+};
+export const register = nextEvent?.luma?.url ?? links.luma;
+
+// The deck may shorten a speaker's name ("Andy Nik" for "Andy Nikulin",
+// "Doris Hernandez" for "Doris Hernandez Argueta"): same first name, and the
+// shorter name's last word starts one of the longer name's later words.
 function sameName(a: string, b: string) {
   const [fa, ...ra] = a.toLowerCase().split(/\s+/);
   const [fb, ...rb] = b.toLowerCase().split(/\s+/);
-  const la = ra.at(-1) ?? '';
-  const lb = rb.at(-1) ?? '';
-  return fa === fb && (la.startsWith(lb) || lb.startsWith(la));
+  if (fa !== fb || !ra.length || !rb.length) return false;
+  const [short, long] = ra.length <= rb.length ? [ra, rb] : [rb, ra];
+  const last = short.at(-1)!;
+  return long.some((w) => w.startsWith(last) || last.startsWith(w));
 }
 
-export const slugify = (s: string) =>
+const slugify = (s: string) =>
   s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 export const talks: Talk[] = Object.entries(talkFiles)
@@ -83,18 +95,20 @@ export const talks: Talk[] = Object.entries(talkFiles)
   })
   .sort((a, b) => b.event.date.localeCompare(a.event.date) || a.order - b.order);
 
+// Everyone who has given a talk: from the published talks, then anyone listed
+// in a past event.json whose talk isn't published yet.
 export const speakers: Speaker[] = (() => {
-  const bySlug = new Map<string, Speaker>();
+  const out: Speaker[] = [];
+  const known = (name: string) => out.some((s) => sameName(s.name, name));
   for (const t of talks) {
-    const slug = slugify(t.person.name);
-    const sp = bySlug.get(slug) ?? { slug, name: t.person.name, links: [], talks: [] };
-    sp.title ??= t.person.title;
-    sp.photo ??= t.person.photo;
-    if (!sp.links.length) sp.links = t.speakerLinks;
-    sp.talks.push(t);
-    bySlug.set(slug, sp);
+    if (!known(t.person.name)) out.push({ slug: slugify(t.person.name), ...t.person, href: `/talks/${t.id}` });
   }
-  return [...bySlug.values()];
+  for (const e of past) {
+    for (const sp of e.speakers ?? []) {
+      if (!known(sp.name)) out.push({ slug: slugify(sp.name), ...sp, href: e.luma?.url ?? links.luma });
+    }
+  }
+  return out;
 })();
 
 export const talksAt = (e: Event) => talks.filter((t) => t.event.date === e.date);
@@ -109,22 +123,23 @@ export const eventName = (e: Event) => `${e.city} #${e.number}`;
 export const thumbnail = (t: Talk) =>
   t.video ? `https://i.ytimg.com/vi/${t.video.youtubeId}/maxresdefault.jpg` : undefined;
 
+export const watchAt = (t: Talk, seconds: number) =>
+  t.video ? `https://www.youtube.com/watch?v=${t.video.youtubeId}&t=${seconds}s` : undefined;
 
-export const links = {
-  luma: 'https://luma.com/agnteng',
-  youtube: 'https://www.youtube.com/@agnteng',
-  substack: 'https://agnteng.substack.com',
-  telegram: 'https://t.me/agntacc',
-  sponsors: 'https://sponsors.agnteng.com',
-};
+export const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 const fmt = (date: string, opts: Intl.DateTimeFormatOptions) =>
   new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { timeZone: 'UTC', ...opts });
 
-export const day = (d: string) => fmt(d, { day: 'numeric' });
-export const month = (d: string) => fmt(d, { month: 'short' });
 export const longDate = (d: string) => fmt(d, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 export const shortDate = (d: string) => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
+
+// Doors time in the event's city, from Luma's start.
+const zones: Record<string, string> = { Lisbon: 'Europe/Lisbon' };
+export const startTime = (e: Event) =>
+  e.luma
+    ? new Date(e.luma.startAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: zones[e.city] ?? 'UTC' })
+    : undefined;
 
 // Transcript paragraphs: "**[m:ss]** text".
 export const transcriptParas = (t: Talk) =>

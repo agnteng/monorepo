@@ -5,11 +5,13 @@ import Animation from '@agnteng/brand/components/Animation.tsx';
 import Avatar from '@agnteng/brand/components/Avatar.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
 import { thumbnail, shortDate, type Talk } from '../lib/data';
-interface Props { talk: Talk; fade?: 'none' | 'left' | 'right' | 'up' | 'down' | 'radial'; class?: string }
-const { talk, fade = 'none', class: cls } = Astro.props;
+interface Props { talk: Talk; index?: number }
+const { talk, index = 0 } = Astro.props;
 const still = thumbnail(talk);
+// Vary the dither's fade so a row of talks without video reads as distinct textures.
+const fade = (['right', 'left', 'radial', 'up', 'down'] as const)[index % 5];
 ---
-<a href={`/talks/${talk.id}`} class:list={['group flex h-full flex-col overflow-hidden rounded-2xl border border-panel-navy/[0.08] bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-electric-blue/10', cls]}>
+<a href={`/talks/${talk.id}`} class="group flex h-full flex-col overflow-hidden rounded-2xl border border-panel-navy/[0.08] bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-electric-blue/10">
   <div class="relative aspect-video overflow-hidden bg-deep-navy">
     {still
       ? <img src={still} alt="" class="size-full object-cover" loading="lazy" />
@@ -19,7 +21,7 @@ const still = thumbnail(talk);
   <div class="flex flex-1 flex-col p-5">
     <h3 class="font-sans text-lg font-bold leading-snug tracking-tight text-panel-navy">{talk.title}</h3>
     <p class="mt-3 flex items-center gap-2.5 font-sans text-sm text-panel-navy/60">
-      <Avatar name={talk.person.name} src={talk.person.photo} size={28} />{talk.person.name}
+      <span aria-hidden="true"><Avatar name={talk.person.name} src={talk.person.photo} size={28} /></span>{talk.person.name}
     </p>
     <span class="mt-auto inline-flex items-center gap-2 pt-5 font-mono text-xs uppercase tracking-wider text-electric-blue">
       {talk.video ? <><Icon name="Eye" size={14} />Watch the recording</> : <><Icon name="BookOpen" size={14} />Read the talk</>}

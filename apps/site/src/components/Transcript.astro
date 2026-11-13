@@ -1,7 +1,7 @@
 ---
-import { transcriptParas, type Talk } from '../lib/data';
-interface Props { talk: Talk; class?: string; timeClass?: string }
-const { talk, class: cls, timeClass = 'opacity-60' } = Astro.props;
+import { transcriptParas, watchAt, type Talk } from '../lib/data';
+interface Props { talk: Talk; class?: string }
+const { talk, class: cls } = Astro.props;
 const paras = transcriptParas(talk);
 const at = (ts: string) => ts.split(':').reduce((s, n) => s * 60 + Number(n), 0);
 ---
@@ -15,8 +15,8 @@ const at = (ts: string) => ts.split(':').reduce((s, n) => s * 60 + Number(n), 0)
       {paras.map((p) => (
         <p class="grid grid-cols-[3.5rem_1fr] gap-3">
           {p.at && talk.video
-            ? <a href={`${talk.video.url}&t=${at(p.at)}s`} class:list={['font-mono text-sm hover:underline', timeClass]}>{p.at}</a>
-            : <span class:list={['font-mono text-sm', timeClass]}>{p.at}</span>}
+            ? <a href={watchAt(talk, at(p.at))} class="font-mono text-sm text-electric-blue hover:underline">{p.at}</a>
+            : <span class="font-mono text-sm text-electric-blue">{p.at}</span>}
           <span>{p.text}</span>
         </p>
       ))}

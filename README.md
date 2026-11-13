@@ -69,6 +69,7 @@ from `.env` at the repository root and inlined at build time
 Dokploy services build from `main`, with the repository root as build
 context: `branding` (`apps/branding/Dockerfile`, a node server), `sponsors`
 (`apps/branding/Dockerfile.sponsors`, nginx serving only the sponsor deck) and
-`site` (`apps/site/Dockerfile`, nginx serving agnteng.com). The site reads the
+`site` (`apps/site/Dockerfile`, nginx serving agnteng.com; the service and its
+domain are not set up yet). The site reads the
 newsletter feed at build time, so a new Substack post appears on the next deploy.
 After every deploy, `mise run fitness:live` checks production.

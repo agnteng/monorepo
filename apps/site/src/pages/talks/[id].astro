@@ -15,7 +15,10 @@ export function getStaticPaths() {
 const { talk } = Astro.props as { talk: Talk };
 const e = talk.event;
 const more = talksAt(e).filter((t) => t.id !== talk.id);
-const first = talk.person.name.split(' ')[0];
+const linkLists = ([
+  [`Find ${talk.person.name.split(' ')[0]}`, talk.speakerLinks],
+  ['Mentioned in the talk', talk.mentioned],
+] as const).filter(([, list]) => list.length > 0);
 ---
 <Shell title={`${talk.title}, ${talk.person.name} | Agentic Engineering`} description={talk.summary} class="bg-soft-white text-panel-navy">
   <SiteNav />
@@ -48,23 +51,20 @@ const first = talk.person.name.split(' ')[0];
           </ul>
         </div>
       )}
-      {(talk.speakerLinks.length > 0 || talk.mentioned.length > 0) && (
+      {linkLists.length > 0 && (
         <div class="mt-10 grid gap-8 sm:grid-cols-2">
-          {talk.speakerLinks.length > 0 && (
-            <div><h2 class="font-mono font-semibold">Find {first}</h2><ul class="mt-3 space-y-2">{talk.speakerLinks.map((l) => <li><a href={l.url} class="inline-flex items-center gap-2 text-electric-blue hover:underline">{l.label}<Icon name="ExternalLink" size={14} /></a></li>)}</ul></div>
-          )}
-          {talk.mentioned.length > 0 && (
-            <div><h2 class="font-mono font-semibold">Mentioned in the talk</h2><ul class="mt-3 space-y-2">{talk.mentioned.map((l) => <li><a href={l.url} class="inline-flex items-center gap-2 text-electric-blue hover:underline">{l.label}<Icon name="ExternalLink" size={14} /></a></li>)}</ul></div>
-          )}
+          {linkLists.map(([heading, list]) => (
+            <div><h2 class="font-mono font-semibold">{heading}</h2><ul class="mt-3 space-y-2">{list.map((l) => <li><a href={l.url} class="inline-flex items-center gap-2 text-electric-blue hover:underline">{l.label}<Icon name="ExternalLink" size={14} /></a></li>)}</ul></div>
+          ))}
         </div>
       )}
-      <Transcript talk={talk} class="mt-12 border-y border-panel-navy/15" timeClass="text-electric-blue" />
+      <Transcript talk={talk} class="mt-12 border-y border-panel-navy/15" />
     </section>
 
     {more.length > 0 && (
       <section class="border-t border-panel-navy/[0.08] py-16">
         <h2 class="font-mono text-2xl font-semibold">Also that night</h2>
-        <ul class="mt-8 grid gap-5 sm:grid-cols-2">{more.map((t, i) => <li><TalkTile talk={t} fade={i ? 'left' : 'right'} /></li>)}</ul>
+        <ul class="mt-8 grid gap-5 sm:grid-cols-2">{more.map((t, i) => <li><TalkTile talk={t} index={i} /></li>)}</ul>
       </section>
     )}
   </main>
