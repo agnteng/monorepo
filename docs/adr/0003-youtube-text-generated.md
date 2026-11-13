@@ -1,6 +1,6 @@
 # 0003. `youtube.md` is generated from `description.md`
 
-- Status: Accepted
+- Status: Superseded by 0006
 - Date: 2026-11-13
 
 ## Context

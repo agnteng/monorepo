@@ -42,7 +42,3 @@ run = "python3 scripts/fitness.py --live"
 [tasks.secrets]
 description = "gitleaks over the full history"
 run = "gitleaks git . --redact --no-banner"
-
-[tasks.bench]
-description = "Transcription benchmark (docs: scripts/bench_transcription.py)"
-run = "python3 scripts/bench_transcription.py"

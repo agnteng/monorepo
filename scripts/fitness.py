@@ -27,7 +27,6 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
 
 FAILURES: list[str] = []
 
@@ -150,20 +149,6 @@ def check_events() -> None:
                 fail("events", f"{where}: speaker {i} photo {photo} does not exist")
 
 
-# ── generated text in sync (docs/adr/0003) ──
-
-def check_youtube_md() -> None:
-    import youtube_md
-    for event in sorted(p for p in (ROOT / "content").iterdir() if p.is_dir()):
-        for folder in sorted(p for p in event.iterdir() if p.is_dir() and p.name[:2].isdigit()):
-            want = youtube_md.for_talk(folder)
-            if want is None:
-                continue
-            md = folder / "youtube.md"
-            if not md.exists() or md.read_text() != want:
-                fail("youtube-md", f"{md.relative_to(ROOT)} is stale: run scripts/youtube_md.py")
-
-
 # ── rendered decks unchanged (refactors must not alter what's on screen) ──
 
 PAGES = ["", "brand-guidelines/", "sponsorship/", "slides/",
@@ -268,7 +253,7 @@ def main() -> None:
         checks = [("render", lambda: check_render(args.update))]
     else:
         checks = [("internal-names", check_internal_names), ("media", check_media),
-                  ("events", check_events), ("youtube-md", check_youtube_md)]
+                  ("events", check_events)]
     for name, fn in checks:
         before = len(FAILURES)
         fn()

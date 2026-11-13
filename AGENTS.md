@@ -27,7 +27,6 @@ it, in the same pull request. Then these rules:
   don't copy its values into code.
 - **A deploy is done when `mise run fitness:live` passes.** A build that loses
   `LUMA_API_KEY` still returns 200 everywhere (`docs/adr/0002`).
-- **Transcription models change only through the benchmark**
-  (`mise run bench -- --models <id>`).
-- Recordings → published talks: the `meetup-video` skill. Talk descriptions:
-  `agentic-engineering-description`.
+- **Video, write-ups and event tooling live in `agnteng/production`**, checked
+  out next to this repository as `../production/`. It reads `event.json` from
+  here.
