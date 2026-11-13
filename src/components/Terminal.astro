@@ -1,0 +1,30 @@
+---
+// Signature terminal block, adapted from DS1 to the AE palette (navy, Kode
+// Mono, electric-blue, dot-grid, blinking cursor). Pass lines via the slot.
+interface Props {
+  title?: string;
+  class?: string;
+}
+const { title = 'agentic-engineering — zsh', class: cls } = Astro.props;
+---
+
+<div class={`relative overflow-hidden rounded-2xl border border-white/10 bg-[#03040F] ${cls ?? ''}`}>
+  <div
+    class="pointer-events-none absolute inset-0 opacity-60"
+    style="background-image:radial-gradient(circle, rgba(82,95,255,0.16) 1.4px, transparent 1.5px); background-size:22px 22px;"
+  >
+  </div>
+  <div class="relative flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
+    <span class="h-3 w-3 rounded-full bg-white/15"></span>
+    <span class="h-3 w-3 rounded-full bg-white/15"></span>
+    <span class="h-3 w-3 rounded-full bg-white/15"></span>
+    <span class="ml-2 font-mono text-[11px] text-soft-white/40">{title}</span>
+  </div>
+  <div class="relative px-5 py-4 font-mono text-[13px] leading-[1.85] text-periwinkle">
+    <slot />
+    <div class="mt-1 text-soft-white">
+      <span class="text-periwinkle/70">$</span>
+      <span class="ae-cursor ml-1 inline-block h-[14px] w-[8px] translate-y-[2px] bg-periwinkle"></span>
+    </div>
+  </div>
+</div>

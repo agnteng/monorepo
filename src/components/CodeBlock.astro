@@ -1,0 +1,15 @@
+---
+interface Props {
+  lang?: string;
+  class?: string;
+}
+const { lang = 'tsx', class: cls } = Astro.props;
+---
+
+<div class={`overflow-hidden rounded-2xl border border-white/10 bg-panel-navy ${cls ?? ''}`}>
+  <div class="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
+    <span class="font-mono text-[11px] uppercase tracking-wider text-periwinkle">{lang}</span>
+    <span class="font-mono text-[11px] tracking-widest text-soft-white/25">• • •</span>
+  </div>
+  <pre class="overflow-x-auto px-4 py-3.5 font-mono text-[12.5px] leading-relaxed text-soft-white/85"><slot /></pre>
+</div>

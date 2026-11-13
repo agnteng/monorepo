@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-11",
+  "city": "Lisbon",
+  "number": 5,
+  "venue": "The Nest by NEAR",
+  "tonight": "Wed 11 November 2026 · The Nest by NEAR",
+  "luma": {
+    "apiId": "evt-rxhZJZbe0doEshB",
+    "url": "https://luma.com/lisbon-5",
+    "startAt": "2026-11-11T18:00:00.000Z"
+  },
+  "speakers": [
+    {
+      "name": "Andy Nik",
+      "title": "Co-founder, Chatronix",
+      "photo": "/assets/speakers/andy-nik.jpg"
+    },
+    {
+      "name": "David Mihal",
+      "title": "Co-Founder, Meridian",
+      "photo": "/assets/speakers/david-mihal.jpg"
+    },
+    {
+      "name": "Sacha Dumay",
+      "title": "CTO, Cashflowy",
+      "photo": "/assets/speakers/sacha-dumay.jpg"
+    }
+  ]
+}

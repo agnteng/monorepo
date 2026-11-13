@@ -1,0 +1,146 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Animation from '../../components/Animation.tsx';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import EventCard from '../../components/EventCard.astro';
+import TalkCard from '../../components/TalkCard.astro';
+import DuotoneCard from '../../components/DuotoneCard.astro';
+
+// Each city is a real photo dithered into the brand duotone (multi-tone pixel
+// treatment). A new city is one row: name, coords, status, photo.
+const cities = [
+  { name: 'Lisbon', lat: '38.7223° N', lng: '9.1393° W', status: 'monthly · home', src: '/assets/photos/lisbon.jpg' },
+  { name: 'Berlin', lat: '52.5200° N', lng: '13.4050° E', status: 'season 2', src: '/assets/photos/berlin.jpg' },
+  { name: 'Frankfurt', lat: '50.1109° N', lng: '8.6821° E', status: 'coming soon', src: '/assets/photos/frankfurt.jpg' },
+  { name: 'Paris', lat: '48.8566° N', lng: '2.3522° E', status: 'on the radar', src: '/assets/photos/paris.jpg' },
+];
+
+const event = {
+  vol: 'Vol. 04',
+  title: 'Agentic Engineering Vol. 04 — Lisbon',
+  datetime: '24 Jun 2026 · 19:00',
+  venue: 'Fábrica Braço de Prata, Lisbon',
+  tags: ['AI Agents', 'Monthly meetup', 'Free'],
+  lumaHref: '#luma',
+};
+
+const talks = [
+  { title: 'Paying agents with x402', speaker: 'João Costa', date: 'Vol. 04', tag: 'Payments', fade: 'right' },
+  { title: 'Red-teaming your own agent', speaker: 'Sofia Marques', date: 'Vol. 03', tag: 'Security', fade: 'left' },
+  { title: "When the loop won't terminate", speaker: 'Miguel Antunes', date: 'Vol. 03', tag: 'Reliability', fade: 'radial' },
+];
+---
+
+<Base title="Agentic Engineering Lisbon — the monthly meetup for agent builders">
+  <SiteHeader title="Website Mockup" />
+
+  <Navbar links={['Meetup', 'Talks', 'About']} class="sticky top-[52px] z-40" />
+
+  <!-- ░░ HERO ░░ -->
+  <section class="relative flex min-h-[86vh] items-center overflow-hidden bg-deep-navy px-6 sm:px-12">
+    <Animation
+      client:visible
+      color="#1E2BE6"
+      edge="#3A4DFF"
+      cell={10}
+      density={0.6}
+      fade="right"
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+    />
+    <!-- legibility overlays -->
+    <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(90deg,#05071E 0%,rgba(5,7,30,0.72) 40%,rgba(5,7,30,0.15) 78%)"></div>
+    <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg,rgba(5,7,30,0.9) 0%,rgba(5,7,30,0) 24%,rgba(5,7,30,0) 70%,#05071E 100%)"></div>
+
+    <div class="relative z-10 mx-auto w-full max-w-[1280px] py-24">
+      <div class="flex items-center gap-2.5">
+        <span class="block h-2.5 w-2.5 bg-bright-blue"></span>
+        <span class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-periwinkle">monthly meetup · lisbon</span>
+      </div>
+
+      <h1 class="mt-6 max-w-3xl font-mono text-5xl font-semibold leading-[0.95] tracking-tight text-soft-white md:text-[66px]">
+        agentic engineers build in <span class="text-bright-blue">lisbon</span>
+      </h1>
+
+      <p class="mt-7 max-w-2xl font-sans text-lg leading-relaxed text-soft-white/70">
+        A monthly meetup and working community for the people building, shipping, and securing AI
+        agents — in Lisbon, and wherever the work is happening.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-3.5">
+        <Button variant="primary" href="#next">Come to the next one</Button>
+        <Button variant="ghost" href="#talks" class="!text-periwinkle">Read the recaps <Icon name="ArrowRight" size={16} /></Button>
+      </div>
+
+      <p class="mt-10 font-mono text-xs uppercase tracking-[0.2em] text-soft-white/40">field notes from the frontier</p>
+    </div>
+  </section>
+
+  <!-- ░░ NEXT MEETUP ░░ -->
+  <section id="next" class="bg-soft-white px-6 py-24 sm:px-12">
+    <div class="mx-auto max-w-[1280px]">
+      <div class="mb-8 flex items-center gap-2.5">
+        <span class="block h-2.5 w-2.5 bg-electric-blue"></span>
+        <span class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-electric-blue">// next meetup</span>
+      </div>
+
+      <EventCard
+        vol={event.vol}
+        title={event.title}
+        datetime={event.datetime}
+        venue={event.venue}
+        tags={event.tags}
+        lumaHref={event.lumaHref}
+      />
+
+      <p class="mt-6 max-w-xl font-mono text-sm leading-relaxed text-panel-navy/55">
+        Doors 19:00. Three talks, then we stay for the part where the real questions get asked.
+      </p>
+    </div>
+  </section>
+
+  <!-- ░░ TALKS & RECAPS ░░ -->
+  <section id="talks" class="bg-soft-white px-6 pb-28 sm:px-12">
+    <div class="mx-auto max-w-[1280px]">
+      <div class="mb-8 flex items-center gap-2.5">
+        <span class="block h-2.5 w-2.5 bg-electric-blue"></span>
+        <span class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-electric-blue">// talks &amp; recaps</span>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        {talks.map((t) => <TalkCard title={t.title} speaker={t.speaker} date={t.date} tag={t.tag} fade={t.fade} />)}
+      </div>
+
+      <div class="mt-10">
+        <Button variant="outline">All recaps on Substack <Icon name="ArrowRight" size={16} /></Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ ON TOUR / CITIES ░░ -->
+  <section id="cities" class="bg-deep-navy px-6 py-24 sm:px-12">
+    <div class="mx-auto max-w-[1280px]">
+      <div class="mb-5 flex items-center gap-2.5">
+        <span class="block h-2.5 w-2.5 bg-bright-blue"></span>
+        <span class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-periwinkle">// on tour</span>
+      </div>
+      <h2 class="max-w-2xl font-mono text-3xl font-semibold leading-tight tracking-tight text-soft-white md:text-4xl">
+        Lisbon is home. The work is everywhere.
+      </h2>
+      <p class="mt-4 max-w-xl font-sans text-[15px] leading-relaxed text-soft-white/55">
+        Agentic Engineering carries the city name when it travels — each chapter, its own skyline.
+      </p>
+
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {cities.map((c) => (
+          <DuotoneCard name={c.name} lat={c.lat} lng={c.lng} status={c.status} src={c.src} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Base>

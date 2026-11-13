@@ -1,0 +1,29 @@
+---
+// Meetup lockup: mark + single-line wordmark, with the meetup city beneath.
+// Single-line wordmark is ae-wordmark-line.svg (the two-line logotype
+// rearranged onto one baseline). City is set in Kode Mono, spaced caps.
+interface Props {
+  city?: string;
+  variant?: 'light' | 'dark';
+  class?: string;
+}
+const { city = 'Lisbon', variant = 'light', class: cls } = Astro.props;
+const dark = variant === 'dark';
+const mark = dark ? '/assets/logo/ae-mark-white.svg' : '/assets/logo/ae-mark.svg';
+const word = dark ? '/assets/logo/ae-wordmark-line-white.svg' : '/assets/logo/ae-wordmark-line.svg';
+const cityColor = dark ? 'text-periwinkle' : 'text-electric-blue';
+---
+
+<div class={`flex items-center gap-4 ${cls ?? ''}`}>
+  <img src={mark} alt="Agentic Engineering" class="h-16 w-auto" />
+  <div>
+    <img src={word} alt="agentic engineering" class="h-[29px] w-auto" />
+    {
+      city && (
+        <div class={`mt-2 font-mono text-[13px] font-medium uppercase ${cityColor}`} style="letter-spacing:0.34em">
+          {city}
+        </div>
+      )
+    }
+  </div>
+</div>

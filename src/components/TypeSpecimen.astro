@@ -1,0 +1,23 @@
+---
+interface Props {
+  role: string; // "Display / mono"
+  family: string; // "Kode Mono"
+  font: 'mono' | 'sans';
+  sample: string; // "Aa æ 01"
+  note: string;
+}
+const { role, family, font, sample, note } = Astro.props;
+const fontClass = font === 'mono' ? 'font-mono' : 'font-sans';
+const sampleWeight = font === 'mono' ? 'font-semibold' : 'font-bold';
+---
+
+<div class="rounded-md border border-panel-navy/[0.08] bg-white p-10">
+  <div class="mb-6 flex items-baseline justify-between">
+    <span class="font-mono text-[13px] uppercase tracking-[0.16em] text-electric-blue">{role}</span>
+    <span class="font-mono text-xs text-panel-navy/40">{family}</span>
+  </div>
+  <div class={`${fontClass} ${sampleWeight} text-[64px] leading-[0.95] tracking-tight text-panel-navy`}>
+    {sample}
+  </div>
+  <p class={`${fontClass} mt-6 text-sm leading-relaxed text-panel-navy/55`}>{note}</p>
+</div>

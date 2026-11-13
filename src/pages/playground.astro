@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import WaveFieldBuilder from '../components/WaveFieldBuilder.tsx';
+---
+
+<Base
+  title="Animation Builder — Agentic Engineering"
+  bodyClass="h-screen overflow-hidden bg-canvas font-sans text-deep-navy antialiased"
+>
+  <WaveFieldBuilder client:load />
+</Base>

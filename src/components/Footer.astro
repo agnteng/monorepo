@@ -1,0 +1,23 @@
+---
+interface Props {
+  socials?: string[];
+  class?: string;
+}
+const { socials = ['substack', 'youtube', 'x', 'telegram'], class: cls } = Astro.props;
+---
+
+<footer class={`w-full border-t border-white/10 bg-deep-navy ${cls ?? ''}`}>
+  <div class="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-5 px-6 py-8">
+    <div class="flex items-center gap-2.5">
+      <img src="/assets/logo/ae-mark-white.svg" alt="Agentic Engineering" class="h-7 w-auto" />
+      <img src="/assets/logo/ae-wordmark-white.svg" alt="" class="h-[25px] w-auto" />
+      <span class="ml-1 font-mono text-xs text-soft-white/40">· lisbon</span>
+    </div>
+    <div class="flex items-center gap-4">
+      {socials.map((s) => (
+        <a href="#" class="font-mono text-xs lowercase tracking-wide text-soft-white/50 transition-colors hover:text-periwinkle">{s}</a>
+      ))}
+    </div>
+    <span class="font-mono text-xs text-soft-white/35">© {new Date().getFullYear()} · @agenteng</span>
+  </div>
+</footer>

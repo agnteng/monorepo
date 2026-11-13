@@ -1,0 +1,20 @@
+---
+// Text input, aligned to DS1: 1.5px border, 10px radius, Manrope 15px.
+// Light-context by default.
+interface Props {
+  label?: string;
+  placeholder?: string;
+  type?: string;
+  class?: string;
+}
+const { label, placeholder, type = 'text', class: cls } = Astro.props;
+---
+
+<label class={`flex flex-col gap-2 ${cls ?? ''}`}>
+  {label && <span class="font-mono text-[11px] uppercase tracking-wider text-panel-navy/45">{label}</span>}
+  <input
+    type={type}
+    placeholder={placeholder}
+    class="rounded-[10px] border-[1.5px] border-panel-navy/15 bg-white px-3.5 py-3 font-sans text-[15px] text-panel-navy outline-none transition-colors placeholder:text-panel-navy/35 focus:border-electric-blue"
+  />
+</label>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  value: string;
+  label: string;
+  delta?: string;
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+const { value, label, delta, tone = 'dark', class: cls } = Astro.props;
+const isDark = tone === 'dark';
+const labelColor = isDark ? 'text-soft-white/55' : 'text-panel-navy/55';
+const valueColor = isDark ? 'text-soft-white' : 'text-panel-navy';
+---
+
+<div class={cls}>
+  <div class="flex items-baseline gap-2">
+    <span class={`font-mono text-4xl font-semibold tracking-tight ${valueColor}`}>{value}</span>
+    {delta && <span class="font-mono text-xs font-semibold text-emerald-500">{delta}</span>}
+  </div>
+  <div class={`mt-1.5 font-mono text-[11px] uppercase tracking-wider ${labelColor}`}>{label}</div>
+</div>

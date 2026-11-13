@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import SponsorDeck from '../components/slides-sponsor/SponsorDeck.tsx';
+
+// Thin shell only, same as /slides — the deck lives in .tsx because a React
+// island can't receive component children with props across an Astro slot
+// boundary, and the slide list is components rather than serialisable data.
+---
+
+<Base
+  title="Sponsorship — Agentic Engineering"
+  description="Sponsorship and partnership deck for the Agentic Engineering meetup."
+  bodyClass="h-screen overflow-hidden bg-black font-sans text-soft-white antialiased"
+>
+  <SponsorDeck client:load />
+</Base>

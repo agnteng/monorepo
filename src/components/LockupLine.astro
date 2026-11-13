@@ -1,0 +1,17 @@
+---
+// Horizontal lockup: mark + single-line wordmark (no city). Mark-to-text
+// proportions tuned for the wider single-line wordmark.
+interface Props {
+  variant?: 'light' | 'dark';
+  class?: string;
+}
+const { variant = 'light', class: cls } = Astro.props;
+const dark = variant === 'dark';
+const mark = dark ? '/assets/logo/ae-mark-white.svg' : '/assets/logo/ae-mark.svg';
+const word = dark ? '/assets/logo/ae-wordmark-line-white.svg' : '/assets/logo/ae-wordmark-line.svg';
+---
+
+<div class={`flex items-center gap-3 ${cls ?? ''}`}>
+  <img src={mark} alt="Agentic Engineering" class="h-9 w-auto" />
+  <img src={word} alt="agentic engineering" class="h-[32px] w-auto" />
+</div>

@@ -1,0 +1,82 @@
+---
+import Animation from './Animation.tsx';
+import Pill from './Pill.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+
+// Next-meetup module. Navy card (pops on a light section) with a dither
+// "event cover" panel on the right.
+interface Props {
+  vol: string;
+  title: string;
+  datetime: string;
+  venue: string;
+  tags?: string[];
+  lumaHref?: string;
+  coverFade?: 'none' | 'left' | 'right' | 'up' | 'down' | 'radial';
+  // CTAs — defaults preserve the original render; pass secondaryHref={null} to
+  // drop the secondary button (e.g. on the live site where there's no speakers anchor).
+  primaryLabel?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string | null;
+}
+const {
+  vol,
+  title,
+  datetime,
+  venue,
+  tags = [],
+  lumaHref = '#',
+  coverFade = 'radial',
+  primaryLabel = 'Save your spot',
+  secondaryLabel = "See who's speaking",
+  secondaryHref = '#speakers',
+} = Astro.props;
+---
+
+<div class="grid overflow-hidden rounded-2xl bg-deep-navy lg:grid-cols-[1.4fr_1fr]">
+  <!-- details -->
+  <div class="p-8 sm:p-10">
+    <div class="flex items-center gap-3">
+      <span class="rounded-full bg-electric-blue px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-white">{vol}</span>
+      <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-periwinkle">upcoming</span>
+    </div>
+
+    <h3 class="mt-5 max-w-md font-sans text-2xl font-bold leading-tight tracking-tight text-soft-white sm:text-3xl">
+      {title}
+    </h3>
+
+    <div class="mt-6 flex flex-col gap-2.5 font-mono text-sm text-soft-white/75">
+      <span class="flex items-center gap-2.5"><Icon name="Calendar" size={16} class="text-periwinkle" /> {datetime}</span>
+      <span class="flex items-center gap-2.5"><Icon name="MapPin" size={16} class="text-periwinkle" /> {venue}</span>
+    </div>
+
+    {tags.length > 0 && (
+      <div class="mt-6 flex flex-wrap gap-2">
+        {tags.map((t) => (
+          <span class="rounded-full border border-white/15 px-3 py-1 font-mono text-[11px] text-periwinkle">{t}</span>
+        ))}
+      </div>
+    )}
+
+    <div class="mt-8 flex flex-wrap items-center gap-3">
+      <Button variant="primary" href={lumaHref}>{primaryLabel}</Button>
+      {secondaryHref && (
+        <Button variant="ghost" href={secondaryHref} class="!text-periwinkle">{secondaryLabel} <Icon name="ArrowRight" size={16} /></Button>
+      )}
+    </div>
+  </div>
+
+  <!-- dither cover -->
+  <div class="relative min-h-[200px] bg-panel-navy">
+    <Animation
+      client:visible
+      color="#1E2BE6"
+      edge="#B5A6FF"
+      cell={11}
+      density={0.55}
+      fade={coverFade}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+    />
+  </div>
+</div>

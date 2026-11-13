@@ -1,0 +1,20 @@
+---
+interface Props {
+  label?: string;
+  checked?: boolean;
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+const { label, checked = false, tone = 'light', class: cls } = Astro.props;
+const labelColor = tone === 'dark' ? 'text-soft-white' : 'text-panel-navy';
+const track = tone === 'dark' ? 'bg-white/15' : 'bg-panel-navy/20';
+---
+
+<label class={`inline-flex cursor-pointer items-center gap-3 ${cls ?? ''}`}>
+  <span class="relative inline-flex h-6 w-11 items-center">
+    <input type="checkbox" checked={checked} class="peer sr-only" />
+    <span class={`absolute inset-0 rounded-full transition-colors peer-checked:bg-electric-blue ${track}`}></span>
+    <span class="absolute left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform duration-150 peer-checked:translate-x-5"></span>
+  </span>
+  {label && <span class={`font-sans text-sm ${labelColor}`}>{label}</span>}
+</label>

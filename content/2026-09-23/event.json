@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-23",
+  "city": "Lisbon",
+  "number": 4,
+  "venue": "Lunar Strategy",
+  "tonight": "Wed 23 September 2026 · Lunar Strategy",
+  "luma": {
+    "apiId": "evt-S0uIAjkttvEDJ6Z",
+    "url": "https://luma.com/kqlbak7w",
+    "startAt": "2026-09-23T18:00:00.000Z"
+  },
+  "speakers": [
+    {
+      "name": "Tim Haldorsson",
+      "title": "CEO, Lunar Strategy",
+      "photo": "/assets/speakers/tim-haldorsson.jpg"
+    },
+    {
+      "name": "Doris Hernandez Argueta",
+      "title": "Co-Founder, Altana Network",
+      "photo": "/assets/speakers/doris-hernandez-argueta.jpg"
+    },
+    {
+      "name": "Jeremy Healsmith",
+      "title": "Co-Founder, Pravi",
+      "photo": "/assets/speakers/jeremy-healsmith.png"
+    }
+  ]
+}

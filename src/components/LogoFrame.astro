@@ -1,0 +1,41 @@
+---
+// A presentation tile for showing a logo asset: a framed surface + caption.
+interface Props {
+  bg?: string; // tailwind bg utility for the surface
+  shape?: 'square' | 'rounded' | 'circle';
+  pad?: string; // tailwind padding utility
+  caption?: string;
+  sub?: string; // secondary caption (hex / px / note)
+  captionTone?: 'light' | 'dark';
+  class?: string;
+}
+const {
+  bg = 'bg-white',
+  shape = 'rounded',
+  pad = 'p-10',
+  caption,
+  sub,
+  captionTone = 'dark',
+  class: cls,
+} = Astro.props;
+
+const shapeClass =
+  shape === 'circle' ? 'rounded-full' : shape === 'rounded' ? 'rounded-xl' : 'rounded-none';
+const capColor = captionTone === 'light' ? 'text-soft-white/55' : 'text-panel-navy/50';
+---
+
+<figure class={`flex flex-col ${cls ?? ''}`}>
+  <div
+    class={`flex items-center justify-center overflow-hidden border border-black/[0.06] ${bg} ${shapeClass} ${pad}`}
+  >
+    <slot />
+  </div>
+  {
+    (caption || sub) && (
+      <figcaption class={`mt-3 font-mono text-[11px] uppercase tracking-wider ${capColor}`}>
+        {caption}
+        {sub && <span class="lowercase opacity-60"> · {sub}</span>}
+      </figcaption>
+    )
+  }
+</figure>

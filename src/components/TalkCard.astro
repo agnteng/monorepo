@@ -1,0 +1,56 @@
+---
+import Animation from './Animation.tsx';
+import Pill from './Pill.astro';
+import Icon from './Icon.astro';
+
+// Talk / recap thumbnail. The "illustration" is the dither wave field (never
+// the dissolving logo, never stock). Vary `fade` per card so a grid reads as
+// distinct textures, not a repeated asset.
+interface Props {
+  title: string;
+  speaker: string;
+  date?: string;
+  tag?: string;
+  fade?: 'none' | 'left' | 'right' | 'up' | 'down' | 'radial';
+  href?: string;
+}
+const { title, speaker, date, tag, fade = 'none', href = '#' } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group block overflow-hidden rounded-2xl border border-panel-navy/[0.08] bg-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-electric-blue/10"
+>
+  <!-- dither header (illustration) -->
+  <div class="relative aspect-[16/10] overflow-hidden bg-deep-navy">
+    <Animation
+      client:visible
+      color="#1E2BE6"
+      edge="#B5A6FF"
+      cell={9}
+      density={0.6}
+      fade={fade}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+    />
+    <div
+      class="pointer-events-none absolute inset-0"
+      style="background:linear-gradient(180deg,rgba(5,7,30,0) 35%,rgba(5,7,30,0.85) 100%)"
+    >
+    </div>
+    {tag && <div class="absolute left-3 top-3"><Pill>{tag}</Pill></div>}
+    {date && (
+      <span class="absolute bottom-3 right-3 font-mono text-[11px] uppercase tracking-wider text-soft-white/70">
+        {date}
+      </span>
+    )}
+  </div>
+
+  <!-- body -->
+  <div class="p-5">
+    <h3 class="font-sans text-lg font-bold leading-snug tracking-tight text-panel-navy">{title}</h3>
+    <p class="mt-1 font-sans text-sm text-panel-navy/55">{speaker}</p>
+    <span class="mt-4 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-electric-blue">
+      <Icon name="Eye" size={14} /> Watch the recording
+    </span>
+  </div>
+</a>

@@ -1,0 +1,31 @@
+---
+// A guideline-doc section. Renders ONLY the small kicker title
+// (colored square + "NN — Label"), then a content slot. No big heading.
+interface Props {
+  n: string; // "01", "02", ...
+  label: string; // "Color & type"
+  tone?: 'light' | 'dark'; // background, mirrors DS2's alternation
+  id?: string;
+}
+
+const { n, label, tone = 'dark', id } = Astro.props;
+
+const isLight = tone === 'light';
+const sectionClass = isLight ? 'bg-soft-white text-panel-navy' : 'bg-deep-navy text-soft-white';
+const squareClass = isLight ? 'bg-electric-blue' : 'bg-bright-blue';
+const labelClass = isLight ? 'text-electric-blue' : 'text-periwinkle';
+---
+
+<section id={id} class={`${sectionClass} px-12 py-24`}>
+  <div class="mx-auto max-w-[1280px]">
+    <div class="flex items-center gap-2.5">
+      <span class={`block h-2.5 w-2.5 ${squareClass}`}></span>
+      <span class={`font-mono text-xs font-semibold uppercase tracking-[0.2em] ${labelClass}`}>
+        {n} — {label}
+      </span>
+    </div>
+    <div class="mt-10">
+      <slot />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+---
+// Tags / labels, aligned to DS1: fully-rounded (999px), Kode Mono 600 / 11px.
+// Default is the filled lavender style; `outline` is the bordered variant.
+interface Props {
+  variant?: 'solid' | 'outline';
+  class?: string;
+}
+const { variant = 'solid', class: cls } = Astro.props;
+const styles = {
+  solid: 'bg-[#EEF1FF] text-electric-blue',
+  outline: 'border border-panel-navy/15 bg-white text-panel-navy',
+};
+---
+
+<span
+  class={`inline-flex items-center rounded-full px-3.5 py-1.5 font-mono text-[11px] font-semibold ${styles[variant]} ${cls ?? ''}`}
+>
+  <slot />
+</span>

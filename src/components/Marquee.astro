@@ -1,0 +1,37 @@
+---
+// Infinite scrolling strip, inspired by DS2's marquee. Two copies of the item
+// list animate -50% for a seamless loop. Pauses for reduced-motion.
+interface Props {
+  items?: string[];
+  tone?: 'blue' | 'navy' | 'light';
+  class?: string;
+}
+const {
+  items = ['agentic engineering', 'lisbon', 'build · ship · secure', 'monthly meetup'],
+  tone = 'blue',
+  class: cls,
+} = Astro.props;
+
+const tones = {
+  blue: 'bg-electric-blue text-white',
+  navy: 'bg-deep-navy text-periwinkle',
+  light: 'bg-soft-white text-electric-blue',
+}[tone];
+---
+
+<div class={`overflow-hidden ${tones} ${cls ?? ''}`}>
+  <div class="ae-marquee-track py-3">
+    {
+      [0, 1].map(() => (
+        <div class="flex shrink-0 items-center" aria-hidden={true}>
+          {items.map((it) => (
+            <span class="mx-6 flex items-center gap-6 font-mono text-sm font-semibold uppercase tracking-[0.18em]">
+              {it}
+              <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-50" />
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>

@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import SlideDeck from '../../components/slides/SlideDeck.tsx';
+
+// Thin shell only. The whole deck lives in .tsx because a React island can't
+// receive component children with props across an Astro slot boundary — the
+// title slide composes <Template><Animation><Image/></Animation></Template>.
+// (Same constraint DuotoneField.tsx documents.)
+---
+
+<Base
+  title="Meetup Slides — Lisbon, 29 Jul 2026"
+  description="Agentic Engineering Lisbon meetup deck, 29 Jul 2026."
+  bodyClass="h-screen overflow-hidden bg-black font-sans text-soft-white antialiased"
+>
+  <SlideDeck client:load />
+</Base>

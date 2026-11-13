@@ -1,0 +1,23 @@
+---
+// Status badge, aligned to DS1: fully-rounded pill, Manrope 600 / 13px,
+// role-tinted background with a matching dot.
+interface Props {
+  tone?: 'info' | 'success' | 'warn' | 'neutral';
+  class?: string;
+}
+const { tone = 'info', class: cls } = Astro.props;
+
+const tones = {
+  info: { text: 'text-electric-blue', bg: 'bg-[#EEF1FF]', dot: 'bg-electric-blue' },
+  success: { text: 'text-[#1F8A5B]', bg: 'bg-[#1F8A5B]/[0.12]', dot: 'bg-[#1F8A5B]' },
+  warn: { text: 'text-[#B26A00]', bg: 'bg-[#DCB507]/[0.16]', dot: 'bg-[#DCB507]' },
+  neutral: { text: 'text-panel-navy/70', bg: 'bg-panel-navy/[0.06]', dot: 'bg-panel-navy/50' },
+}[tone];
+---
+
+<span
+  class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 font-sans text-[13px] font-semibold ${tones.text} ${tones.bg} ${cls ?? ''}`}
+>
+  <span class={`h-[7px] w-[7px] rounded-full ${tones.dot}`}></span>
+  <slot />
+</span>

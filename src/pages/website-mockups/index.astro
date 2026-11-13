@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+
+const links = [
+  { n: '01', label: 'Lisbon Mockup', href: '/website-mockups/lisbon' },
+  { n: '02', label: 'Landing Page (V2)', href: '/website-mockups/v2' },
+  { n: '03', label: 'Landing Page (V3)', href: '/website-mockups/v3' },
+];
+---
+
+<Base title="Website Mockups — Agentic Engineering">
+  <SiteHeader title="Website Mockups" />
+  <main class="mx-auto max-w-[1280px] px-12 py-20">
+    <div class="flex items-center gap-2.5">
+      <span class="block h-2.5 w-2.5 bg-bright-blue"></span>
+      <span class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-periwinkle">
+        Website Mockups
+      </span>
+    </div>
+
+    <nav class="mt-12 divide-y divide-white/10 border-y border-white/10">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="group flex items-center gap-5 py-5 transition hover:bg-white/[0.03]"
+          >
+            <span class="font-mono text-xs text-soft-white/40">{l.n}</span>
+            <span class="font-sans text-lg tracking-tight">{l.label}</span>
+            <span class="ml-auto font-mono text-xs text-soft-white/30 transition group-hover:text-periwinkle">
+              →
+            </span>
+          </a>
+        ))
+      }
+    </nav>
+  </main>
+</Base>

@@ -1,0 +1,34 @@
+---
+import DuotoneField from './DuotoneField.tsx';
+// Duotone treatment on a photo. Any city photo becomes a brand dithered image.
+interface Props {
+  name: string;
+  lat: string;
+  lng: string;
+  src: string;
+  status?: string;
+  mid?: string;
+  light?: string;
+  shape?: 'square' | 'dot' | 'halftone';
+  cell?: number;
+  contrast?: number;
+  edgeBoost?: number;
+  base?: number;
+}
+const { name, lat, lng, src, status, mid = '#1E2BE6', light = '#B5A6FF', shape = 'square', cell = 4, contrast = 1.4, edgeBoost = 1.3, base = 0.5 } = Astro.props;
+---
+
+<div class="relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/10 bg-deep-navy">
+  <DuotoneField client:visible src={src} color={mid} edge={light} cell={cell} shape={shape} motion={30} contrast={contrast} edgeGlow={edgeBoost} tone={base} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg,rgba(5,7,30,0.7) 0%,rgba(5,7,30,0) 22%,rgba(5,7,30,0.4) 58%,#05071E 100%)"></div>
+
+  <div class="absolute inset-x-5 top-5 flex items-center justify-between gap-2">
+    <span class="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.16em] text-soft-white/80">■ agentic engineering</span>
+    {status && <span class="whitespace-nowrap font-mono text-[10px] uppercase tracking-wider text-periwinkle">{status}</span>}
+  </div>
+
+  <div class="absolute inset-x-5 bottom-5">
+    <div class="font-mono text-[11px] uppercase tracking-[0.16em] text-periwinkle/80">{lat} · {lng}</div>
+    <div class="mt-1.5 font-mono text-3xl font-semibold tracking-tight text-soft-white">{name}</div>
+  </div>
+</div>

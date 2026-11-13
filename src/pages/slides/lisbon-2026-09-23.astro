@@ -1,0 +1,30 @@
+---
+// Not prerendered: this page is the live event deck, so every request should
+// see current Luma data (who's checked in right now) rather than whatever
+// was true at the last `astro build`. The audience data is then kept fresh
+// after load too — SlideAudience polls /api/audience.json.
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import SlideDeck from '../../components/slides-2026-09-23/SlideDeck.tsx';
+import { getAllGuests, getSupporterNames, getEventAudience } from '../../lib/luma';
+import { LUMA_EVENT_API_ID, LUMA_EVENT_START_AT } from '../../components/slides-2026-09-23/content';
+
+// Thin shell, same reasoning as lisbon-2026-08-26.astro — the deck lives in
+// .tsx because a React island can't receive component children with props
+// across an Astro slot boundary. The Luma fetch happens here (server-side,
+// on every request) rather than in a .tsx file, so LUMA_API_KEY never
+// reaches the client bundle; guests are fetched once and both Luma-backed
+// slides derive their data from that one list, as plain serialisable props.
+const guests = await getAllGuests(LUMA_EVENT_API_ID);
+const supporters = getSupporterNames(guests);
+const audience = getEventAudience(guests, LUMA_EVENT_START_AT);
+---
+
+<Base
+  title="Meetup Slides — Lisbon, 23 Sep 2026"
+  description="Agentic Engineering Lisbon meetup deck, 23 Sep 2026."
+  bodyClass="h-screen overflow-hidden bg-black font-sans text-soft-white antialiased"
+>
+  <SlideDeck client:load supporters={supporters} audience={audience} />
+</Base>

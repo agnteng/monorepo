@@ -1,0 +1,15 @@
+---
+interface Props {
+  name: string;
+  hex: string;
+}
+const { name, hex } = Astro.props;
+---
+
+<div class="overflow-hidden rounded-[5px] border border-panel-navy/10">
+  <div class="h-[118px]" style={`background:${hex}`}></div>
+  <div class="bg-white px-3.5 pb-4 pt-3.5">
+    <div class="font-sans text-sm font-bold text-panel-navy">{name}</div>
+    <div class="mt-1 font-mono text-[11px] uppercase text-panel-navy/45">{hex}</div>
+  </div>
+</div>

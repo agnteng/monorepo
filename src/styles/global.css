@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────
+ * Design tokens (Tailwind v4 `@theme`) — basic Color & Type, ported from DS2.
+ * ─────────────────────────────────────────────────────────────────────────
+ * Each token becomes a Tailwind utility automatically, e.g.
+ *   --color-electric-blue → bg-electric-blue / text-electric-blue / border-electric-blue
+ *   --font-mono           → font-mono
+ */
+@theme {
+  /* Brand palette */
+  --color-electric-blue: #1e2be6;
+  --color-bright-blue: #3a4dff;
+  --color-periwinkle: #b5a6ff;
+  --color-deep-navy: #05071e;
+  --color-panel-navy: #0b0e2a; /* supporting: cards / panels on navy */
+  --color-soft-white: #f4f5ff;
+  --color-signal-yellow: #f9c835;
+
+  /* Extended accents — for patterns, illustration & images. Tuned to the same
+     vivid register as electric-blue/signal-yellow so they read on navy. */
+  --color-cyan: #1fc6e6;
+  --color-mint: #16d9a6;
+  --color-violet: #7c4df5;
+  --color-magenta: #ed4ba0;
+  --color-coral: #ff6e4d;
+  --color-amber: #ff9e2c;
+
+  /* Neutral light-UI surfaces — used only by the (light) Animation Builder
+     tool chrome. The rest of the design system stays on the dark palette. */
+  --color-canvas: #f1f2f6; /* Figma-style infinite-canvas gray */
+  --color-panel: #ffffff; /* chrome surfaces: top bar, panel, drawer */
+  --color-line: #e6e6ec; /* hairline borders on light */
+  --color-ink: #1c1d2e; /* primary text on light */
+
+  /* Type */
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Kode Mono", ui-monospace, monospace;
+}
+
+/* ── Brand animations ─────────────────────────────────────────────────── */
+@keyframes ae-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes ae-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ae-cursor {
+  display: inline-block;
+  animation: ae-blink 1.1s steps(1) infinite;
+}
+.ae-marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ae-marquee 26s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ae-cursor,
+  .ae-marquee-track { animation: none; }
+}

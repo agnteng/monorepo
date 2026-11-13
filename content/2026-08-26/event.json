@@ -1,0 +1,29 @@
+{
+  "date": "2026-08-26",
+  "city": "Lisbon",
+  "number": 3,
+  "venue": "The Nest",
+  "tonight": "Wed 26 August 2026 · The Nest",
+  "luma": {
+    "apiId": "evt-KKvaxokxBVwWTE0",
+    "url": "https://luma.com/lfsrumua",
+    "startAt": "2026-08-26T18:00:00.000Z"
+  },
+  "speakers": [
+    {
+      "name": "Youssef Allali",
+      "title": "Senior Developer Advocate, Coinbase",
+      "photo": "/assets/speakers/youssef-allali.jpg"
+    },
+    {
+      "name": "Harley Alexander",
+      "title": "Product Engineer, PostHog",
+      "photo": "/assets/speakers/harley-alexander.png"
+    },
+    {
+      "name": "Joel D'Silva",
+      "title": "Senior Product Designer, Nokia",
+      "photo": "/assets/speakers/joel-dsilva.jpg"
+    }
+  ]
+}

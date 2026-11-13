@@ -1,0 +1,25 @@
+---
+import Icon from './Icon.astro';
+// Inline alert / note. Light-context.
+interface Props {
+  tone?: 'info' | 'success' | 'warn' | 'danger';
+  title?: string;
+  class?: string;
+}
+const { tone = 'info', title, class: cls } = Astro.props;
+
+const tones = {
+  info: { wrap: 'border-electric-blue/20 bg-[#EEF1FF]', accent: 'text-electric-blue', icon: 'Command' },
+  success: { wrap: 'border-[#1F8A5B]/25 bg-[#1F8A5B]/[0.08]', accent: 'text-[#1F8A5B]', icon: 'Check' },
+  warn: { wrap: 'border-[#DCB507]/30 bg-[#DCB507]/[0.12]', accent: 'text-[#B26A00]', icon: 'Flag' },
+  danger: { wrap: 'border-red-500/25 bg-red-500/[0.06]', accent: 'text-red-600', icon: 'Alert' },
+}[tone];
+---
+
+<div class={`flex items-start gap-3 rounded-xl border p-4 ${tones.wrap} ${cls ?? ''}`}>
+  <span class={`mt-0.5 flex-none ${tones.accent}`}><Icon name={tones.icon} size={18} /></span>
+  <div class="min-w-0">
+    {title && <div class={`mb-1 font-sans text-sm font-bold ${tones.accent}`}>{title}</div>}
+    <div class="font-sans text-sm leading-relaxed text-panel-navy/75"><slot /></div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+
+// Newest to oldest.
+const links = [
+  { n: '01', label: 'Lisbon - 2026-11-11', href: '/slides/lisbon-2026-11-11' },
+  { n: '02', label: 'Lisbon - 2026-09-23', href: '/slides/lisbon-2026-09-23' },
+  { n: '03', label: 'Lisbon - 2026-08-26', href: '/slides/lisbon-2026-08-26' },
+  { n: '04', label: 'Lisbon - 2026-07-29', href: '/slides/lisbon-2026-07-29' },
+];
+---
+
+<Base title="Meetup Slides — Agentic Engineering">
+  <SiteHeader title="Meetup Slides" />
+  <main class="mx-auto max-w-[1280px] px-12 py-20">
+    <div class="flex items-center gap-2.5">
+      <span class="block h-2.5 w-2.5 bg-bright-blue"></span>
+      <span class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-periwinkle">
+        Meetup Slides
+      </span>
+    </div>
+
+    <nav class="mt-12 divide-y divide-white/10 border-y border-white/10">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="group flex items-center gap-5 py-5 transition hover:bg-white/[0.03]"
+          >
+            <span class="font-mono text-xs text-soft-white/40">{l.n}</span>
+            <span class="font-sans text-lg tracking-tight">{l.label}</span>
+            <span class="ml-auto font-mono text-xs text-soft-white/30 transition group-hover:text-periwinkle">
+              →
+            </span>
+          </a>
+        ))
+      }
+    </nav>
+  </main>
+</Base>

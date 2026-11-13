@@ -1,0 +1,27 @@
+---
+// Pull-quote, inspired by DS2's X quote card.
+interface Props {
+  author?: string;
+  role?: string;
+  variant?: 'periwinkle' | 'navy' | 'light';
+  class?: string;
+}
+const { author, role, variant = 'periwinkle', class: cls } = Astro.props;
+const styles = {
+  periwinkle: { bg: 'bg-periwinkle', text: 'text-deep-navy', meta: 'text-deep-navy/60', mark: 'text-deep-navy/80' },
+  navy: { bg: 'bg-deep-navy', text: 'text-soft-white', meta: 'text-periwinkle', mark: 'text-periwinkle/70' },
+  light: { bg: 'bg-white border border-panel-navy/[0.08]', text: 'text-panel-navy', meta: 'text-panel-navy/55', mark: 'text-electric-blue/70' },
+}[variant];
+---
+
+<figure class={`rounded-2xl p-8 ${styles.bg} ${cls ?? ''}`}>
+  <div class={`font-mono text-5xl leading-none ${styles.mark}`}>&ldquo;</div>
+  <blockquote class={`mt-2 font-sans text-xl font-bold leading-snug tracking-tight ${styles.text}`}>
+    <slot />
+  </blockquote>
+  {(author || role) && (
+    <figcaption class={`mt-5 font-mono text-[13px] ${styles.meta}`}>
+      {author && <span>— {author}</span>}{role && <span>, {role}</span>}
+    </figcaption>
+  )}
+</figure>

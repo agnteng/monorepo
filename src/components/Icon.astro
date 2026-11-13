@@ -1,0 +1,31 @@
+---
+// Pixel / 8-bit icon, ported from DS1's 67-icon set. Paths use currentColor,
+// so colour it with any `text-*` utility on the element or a parent.
+import icons from '../icons/icon-data.js';
+
+interface Props {
+  name: string;
+  size?: number | string;
+  class?: string;
+}
+const { name, size = 24, class: cls } = Astro.props;
+const set = icons as Record<string, { viewBox: string; body: string }>;
+const icon = set[name];
+---
+
+{
+  icon ? (
+    <svg
+      width={size}
+      height={size}
+      viewBox={icon.viewBox}
+      fill="none"
+      class={cls}
+      role="img"
+      aria-label={name}
+      set:html={icon.body}
+    />
+  ) : (
+    <span class="font-mono text-[10px] text-red-500">?{name}</span>
+  )
+}

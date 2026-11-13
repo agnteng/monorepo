@@ -1,0 +1,41 @@
+# build output
+dist/
+# astro generated types
+.astro/
+# deps
+node_modules/
+# logs
+npm-debug.log*
+# secrets: never rely on a personal global gitignore for these.
+# .env.schema holds no values and is safe to commit.
+.env
+.env.*
+!.env.schema
+# python
+__pycache__/
+*.pyc
+# os / editor
+.DS_Store
+*.local
+.vscode/
+
+# event media and scratch. A single talk recording outweighs the whole repo,
+# and GitHub rejects anything over 100MB. Per talk, the markdown and JSON are
+# tracked; the clips are not. work/ (audio, frames, chunk transcripts, cache)
+# is scratch: what is worth keeping ends up in a talk folder or the README.
+content/**/raw/*
+content/**/upload/*
+content/**/work/
+*.mp4
+*.MP4
+*.mov
+*.mkv
+*.m4v
+*.avi
+*.wav
+*.m4a
+*.mp3
+# keep raw/ so a new event starts from the same layout. The negation works
+# because the glob above ends in /* rather than /: git does not descend into an
+# ignored directory, so a negation inside one is never reached.
+!content/**/raw/.gitkeep

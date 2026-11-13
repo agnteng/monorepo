@@ -1,0 +1,39 @@
+---
+import Button from './Button.astro';
+interface Props {
+  links?: string[];
+  linkHrefs?: string[];
+  cta?: string;
+  ctaHref?: string;
+  signIn?: boolean;
+  class?: string;
+}
+const {
+  links = ['Talks', 'Recaps', 'About'],
+  linkHrefs,
+  cta = 'Join',
+  ctaHref = '#',
+  signIn = true,
+  class: cls,
+} = Astro.props;
+---
+
+<header class={`w-full border-b border-white/10 bg-deep-navy ${cls ?? ''}`}>
+  <div class="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-3.5">
+    <a href="/" class="flex items-center gap-2.5">
+      <img src="/assets/logo/ae-mark-white.svg" alt="Agentic Engineering" class="h-7 w-auto" />
+      <img src="/assets/logo/ae-wordmark-white.svg" alt="" class="h-[25px] w-auto" />
+    </a>
+    <nav class="hidden items-center gap-7 md:flex">
+      {links.map((l, i) => (
+        <a href={linkHrefs?.[i] ?? '#'} class="font-sans text-sm text-soft-white/65 transition-colors hover:text-soft-white">{l}</a>
+      ))}
+    </nav>
+    <div class="flex items-center gap-3">
+      {signIn && (
+        <a href="#" class="hidden font-sans text-sm text-soft-white/65 transition-colors hover:text-soft-white sm:block">Sign in</a>
+      )}
+      <Button variant="primary" href={ctaHref} class="!px-5 !py-2.5 !text-sm">{cta}</Button>
+    </div>
+  </div>
+</header>

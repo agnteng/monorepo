@@ -1,0 +1,546 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import Swatch from '../components/Swatch.astro';
+import TypeSpecimen from '../components/TypeSpecimen.astro';
+import LogoFrame from '../components/LogoFrame.astro';
+import LockupLine from '../components/LockupLine.astro';
+import LockupMeetup from '../components/LockupMeetup.astro';
+import Animation from '../components/Animation.tsx';
+import DuotoneField from '../components/DuotoneField.tsx';
+import SiteHeader from '../components/SiteHeader.astro';
+import Icon from '../components/Icon.astro';
+import Button from '../components/Button.astro';
+import Pill from '../components/Pill.astro';
+import Badge from '../components/Badge.astro';
+import Input from '../components/Input.astro';
+import Toggle from '../components/Toggle.astro';
+import Avatar from '../components/Avatar.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import Stat from '../components/Stat.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import Quote from '../components/Quote.astro';
+import Callout from '../components/Callout.astro';
+import Terminal from '../components/Terminal.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import Marquee from '../components/Marquee.astro';
+import icons from '../icons/icon-data.js';
+
+const iconNames = Object.keys(icons);
+
+// Voice & usage, ported from DESIGN SYSTEM 2.
+const sayLines = [
+  { ok: true, text: '“Notes from the first Agentic Engineering meetup.”' },
+  { ok: true, text: '“Six talks, one room, what actually shipped.”' },
+  { ok: false, text: '“Unlock the future of agentic AI. 🚀”' },
+];
+const neverIllustrate = [
+  'node graphs', 'connected dots', 'glowing brains', 'circuit boards', 'hexagons',
+  'robots', 'swooshes & blobs', 'infinity loops', 'terminal / hacker trope', 'mock desktop windows',
+];
+const neverWrite = ['unlock', 'supercharge', 'the future of [x]', 'where [x] meets [y]', 'reimagined', 'build the future', '🚀 / ✨'];
+
+// Core palette (the foundation).
+const corePalette = [
+  { name: 'Electric Blue', hex: '#1E2BE6' },
+  { name: 'Bright Blue', hex: '#3A4DFF' },
+  { name: 'Periwinkle', hex: '#B5A6FF' },
+  { name: 'Deep Navy', hex: '#05071E' },
+  { name: 'Soft White', hex: '#F4F5FF' },
+  { name: 'Signal Yellow', hex: '#F9C835' },
+];
+// Extended accents — expressive range for patterns, illustration & images.
+const accentPalette = [
+  { name: 'Cyan', hex: '#1FC6E6' },
+  { name: 'Mint', hex: '#16D9A6' },
+  { name: 'Violet', hex: '#7C4DF5' },
+  { name: 'Magenta', hex: '#ED4BA0' },
+  { name: 'Coral', hex: '#FF6E4D' },
+  { name: 'Amber', hex: '#FF9E2C' },
+];
+// Tones — each colour stepped down over navy (opacity ramp) for shade range.
+const toneColors = [
+  { name: 'Electric Blue', hex: '#1E2BE6' },
+  { name: 'Cyan', hex: '#1FC6E6' },
+  { name: 'Violet', hex: '#7C4DF5' },
+  { name: 'Magenta', hex: '#ED4BA0' },
+  { name: 'Coral', hex: '#FF6E4D' },
+  { name: 'Amber', hex: '#FF9E2C' },
+];
+const toneSteps = [1, 0.78, 0.58, 0.4, 0.25, 0.13];
+
+// Reusable spec-row label class for the Components section.
+const rowLabel = 'font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue sm:pt-2';
+---
+
+<Base title="Brand Guidelines — Agentic Engineering">
+  <SiteHeader title="Brand Guidelines" />
+
+  <!-- 01 — The mark -->
+  <Section n="01" label="The mark" tone="light" id="mark">
+    <div class="space-y-20">
+      <!-- ░ The mark ░ -->
+      <div>
+        <h3 class="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">
+          The mark
+        </h3>
+        <div class="grid gap-6 sm:grid-cols-2">
+          <LogoFrame caption="primary" sub="#1E2BE6">
+            <img src="/assets/logo/ae-mark.svg" alt="Agentic Engineering mark" class="h-32 w-auto" />
+          </LogoFrame>
+          <LogoFrame bg="bg-deep-navy" captionTone="light" caption="reversed" sub="on navy">
+            <img src="/assets/logo/ae-mark-white.svg" alt="Agentic Engineering mark, reversed" class="h-32 w-auto" />
+          </LogoFrame>
+        </div>
+      </div>
+
+      <!-- ░ The wordmark ░ -->
+      <div>
+        <h3 class="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">
+          The wordmark
+        </h3>
+        <div class="grid gap-6 sm:grid-cols-2">
+          <LogoFrame caption="black" sub="on light">
+            <img src="/assets/logo/ae-wordmark.svg" alt="agentic engineering wordmark" class="w-[260px]" />
+          </LogoFrame>
+          <LogoFrame bg="bg-deep-navy" captionTone="light" caption="white" sub="on dark">
+            <img src="/assets/logo/ae-wordmark-white.svg" alt="agentic engineering wordmark, reversed" class="w-[260px]" />
+          </LogoFrame>
+        </div>
+      </div>
+
+      <!-- ░ Lockup ░ -->
+      <div>
+        <h3 class="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">
+          Lockup
+        </h3>
+        <div class="grid gap-6 sm:grid-cols-2">
+          <LogoFrame caption="primary" sub="on light">
+            <div class="flex items-center gap-[30px]">
+              <img src="/assets/logo/ae-mark.svg" alt="mark" class="h-20 w-auto" />
+              <img src="/assets/logo/ae-wordmark.svg" alt="agentic engineering" class="h-[72px] w-auto" />
+            </div>
+          </LogoFrame>
+          <LogoFrame bg="bg-deep-navy" captionTone="light" caption="reversed" sub="on navy">
+            <div class="flex items-center gap-[30px]">
+              <img src="/assets/logo/ae-mark-white.svg" alt="mark, reversed" class="h-20 w-auto" />
+              <img src="/assets/logo/ae-wordmark-white.svg" alt="agentic engineering, reversed" class="h-[72px] w-auto" />
+            </div>
+          </LogoFrame>
+        </div>
+      </div>
+
+      <!-- ░ Lockup · single line ░ -->
+      <div>
+        <h3 class="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">
+          Lockup · single line
+        </h3>
+        <div class="grid gap-6 sm:grid-cols-2">
+          <LogoFrame caption="primary" sub="on light" pad="p-12">
+            <LockupLine variant="light" />
+          </LogoFrame>
+          <LogoFrame bg="bg-deep-navy" captionTone="light" caption="reversed" sub="on navy" pad="p-12">
+            <LockupLine variant="dark" />
+          </LogoFrame>
+        </div>
+      </div>
+
+      <!-- ░ Meetup lockup ░ -->
+      <div>
+        <h3 class="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">
+          Meetup lockup
+        </h3>
+        <div class="grid gap-6 sm:grid-cols-2">
+          <LogoFrame caption="with city" sub="on light" pad="p-12">
+            <LockupMeetup city="Lisbon" variant="light" />
+          </LogoFrame>
+          <LogoFrame bg="bg-deep-navy" captionTone="light" caption="with city" sub="reversed" pad="p-12">
+            <LockupMeetup city="Lisbon" variant="dark" />
+          </LogoFrame>
+        </div>
+      </div>
+
+      <!-- ░ Web — favicon & app icon ░ -->
+      <div>
+        <h3 class="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">
+          Web — favicon &amp; app icon
+        </h3>
+        <div class="flex flex-wrap items-end gap-x-10 gap-y-8">
+          {
+            [48, 32, 16].map((px) => (
+              <div class="flex flex-col items-center gap-2">
+                <div class="flex items-center justify-center overflow-hidden rounded-md border border-black/10 bg-white">
+                  <img src="/favicon.svg" width={px} height={px} alt={`favicon ${px}px`} />
+                </div>
+                <span class="font-mono text-[10px] text-panel-navy/50">{px}px</span>
+              </div>
+            ))
+          }
+          <div class="flex flex-col items-center gap-2">
+            <img src="/assets/logo/ae-icon.svg" width="88" height="88" class="rounded-[20px]" alt="apple touch icon" />
+            <span class="font-mono text-[10px] text-panel-navy/50">apple-touch · 180</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <img src="/assets/logo/ae-icon.svg" width="88" height="88" class="rounded-[20px]" alt="PWA icon" />
+            <span class="font-mono text-[10px] text-panel-navy/50">pwa · 512</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ░ Social avatar ░ -->
+      <div>
+        <h3 class="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">
+          Social avatar
+        </h3>
+        <div class="flex flex-wrap items-center gap-8">
+          <div class="flex flex-col items-center gap-2">
+            <div class="h-[120px] w-[120px] overflow-hidden rounded-full">
+              <img src="/assets/logo/ae-icon.svg" alt="social avatar, circle" class="h-full w-full" />
+            </div>
+            <span class="font-mono text-[10px] text-panel-navy/50">circle crop</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="h-[120px] w-[120px] overflow-hidden rounded-2xl">
+              <img src="/assets/logo/ae-icon.svg" alt="social avatar, square" class="h-full w-full" />
+            </div>
+            <span class="font-mono text-[10px] text-panel-navy/50">square</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 02 — Color & type -->
+  <Section n="02" label="Color & type" tone="light" id="color-type">
+    <h3 class="mb-4 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">Core palette</h3>
+    <div class="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6">
+      {corePalette.map((c) => <Swatch name={c.name} hex={c.hex} />)}
+    </div>
+
+    <h3 class="mb-4 mt-12 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">Extended accents</h3>
+    <div class="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6">
+      {accentPalette.map((c) => <Swatch name={c.name} hex={c.hex} />)}
+    </div>
+
+    <h3 class="mb-4 mt-12 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-electric-blue">Tones</h3>
+    <div class="space-y-2.5">
+      {
+        toneColors.map((c) => (
+          <div class="flex items-center gap-4">
+            <span class="w-28 shrink-0 font-mono text-[11px] text-panel-navy/60">{c.name}</span>
+            <div class="flex flex-1 overflow-hidden rounded-md bg-deep-navy">
+              {toneSteps.map((o) => <div class="h-9 flex-1" style={`background:${c.hex};opacity:${o}`} />)}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-2">
+      <TypeSpecimen
+        role="Display / mono"
+        family="Kode Mono"
+        font="mono"
+        sample="Aa æ 01"
+        note="Headlines, the wordmark, labels, episode numbers, code — anything that should feel typed, not designed."
+      />
+      <TypeSpecimen
+        role="Body / sans"
+        family="Manrope"
+        font="sans"
+        sample="Aa Bb 01"
+        note="Running text, recap posts, descriptions. Plainspoken, specific, set generously — it carries the voice."
+      />
+    </div>
+  </Section>
+
+  <!-- 03 — Pattern -->
+  <Section n="03" label="Pattern" tone="light" id="pattern">
+    <div class="grid gap-6 sm:grid-cols-3">
+      {
+        [
+          { cap: 'aurora · signature', cls: 'bg-deep-navy' },
+          { cap: 'wave', cls: 'bg-deep-navy' },
+          { cap: 'drift', cls: 'bg-deep-navy' },
+          { cap: 'bloom · radial', cls: 'bg-deep-navy' },
+          { cap: 'radar', cls: 'bg-deep-navy' },
+          { cap: 'image · duotone', cls: 'bg-deep-navy' },
+        ].map((m, i) => (
+          <div>
+            <div class={`relative aspect-[4/3] overflow-hidden rounded-xl ${m.cls}`}>
+              {i === 0 && (
+                <Animation client:visible animation="aurora" color="#1E2BE6" edge="#ED4BA0" bg="#05071E" cell={2} gap={0} density={0.65} motion={82} fade="none" shape="square" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+              )}
+              {i === 1 && (
+                <Animation client:visible animation="wave" color="#1E2BE6" edge="#3A4DFF" cell={3} gap={0} density={0.62} motion={70} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+              )}
+              {i === 2 && (
+                <Animation client:visible animation="drift" color="#7C4DF5" edge="#1FC6E6" cell={3} gap={0} density={0.55} motion={48} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+              )}
+              {i === 3 && (
+                <Animation client:visible animation="bloom" color="#ED4BA0" edge="#7C4DF5" cell={3} gap={0} density={0.5} fade="radial" motion={55} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+              )}
+              {i === 4 && (
+                <Animation client:visible animation="radar" color="#16D9A6" edge="#B5A6FF" cell={3} gap={0} density={0.2} motion={55} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+              )}
+              {i === 5 && (
+                <DuotoneField client:visible src="/assets/photos/lisbon.jpg" animation="aurora" color="#1E2BE6" edge="#ED4BA0" bg="#05071E" cell={2} gap={0} density={0.65} motion={82} shape="square" contrast={1.25} edgeGlow={1} tone={0.8} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+              )}
+            </div>
+            <p class="mt-2 font-mono text-[11px] text-panel-navy/55">{m.cap}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- 04 — Iconography -->
+  <Section n="04" label="Iconography" tone="light" id="iconography">
+    <div class="grid grid-cols-6 gap-2 sm:grid-cols-9 lg:grid-cols-12">
+      {
+        iconNames.map((n) => (
+          <div
+            class="group flex aspect-square flex-col items-center justify-center gap-1 rounded-md border border-panel-navy/[0.08] bg-white text-panel-navy/70 transition-colors hover:border-electric-blue/40 hover:text-electric-blue"
+            title={n}
+          >
+            <Icon name={n} size={22} />
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- 05 — Components (all the website stuff, one section, line by line) -->
+  <Section n="05" label="Components" tone="light" id="components">
+    <div class="divide-y divide-panel-navy/10">
+      <!-- buttons -->
+      <div class="grid gap-4 py-9 first:pt-0 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Buttons</h3>
+        <div class="flex flex-wrap items-center gap-3.5">
+          <Button variant="primary">Start building <Icon name="ArrowRight" size={14} /></Button>
+          <Button variant="secondary">Contact</Button>
+          <Button variant="outline">Learn more</Button>
+          <Button variant="ghost">Read the docs <Icon name="ArrowRight" size={14} /></Button>
+          <Button variant="primary" disabled>Disabled</Button>
+        </div>
+      </div>
+
+      <!-- tags & badges -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Tags &amp; status</h3>
+        <div class="flex flex-col gap-3">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <Pill>Pre-seed</Pill>
+            <Pill>Infrastructure</Pill>
+            <Pill variant="outline">Payments</Pill>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <Badge tone="success">Operational</Badge>
+            <Badge tone="warn">In review</Badge>
+            <Badge tone="info">Series A</Badge>
+          </div>
+        </div>
+      </div>
+
+      <!-- inputs -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Inputs</h3>
+        <div class="max-w-xl">
+          <div class="grid gap-4 sm:grid-cols-2">
+            <Input label="Email" placeholder="you@domain.com" />
+            <Input label="Name" placeholder="Ada Lovelace" />
+          </div>
+          <div class="mt-4 flex items-center gap-2.5">
+            <span class="flex h-[18px] w-[18px] items-center justify-center rounded bg-electric-blue text-white">
+              <Icon name="Check" size={12} />
+            </span>
+            <span class="font-sans text-[15px] text-panel-navy">Show active investments only</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- toggles -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Toggles</h3>
+        <div class="flex flex-wrap gap-x-10 gap-y-4">
+          <Toggle label="Email notifications" checked />
+          <Toggle label="Public profile" />
+        </div>
+      </div>
+
+      <!-- avatars -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Avatars</h3>
+        <div class="flex items-center gap-2.5">
+          <Avatar name="Sofia Marques" size={40} />
+          <Avatar name="Ada Lovelace" size={40} />
+          <Avatar name="Rui Tavares" size={40} />
+          <span class="ml-1 font-sans text-sm text-panel-navy/55">+128 builders</span>
+        </div>
+      </div>
+
+      <!-- card -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Card</h3>
+        <article class="group max-w-sm cursor-pointer rounded-2xl border border-panel-navy/[0.08] bg-white p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-electric-blue/10">
+          <div class="flex items-center gap-2.5">
+            <Icon name="Code" size={18} class="text-electric-blue" />
+            <span class="font-mono text-xs uppercase tracking-wider text-electric-blue">talk 01</span>
+          </div>
+          <h4 class="mt-3 font-sans text-lg font-bold tracking-tight text-panel-navy">Paying agents with x402</h4>
+          <p class="mt-1.5 font-sans text-sm text-panel-navy/50">Hover — cards lift with a soft shadow.</p>
+        </article>
+      </div>
+
+      <!-- stats -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Stats</h3>
+        <div class="flex flex-wrap gap-x-12 gap-y-6">
+          <Stat value="06" label="Meetups" tone="light" />
+          <Stat value="38" label="Talks shipped" tone="light" />
+          <Stat value="1.2k" label="Builders" delta="+18%" tone="light" />
+          <Stat value="100%" label="Live, never stock" tone="light" />
+        </div>
+      </div>
+
+      <!-- feature cards -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Feature cards</h3>
+        <div class="grid gap-5 sm:grid-cols-3">
+          <FeatureCard icon="Zap" title="Ship fast" body="Working agents in production, not slideware. Every talk is something that shipped." />
+          <FeatureCard icon="Lock" title="Secure by default" body="Red-team your own agent. Evals that survive contact with prod." />
+          <FeatureCard icon="GitBranch" title="Build in the open" body="Recaps, code and notes after every session — the whole room learns." />
+        </div>
+      </div>
+
+      <!-- callouts -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Callouts</h3>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <Callout tone="info" title="Heads up">The next meetup is the first Thursday of the month.</Callout>
+          <Callout tone="success" title="Confirmed">Your talk slot is locked for #06.</Callout>
+          <Callout tone="warn" title="In review">Submission is being reviewed by the curators.</Callout>
+          <Callout tone="danger" title="Error">Couldn&rsquo;t reach the server — retry in a moment.</Callout>
+        </div>
+      </div>
+
+      <!-- quote -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Quote</h3>
+        <Quote author="Sofia Marques" role="talk #04" variant="periwinkle" class="max-w-xl">
+          An agent without evals is just a demo that hasn&rsquo;t failed in front of you yet.
+        </Quote>
+      </div>
+
+      <!-- terminal -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Terminal</h3>
+        <Terminal title="agentic-engineering — zsh" class="max-w-2xl">
+          <div class="text-soft-white">$ ae deploy --check</div>
+          <div class="opacity-70">initializing checks…</div>
+          <div class="flex items-center gap-3"><span class="w-32 shrink-0">[✓] evals</span><span class="h-2.5 flex-1 bg-electric-blue"></span><span>100%</span></div>
+          <div class="flex items-center gap-3"><span class="w-32 shrink-0">[✓] guardrails</span><span class="h-2.5 flex-1 bg-electric-blue"></span><span>100%</span></div>
+          <div class="mt-1 text-soft-white">&gt; all systems operational.</div>
+        </Terminal>
+      </div>
+
+      <!-- code block -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Code block</h3>
+        <CodeBlock lang="tsx" class="max-w-2xl">{`<Animation
+  color="#1E2BE6"
+  edge="#3A4DFF"
+  density={0.6}
+  fade="radial"
+  motion={70}
+/>`}</CodeBlock>
+      </div>
+
+      <!-- navigation & footer -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Nav &amp; footer</h3>
+        <div class="overflow-hidden rounded-2xl border border-panel-navy/[0.08]">
+          <Navbar />
+          <div class="bg-deep-navy px-6 py-12 text-center font-mono text-xs text-soft-white/30">page content</div>
+          <Footer />
+        </div>
+      </div>
+
+      <!-- marquee -->
+      <div class="grid gap-4 py-9 sm:grid-cols-[150px_1fr] sm:items-start">
+        <h3 class={rowLabel}>Marquee</h3>
+        <div class="overflow-hidden rounded-2xl">
+          <Marquee tone="blue" />
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 06 — Voice & usage (the single dark-mode example, last) -->
+  <Section n="06" label="Voice & usage" tone="dark" id="voice">
+    <div class="grid gap-6 lg:grid-cols-2">
+      <!-- voice (light card on the dark section) -->
+      <div class="rounded-xl bg-white p-10">
+        <span class="font-mono text-[11px] font-semibold uppercase tracking-wider text-electric-blue">The voice</span>
+        <p class="mb-7 mt-4 font-sans text-lg leading-relaxed text-panel-navy">
+          Plainspoken, specific, builder-to-builder, mildly wry. Concrete over grandiose. We
+          earn trust by respecting intelligence, not by shouting.
+        </p>
+        <div class="flex flex-col gap-3.5">
+          {
+            sayLines.map((l) => (
+              <div class="flex items-start gap-3">
+                <span class={`font-mono text-sm font-bold ${l.ok ? 'text-emerald-600' : 'text-red-500'}`}>{l.ok ? 'say' : 'not'}</span>
+                <span class={`font-sans text-[15px] leading-snug ${l.ok ? 'text-panel-navy/75' : 'text-panel-navy/35 line-through'}`}>{l.text}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <!-- motion mandate (light card, with a contained dither sample) -->
+      <div class="rounded-xl bg-white p-10">
+        <span class="font-mono text-[11px] font-semibold uppercase tracking-wider text-electric-blue">Motion is required</span>
+        <p class="mt-4 font-sans text-lg leading-relaxed text-panel-navy">
+          Almost no meetup bothers to move or illustrate — which is exactly the opening. If
+          nothing moves and nothing is drawn, it reads as a template. Every surface gets the
+          live dither or an illustrated header. Never static, never stock.
+        </p>
+        <div class="relative mt-6 h-20 overflow-hidden rounded-lg bg-deep-navy">
+          <Animation client:visible color="#1E2BE6" edge="#B5A6FF" cell={10} density={0.6} fade="right" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+        </div>
+      </div>
+    </div>
+
+    <!-- guardrails (light card) -->
+    <div class="mt-6 rounded-xl bg-white p-10">
+      <span class="font-mono text-[11px] font-semibold uppercase tracking-wider text-red-600">The anti-slop guardrails — constraints, not suggestions</span>
+      <div class="mt-7 grid gap-9 sm:grid-cols-2">
+        <div>
+          <div class="mb-4 font-sans text-[15px] font-bold text-panel-navy">Never illustrate with</div>
+          <div class="flex flex-wrap gap-2">
+            {neverIllustrate.map((w) => (
+              <span class="rounded-sm border border-panel-navy/10 px-2.5 py-1.5 font-mono text-xs text-panel-navy/50">{w}</span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div class="mb-4 font-sans text-[15px] font-bold text-panel-navy">Never write</div>
+          <div class="flex flex-wrap gap-2">
+            {neverWrite.map((w) => (
+              <span class="rounded-sm border border-panel-navy/10 px-2.5 py-1.5 font-mono text-xs text-panel-navy/50">{w}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <!-- relocated from the Pattern section -->
+      <div class="mt-7 flex items-start gap-3 rounded-lg border border-red-500/20 bg-red-500/[0.04] p-4">
+        <span class="mt-0.5 flex-none font-mono text-[11px] font-semibold uppercase tracking-wider text-red-500">Never</span>
+        <p class="font-sans text-sm leading-relaxed text-panel-navy/70">
+          Dissolve the logo into the dither. The mark stays solid and intact — the field is a
+          background texture, not a logo treatment.
+        </p>
+      </div>
+    </div>
+  </Section>
+</Base>
