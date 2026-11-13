@@ -21,8 +21,8 @@ __pycache__/
 .vscode/
 
 # Event media never lives in the repository: camera files, audio, frames,
-# chunk transcripts and clips go in ~/agnteng-media/<date>/ (AGNTENG_MEDIA
-# overrides it; see scripts/common.py). These rules are a safety net for media
+# chunk transcripts and clips go in $AGNTENG_MEDIA/<date>/ (see
+# scripts/common.py). These rules are a safety net for media
 # dropped into content/ by mistake.
 content/**/raw/
 content/**/work/

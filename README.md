@@ -7,7 +7,7 @@ context on purpose: the talk descriptions, the decks and the YouTube uploads
 all read the same event data, and the website will join them under `apps/`.
 
 What must not be public (Luma numbers, attendee and supporter lists, sponsor
-terms) lives in the private `agnteng/private` repository. Video and audio live
+terms) lives in the private workspace repository. Video and audio live
 in neither: see *Media* below.
 
 This repository is public. Credentials live in `.env` (ignored) or come from a
@@ -36,9 +36,9 @@ git config core.hooksPath .githooks   # needs: brew install gitleaks
 ## Media
 
 Camera files, audio, frames, chunk transcripts and clips are never in the
-repository. They live in `~/agnteng-media/<date>/` (`raw/`, `work/`, one `.mp4`
-per talk), and the scripts find them from the event's date. Set
-`AGNTENG_MEDIA` to keep them somewhere else, such as an external disk.
+repository. They live in `$AGNTENG_MEDIA/<date>/` (`raw/`, `work/`, one `.mp4`
+per talk), the workspace's `media/` unless pointed elsewhere, such as an
+external disk. The scripts find them from the event's date.
 
 ## A new meetup
 
@@ -48,7 +48,7 @@ per talk), and the scripts find them from the event's date. Set
    date), plus `apps/branding/src/pages/slides/<city>-<date>.astro`. Point
    `src/pages/api/audience.json.ts` at the new deck's `content.ts`, so the live
    audience slide polls tonight's event.
-3. After the event, the camera files go in `~/agnteng-media/<date>/raw/` and the
+3. After the event, the camera files go in `$AGNTENG_MEDIA/<date>/raw/` and the
    `meetup-video` skill takes it from there.
 
 ## Develop
