@@ -149,6 +149,26 @@ def check_events() -> None:
                 fail("events", f"{where}: speaker {i} photo {photo} does not exist")
 
 
+# ── published talks (org ADR 0007) ──
+
+def check_talks() -> None:
+    for f in sorted((ROOT / "content").glob("*/talks/*.json")):
+        where = f.relative_to(ROOT)
+        if not (f.parent.parent / "event.json").exists():
+            fail("talks", f"{where}: no event.json for {f.parent.parent.name}")
+        try:
+            t = json.loads(f.read_text())
+        except json.JSONDecodeError as err:
+            fail("talks", f"{where}: not JSON ({err})")
+            continue
+        for k in ("slug", "title", "speaker", "summary"):
+            if not isinstance(t.get(k), str) or not t[k]:
+                fail("talks", f"{where}: needs a non-empty {k!r}")
+        video = t.get("video")
+        if video is not None and not re.fullmatch(r"[\w-]{11}", str(video.get("youtubeId", ""))):
+            fail("talks", f"{where}: video.youtubeId is not a YouTube id")
+
+
 # ── rendered decks unchanged (refactors must not alter what's on screen) ──
 
 PAGES = ["", "brand-guidelines/", "sponsorship/", "slides/",
@@ -253,7 +273,7 @@ def main() -> None:
         checks = [("render", lambda: check_render(args.update))]
     else:
         checks = [("internal-names", check_internal_names), ("media", check_media),
-                  ("events", check_events)]
+                  ("events", check_events), ("talks", check_talks)]
     for name, fn in checks:
         before = len(FAILURES)
         fn()

@@ -15,6 +15,7 @@
     "@astrojs/node": "^9.5.0",
     "@astrojs/react": "^4.4.2",
     "@tailwindcss/vite": "^4.3.1",
+    "@agnteng/brand": "workspace:*",
     "astro": "^5.18.2",
     "gifenc": "^1.0.3",
     "qrcode-generator": "^2.0.4",

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Scan the brand components for utility classes, wherever this is imported. */
+@source "./";
 
 /*
  * ─────────────────────────────────────────────────────────────────────────

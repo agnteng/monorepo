@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'node:url';
 
@@ -8,11 +9,13 @@ const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 
 export default defineConfig({
   site: 'https://agnteng.com',
-  // Speaker photos, event photos and logos are shared with the branding app.
+  // React only for the brand's dither (DuotoneField); everything else is static.
+  integrations: [react()],
+  // Logos, speaker photos and event photos are shared with the branding app.
   publicDir: '../branding/public',
   vite: {
     plugins: [tailwindcss()],
-    resolve: { alias: { '@content': `${repoRoot}content` } },
+    resolve: { alias: { '@content': `${repoRoot}content` }, dedupe: ['react', 'react-dom'] },
   },
   server: { host: '127.0.0.1', port: 4330 },
 });

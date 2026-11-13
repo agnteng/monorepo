@@ -8,6 +8,7 @@ RUN corepack enable
 # Manifests first, so the dependency layer is cached until a dependency changes.
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY apps/branding/package.json apps/branding/
+COPY packages/brand/package.json packages/brand/
 RUN pnpm install --frozen-lockfile
 COPY . .
 # LUMA_API_KEY is inlined here, from the .env Dokploy writes to the build

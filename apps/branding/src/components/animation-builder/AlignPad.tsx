@@ -1,4 +1,4 @@
-import { ANCHORS, anchorFactors, type Anchor } from './anchor';
+import { ANCHORS, anchorFactors, type Anchor } from '@agnteng/brand/components/anchor.ts';
 
 // A single SVG widget for picking one of 9 alignment positions (the corners,
 // edges and centre of a frame). The active position is a filled accent dot;

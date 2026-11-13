@@ -13,6 +13,7 @@ WORKDIR /repo
 RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY apps/branding/package.json apps/branding/
+COPY packages/brand/package.json packages/brand/
 RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm --filter branding build

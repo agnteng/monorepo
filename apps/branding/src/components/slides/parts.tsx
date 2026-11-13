@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import qrcode from 'qrcode-generator';
-import Animation from '../Animation';
-import type { AnimName } from '../Animation';
+import Animation from '@agnteng/brand/components/Animation.tsx';
+import type { AnimName } from '@agnteng/brand/components/Animation.tsx';
 import { C, PAD, PAD_TOP } from './deck';
 
 // ─────────────────────────────────────────────────────────────────────────

@@ -7,7 +7,7 @@
 // treatment can each be improved without touching the other.
 // ─────────────────────────────────────────────────────────────────────────
 
-import type { Anchor } from './animation-builder/anchor';
+import type { Anchor } from './anchor';
 
 export type ImagePosition = Anchor;
 

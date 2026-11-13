@@ -46,6 +46,9 @@ export type Talk = TalkFile & {
 const eventFiles = import.meta.glob<Event>('@content/*/event.json', { eager: true, import: 'default' });
 const talkFiles = import.meta.glob<TalkFile>('@content/*/talks/*.json', { eager: true, import: 'default' });
 
+export type Question = { question: string; answers: { speaker: string; text: string }[] };
+const questionFiles = import.meta.glob<Question[]>('@content/*/questions.json', { eager: true, import: 'default' });
+
 const dateOf = (path: string) => path.match(/(\d{4}-\d\d-\d\d)\//)![1];
 
 export const events: Event[] = Object.values(eventFiles).sort((a, b) => b.date.localeCompare(a.date));
@@ -96,22 +99,24 @@ export const speakers: Speaker[] = (() => {
 
 export const talksAt = (e: Event) => talks.filter((t) => t.event.date === e.date);
 
+export const questionsAt = (e: Event): Question[] =>
+  Object.entries(questionFiles).find(([path]) => dateOf(path) === e.date)?.[1] ?? [];
+
+// /events/lisbon-5: the city and the meetup number, like the Luma slugs.
+export const eventSlug = (e: Event) => `${slugify(e.city)}-${e.number}`;
+export const eventName = (e: Event) => `${e.city} #${e.number}`;
+
 export const thumbnail = (t: Talk) =>
   t.video ? `https://i.ytimg.com/vi/${t.video.youtubeId}/maxresdefault.jpg` : undefined;
 
-// Doors, talks and Q&A as listed on Luma for every Lisbon meetup.
-export const agenda = [
-  { time: '19:00', what: 'Doors open' },
-  { time: '19:45', what: 'Three 10-minute talks' },
-  { time: '20:15', what: 'Q&A, then drinks' },
-];
 
-export const socials: Link[] = [
-  { label: 'Luma', url: 'https://luma.com/agnteng' },
-  { label: 'YouTube', url: 'https://www.youtube.com/@agnteng' },
-  { label: 'Substack', url: 'https://agnteng.substack.com' },
-  { label: 'Telegram', url: 'https://t.me/agntacc' },
-];
+export const links = {
+  luma: 'https://luma.com/agnteng',
+  youtube: 'https://www.youtube.com/@agnteng',
+  substack: 'https://agnteng.substack.com',
+  telegram: 'https://t.me/agntacc',
+  sponsors: 'https://sponsors.agnteng.com',
+};
 
 const fmt = (date: string, opts: Intl.DateTimeFormatOptions) =>
   new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { timeZone: 'UTC', ...opts });

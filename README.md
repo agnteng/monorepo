@@ -26,8 +26,10 @@ git config core.hooksPath .githooks   # needs: brew install gitleaks
 | `apps/branding/` | [branding.agnteng.com](https://branding.agnteng.com) (Astro): brand guidelines, playground, website mockups, the `slides/<city>-<date>` decks, `sponsorship`, and `api/audience.json` (live Luma numbers for tonight's deck). Also builds [sponsors.agnteng.com](https://sponsors.agnteng.com). |
 | `apps/branding/src/components/slides/` | The deck engine and primitives; `slides/meetup/` holds the slides every meetup deck shares, `slides-<date>/` one meetup's own. |
 | `apps/branding/src/lib/luma.ts` | Server-only Luma client. Import it only from `.astro` frontmatter or `src/pages/api/`, so `LUMA_API_KEY` stays out of the browser bundle. |
-| `packages/` | Code shared by two or more apps, consumed as raw source. Empty until the website arrives; the brand tokens and logos move here then. |
+| `apps/site/` | [agnteng.com](https://agnteng.com) (Astro, static): the next event, every talk with its video and transcript, the speakers, past events with their Q&A, the newsletter's latest posts. |
+| `packages/brand/` | The brand, shared by both apps as raw source: tokens (`styles.css`), components, the pixel icons and the dither (`Animation`, `DuotoneField`). Logos and photos stay in `apps/branding/public/`, which the site serves too. |
 | `content/<date>/event.json` | One event's identity: city, venue, Luma ids, speakers. The decks import it as `@content/<date>/event.json`; production reads it for the write-ups. |
+| `content/<date>/talks/`, `questions.json` | Each talk and the Q&A, written by production's `publish_talks.py` (org ADR 0007). Never edited here. |
 | `scripts/fitness.py` | The fitness checks (`docs/adr/0005`). |
 | `docs/adr/` | Decisions about this repository, and why. Org-wide decisions live in the workspace. |
 | `tests/snapshots/` | What every page renders (without Luma data); `mise run fitness:render` compares against it. |
@@ -53,6 +55,7 @@ Tool versions are pinned in `mise.toml`; tasks run the same locally and in CI.
 mise install            # node, pnpm, python, gitleaks
 mise run install        # dependencies, from the repository root
 mise run dev            # branding site on 127.0.0.1:4321
+mise run dev:site       # agnteng.com on 127.0.0.1:4330
 mise run fitness        # the repository checks CI runs
 mise tasks              # everything else
 ```
@@ -63,7 +66,9 @@ from `.env` at the repository root and inlined at build time
 
 ## Deploy
 
-Two Dokploy services build from `main`, with the repository root as build
-context: `branding` (`apps/branding/Dockerfile`, a node server) and `sponsors`
-(`apps/branding/Dockerfile.sponsors`, nginx serving only the sponsor deck).
+Dokploy services build from `main`, with the repository root as build
+context: `branding` (`apps/branding/Dockerfile`, a node server), `sponsors`
+(`apps/branding/Dockerfile.sponsors`, nginx serving only the sponsor deck) and
+`site` (`apps/site/Dockerfile`, nginx serving agnteng.com). The site reads the
+newsletter feed at build time, so a new Substack post appears on the next deploy.
 After every deploy, `mise run fitness:live` checks production.

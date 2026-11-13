@@ -1,5 +1,5 @@
 import type { OverlaySpec, Variant, Grad, SpeakerFace } from './overlay';
-import type { Anchor } from './anchor';
+import type { Anchor } from '@agnteng/brand/components/anchor.ts';
 
 // A template = a fixed export frame + how to build the overlay design elements
 // from the editable text/logo controls. The same field animation flows under it.

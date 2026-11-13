@@ -1,0 +1,25 @@
+---
+import SocialIcons from '@agnteng/brand/components/SocialIcons.astro';
+import { links } from '../lib/data';
+const items = [
+  { label: 'YouTube', href: links.youtube, icon: 'youtube' as const },
+  { label: 'Substack', href: links.substack, icon: 'substack' as const },
+  { label: 'Luma', href: links.luma, icon: 'luma' as const },
+];
+---
+<footer class="w-full bg-deep-navy">
+  <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 md:flex-row md:items-center md:justify-between md:px-8">
+    <div class="flex items-center gap-2.5">
+      <img src="/assets/logo/ae-mark-white.svg" alt="Agentic Engineering" class="h-7 w-auto" />
+      <img src="/assets/logo/ae-wordmark-white.svg" alt="" class="h-[25px] w-auto" />
+      <span class="ml-1 font-mono text-xs text-soft-white/40">lisbon</span>
+    </div>
+    <ul class="flex flex-wrap items-center gap-5">
+      {items.map((i) => (
+        <li><a href={i.href} class="flex items-center gap-2 font-mono text-xs lowercase tracking-wide text-soft-white/60 transition-colors hover:text-periwinkle"><SocialIcons name={i.icon} size={16} />{i.label}</a></li>
+      ))}
+      <li><a href={links.telegram} class="font-mono text-xs lowercase tracking-wide text-soft-white/60 transition-colors hover:text-periwinkle">telegram</a></li>
+      <li><a href={links.sponsors} class="font-mono text-xs lowercase tracking-wide text-soft-white/60 transition-colors hover:text-periwinkle">sponsors</a></li>
+    </ul>
+  </div>
+</footer>
