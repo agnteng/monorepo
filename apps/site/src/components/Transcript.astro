@@ -1,0 +1,25 @@
+---
+import { transcriptParas, type Talk } from '../lib/data';
+interface Props { talk: Talk; class?: string; timeClass?: string }
+const { talk, class: cls, timeClass = 'opacity-60' } = Astro.props;
+const paras = transcriptParas(talk);
+const at = (ts: string) => ts.split(':').reduce((s, n) => s * 60 + Number(n), 0);
+---
+{talk.transcript && (
+  <details class:list={['group', cls]}>
+    <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold [&::-webkit-details-marker]:hidden">
+      <span>Read the transcript</span>
+      <span class="font-mono text-sm transition group-open:rotate-45">+</span>
+    </summary>
+    <div class="space-y-4 pb-6 leading-relaxed">
+      {paras.map((p) => (
+        <p class="grid grid-cols-[3.5rem_1fr] gap-3">
+          {p.at && talk.video
+            ? <a href={`${talk.video.url}&t=${at(p.at)}s`} class:list={['font-mono text-sm hover:underline', timeClass]}>{p.at}</a>
+            : <span class:list={['font-mono text-sm', timeClass]}>{p.at}</span>}
+          <span>{p.text}</span>
+        </p>
+      ))}
+    </div>
+  </details>
+)}

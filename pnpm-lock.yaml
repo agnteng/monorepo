@@ -216,6 +216,25 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  apps/site:
+    dependencies:
+      '@phosphor-icons/core':
+        specifier: ^2.1.1
+        version: 2.1.1
+      '@tailwindcss/vite':
+        specifier: ^4.3.1
+        version: 4.3.5(vite@6.4.6(jiti@2.7.0)(lightningcss@1.33.0))
+      astro:
+        specifier: ^5.18.2
+        version: 5.18.2(jiti@2.7.0)(lightningcss@1.33.0)(rollup@4.68.2)(typescript@5.9.3)
+      tailwindcss:
+        specifier: ^4.3.1
+        version: 4.3.5
+    devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
 packages:
 
   '@astrojs/compiler@2.13.1':
@@ -822,6 +841,9 @@ packages:
 
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
+
+  '@phosphor-icons/core@2.1.1':
+    resolution: {integrity: sha512-v4ARvrip4qBCImOE5rmPUylOEK4iiED9ZyKjcvzuezqMaiRASCHKcRIuvvxL/twvLpkfnEODCOJp5dM4eZilxQ==}
 
   '@rolldown/pluginutils@1.0.0-beta.27':
     resolution: {integrity: sha512-+d0F4MKMCbeVUJwG96uQ4SgAznZNSq93I3V+9NHA4OpvqG8mRCpGdKmK8l/dl02h2CCDHwW2FqilnTyDcAnqjA==}
@@ -2873,6 +2895,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.6.0
 
   '@oslojs/encoding@1.1.0': {}
+
+  '@phosphor-icons/core@2.1.1': {}
 
   '@rolldown/pluginutils@1.0.0-beta.27': {}
 

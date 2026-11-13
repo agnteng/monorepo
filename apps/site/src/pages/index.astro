@@ -1,0 +1,18 @@
+---
+import Shell from '../layouts/Shell.astro';
+const directions = [
+  { href: '/a', name: 'A. Index', about: 'Light and typographic. The next date is the hero; talks read as a programme.' },
+  { href: '/b', name: 'B. Broadcast', about: 'Dark and video-first. The latest talk leads; the archive is a wall of videos.' },
+  { href: '/c', name: 'C. The room', about: 'Photo-led. The night itself sells the event: the room, the agenda, the people.' },
+];
+---
+<Shell title="Design directions | Agentic Engineering" class="bg-soft-white text-deep-navy">
+  <main class="mx-auto max-w-3xl px-4 py-20">
+    <h1 class="font-mono text-3xl font-semibold">agnteng.com: three directions</h1>
+    <ul class="mt-10 divide-y divide-deep-navy/15 border-y-2 border-deep-navy">
+      {directions.map((d) => (
+        <li><a href={d.href} class="block py-6 hover:text-electric-blue"><p class="text-xl font-bold">{d.name}</p><p class="mt-1 text-deep-navy/70">{d.about}</p></a></li>
+      ))}
+    </ul>
+  </main>
+</Shell>

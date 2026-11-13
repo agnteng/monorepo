@@ -1,0 +1,145 @@
+---
+// Direction B, "Broadcast": dark and video-first. The newest talk is the
+// hero; the archive is a wall of videos; speakers in the brand's duotone.
+import Shell from '../../layouts/Shell.astro';
+import Icon from '../../components/Icon.astro';
+import { nextEvent, past, talks, talksAt, speakers, agenda, socials, shortDate, longDate, thumbnail, type Talk } from '../../lib/data';
+
+const register = nextEvent?.luma?.url ?? 'https://luma.com/agnteng';
+const featured = talks.find((t) => t.video) ?? talks[0];
+const rest = talks.filter((t) => t.id !== featured.id);
+const big = rest.slice(0, 2);
+const small = rest.slice(2);
+const cover = (t: Talk) => thumbnail(t) ?? t.person.photo;
+---
+<Shell title="Agentic Engineering" class="bg-deep-navy text-soft-white">
+  <header class="absolute inset-x-0 top-0 z-20">
+    <nav class="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-4 md:px-8">
+      <a href="/b"><img src="/assets/logo/ae-wordmark-line-white.svg" alt="Agentic Engineering" class="h-5 md:h-6" /></a>
+      <div class="flex items-center gap-6 text-sm font-semibold">
+        <a href="#talks" class="hidden text-soft-white/70 hover:text-soft-white md:block">Talks</a>
+        <a href="#speakers" class="hidden text-soft-white/70 hover:text-soft-white md:block">Speakers</a>
+        <a href="#events" class="hidden text-soft-white/70 hover:text-soft-white md:block">Events</a>
+        <a href="#involved" class="hidden text-soft-white/70 hover:text-soft-white md:block">Get involved</a>
+        <a href={register} class="rounded-full bg-signal-yellow px-4 py-2 text-deep-navy transition hover:brightness-105 active:scale-[0.98]">Register</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="mx-auto grid max-w-[1400px] items-center gap-10 px-4 pt-28 pb-16 md:px-8 lg:grid-cols-12 lg:pt-32">
+      <div class="lg:col-span-5">
+        <h1 class="rise font-mono text-4xl font-semibold uppercase leading-[1.05] tracking-tight md:text-6xl" style="--i:0">
+          Talks from people building with agents
+        </h1>
+        <p class="rise mt-6 max-w-[46ch] text-lg leading-relaxed text-soft-white/70" style="--i:1">
+          A Lisbon meetup. Every talk is filmed, summarised and transcribed here.
+        </p>
+        <div class="rise mt-8 flex flex-wrap gap-3" style="--i:2">
+          <a href={register} class="rounded-full bg-signal-yellow px-6 py-3.5 font-semibold text-deep-navy transition hover:brightness-105 active:scale-[0.98]">Register</a>
+          <a href="#talks" class="rounded-full border border-soft-white/25 px-6 py-3.5 font-semibold transition hover:border-soft-white active:scale-[0.98]">Browse talks</a>
+        </div>
+      </div>
+      <a href={`/b/talks/${featured.id}`} class="rise group block lg:col-span-7" style="--i:3">
+        <div class="relative aspect-video overflow-hidden rounded-2xl bg-panel-navy">
+          <img src={cover(featured)} alt="" class="size-full object-cover transition duration-700 group-hover:scale-[1.03]" />
+          <span class="absolute inset-0 grid place-items-center">
+            <span class="grid size-20 place-items-center rounded-full bg-signal-yellow text-deep-navy shadow-[0_10px_40px_rgb(5_7_30/0.5)] transition group-hover:scale-110">
+              <Icon name="play" weight="fill" class="size-8 translate-x-0.5" />
+            </span>
+          </span>
+        </div>
+        <p class="mt-4 text-xl font-bold md:text-2xl">{featured.title}</p>
+        <p class="mt-1 text-soft-white/60">{featured.person.name}, {featured.event.city} #{featured.event.number}</p>
+      </a>
+    </section>
+
+    {nextEvent && (
+      <section class="mx-auto max-w-[1400px] px-4 md:px-8">
+        <div class="grid gap-8 rounded-2xl bg-panel-navy p-6 md:grid-cols-[auto_1fr_auto] md:items-center md:p-8">
+          <div>
+            <p class="font-mono text-sm text-signal-yellow">Next event</p>
+            <p class="mt-1 font-mono text-3xl font-semibold">{longDate(nextEvent.date)}</p>
+            <p class="mt-1 text-soft-white/60">{nextEvent.city} #{nextEvent.number}, {nextEvent.venue}</p>
+          </div>
+          <ol class="flex flex-wrap gap-x-8 gap-y-2 text-sm md:justify-center">
+            {agenda.map((a) => <li><span class="font-mono text-soft-white/50">{a.time}</span> <span class="ml-1 font-medium">{a.what}</span></li>)}
+          </ol>
+          <a href={register} class="justify-self-start rounded-full bg-signal-yellow px-6 py-3 font-semibold text-deep-navy transition hover:brightness-105 active:scale-[0.98] md:justify-self-end">Register</a>
+        </div>
+      </section>
+    )}
+
+    <section id="talks" class="mx-auto max-w-[1400px] px-4 py-24 md:px-8">
+      <h2 class="font-mono text-3xl font-semibold uppercase tracking-tight md:text-5xl">All talks</h2>
+      <div class="mt-10 grid gap-6 md:grid-cols-6">
+        {[...big, ...small].map((t, i) => (
+          <a href={`/b/talks/${t.id}`} class:list={['reveal group block', i < 2 ? 'md:col-span-3' : 'md:col-span-2']}>
+            <div class="relative aspect-video overflow-hidden rounded-xl bg-electric-blue">
+              {thumbnail(t)
+                ? <img src={thumbnail(t)} alt="" class="size-full object-cover transition duration-700 group-hover:scale-[1.04]" loading="lazy" />
+                : t.person.photo && <img src={t.person.photo} alt="" class="size-full object-cover object-top mix-blend-luminosity grayscale contrast-125 transition duration-700 group-hover:scale-[1.04]" loading="lazy" />}
+              {!t.video && <span class="absolute bottom-3 left-3 rounded-full bg-deep-navy/80 px-3 py-1 font-mono text-xs">Video soon</span>}
+            </div>
+            <p class:list={['mt-4 font-bold leading-snug group-hover:text-signal-yellow', i < 2 ? 'text-2xl' : 'text-lg']}>{t.title}</p>
+            <p class="mt-1 text-sm text-soft-white/60">{t.person.name}, {shortDate(t.event.date)}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="speakers" class="border-y border-soft-white/10 bg-panel-navy">
+      <div class="mx-auto grid max-w-[1400px] gap-12 px-4 py-24 md:px-8 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <h2 class="font-mono text-3xl font-semibold uppercase tracking-tight md:text-5xl">Who has spoken</h2>
+          <p class="mt-4 max-w-[40ch] text-soft-white/70">Founders, engineers and operators, each with ten minutes on something they built.</p>
+        </div>
+        <ul class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:col-span-8">
+          {speakers.map((s) => (
+            <li class="reveal">
+              <a href={`/b/talks/${s.talks[0].id}`} class="group block overflow-hidden rounded-xl bg-electric-blue">
+                {s.photo && <img src={s.photo} alt={s.name} class="aspect-square w-full object-cover mix-blend-luminosity grayscale contrast-125 transition duration-500 group-hover:mix-blend-normal group-hover:grayscale-0" loading="lazy" />}
+                <div class="bg-deep-navy/90 px-4 py-3">
+                  <p class="font-semibold leading-tight">{s.name}</p>
+                  {s.title && <p class="mt-0.5 truncate text-sm text-soft-white/60">{s.title}</p>}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section id="events" class="mx-auto max-w-[1400px] px-4 py-24 md:px-8">
+      <h2 class="font-mono text-3xl font-semibold uppercase tracking-tight md:text-5xl">Past events</h2>
+      <ol class="mt-10">
+        {past.map((e) => (
+          <li class="reveal grid grid-cols-[4rem_1fr_auto] items-baseline gap-4 border-t border-soft-white/10 py-5 md:grid-cols-[6rem_14rem_1fr_auto]">
+            <span class="font-mono text-2xl font-semibold text-signal-yellow">#{e.number}</span>
+            <span class="font-semibold">{shortDate(e.date)}</span>
+            <span class="hidden text-soft-white/60 md:block">{e.venue}</span>
+            <span class="text-sm text-soft-white/60">{talksAt(e).length ? `${talksAt(e).length} talks` : 'Not filmed'}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section id="involved" class="mx-auto max-w-[1400px] px-4 pb-24 md:px-8">
+      <div class="grid gap-10 rounded-2xl border border-signal-yellow/40 p-8 md:grid-cols-2 md:p-12">
+        <h2 class="font-mono text-3xl font-semibold uppercase leading-tight tracking-tight md:text-4xl">Your ten minutes could be next</h2>
+        <div class="space-y-6 text-soft-white/80">
+          <p><span class="font-semibold text-soft-white">Speak.</span> Register for the next event and fill in the talk field. Real work, no product pitches.</p>
+          <p><span class="font-semibold text-soft-white">Host.</span> Have a room in Lisbon? <a href="https://t.me/agntacc" class="text-signal-yellow underline underline-offset-4">Tell us on Telegram</a>.</p>
+          <p><span class="font-semibold text-soft-white">Sponsor.</span> <a href="https://sponsors.agnteng.com" class="text-signal-yellow underline underline-offset-4">See the sponsor deck</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-soft-white/10">
+    <div class="mx-auto flex max-w-[1400px] flex-col gap-8 px-4 py-12 md:flex-row md:items-center md:justify-between md:px-8">
+      <img src="/assets/logo/ae-wordmark-line-white.svg" alt="Agentic Engineering" class="h-5" />
+      <ul class="flex flex-wrap gap-6 text-sm font-semibold">{socials.map((s) => <li><a href={s.url} class="text-soft-white/70 hover:text-soft-white">{s.label}</a></li>)}</ul>
+    </div>
+  </footer>
+</Shell>

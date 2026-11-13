@@ -1,0 +1,80 @@
+---
+import Shell from '../../../layouts/Shell.astro';
+import Icon from '../../../components/Icon.astro';
+import Transcript from '../../../components/Transcript.astro';
+import { talks, talksAt, longDate, socials, type Talk } from '../../../lib/data';
+
+export function getStaticPaths() {
+  return talks.map((talk) => ({ params: { id: talk.id }, props: { talk } }));
+}
+const { talk } = Astro.props as { talk: Talk };
+const e = talk.event;
+const more = talksAt(e).filter((t) => t.id !== talk.id);
+---
+<Shell title={`${talk.title}, ${talk.person.name} | Agentic Engineering`} description={talk.summary} class="bg-white text-ink">
+  <header class="border-b border-line">
+    <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
+      <a href="/c"><img src="/assets/logo/ae-wordmark-line.svg" alt="Agentic Engineering" class="h-5 md:h-6" /></a>
+      <a href="/c#talks" class="flex items-center gap-2 text-sm font-semibold hover:text-electric-blue"><Icon name="arrow-left" class="size-4" />All talks</a>
+    </nav>
+  </header>
+
+  <main class="mx-auto max-w-5xl px-4 md:px-8">
+    <section class="pt-14 pb-10 text-center md:pt-20">
+      {talk.person.photo && <img src={talk.person.photo} alt="" class="rise mx-auto size-24 rounded-full object-cover" style="--i:0" />}
+      <p class="rise mt-5 font-semibold" style="--i:1">{talk.person.name}{talk.person.title && <span class="font-normal text-ink/60">, {talk.person.title}</span>}</p>
+      <h1 class="rise mx-auto mt-4 max-w-[22ch] text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl" style="--i:2">{talk.title}</h1>
+      <p class="rise mt-5 text-ink/60" style="--i:3">{e.city} #{e.number}, {longDate(e.date)}, {e.venue}</p>
+    </section>
+
+    <div class="rise aspect-video overflow-hidden rounded-2xl bg-canvas" style="--i:4">
+      {talk.video
+        ? <iframe class="size-full" src={`https://www.youtube-nocookie.com/embed/${talk.video.youtubeId}`} title={talk.title} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        : <div class="flex size-full flex-col items-center justify-center gap-3 text-ink/60"><Icon name="film-slate" class="size-10" /><p>The video for this talk is not online yet. The write-up and transcript are below.</p></div>}
+    </div>
+
+    <section class="mx-auto max-w-3xl py-16">
+      <p class="text-2xl leading-relaxed">{talk.summary}</p>
+      {talk.takeaways.length > 0 && (
+        <div class="mt-10 rounded-2xl bg-canvas p-6 md:p-8">
+          <h2 class="font-extrabold">What to take away</h2>
+          <ul class="mt-4 space-y-3">
+            {talk.takeaways.map((k) => <li class="flex gap-3 leading-relaxed"><Icon name="check" weight="bold" class="mt-1 size-4 text-electric-blue" /><span>{k}</span></li>)}
+          </ul>
+        </div>
+      )}
+      {(talk.speakerLinks.length > 0 || talk.mentioned.length > 0) && (
+        <div class="mt-10 grid gap-8 sm:grid-cols-2">
+          {talk.speakerLinks.length > 0 && (
+            <div><h2 class="font-extrabold">Find {talk.person.name.split(' ')[0]}</h2><ul class="mt-3 space-y-2">{talk.speakerLinks.map((l) => <li><a href={l.url} class="text-electric-blue hover:underline">{l.label}</a></li>)}</ul></div>
+          )}
+          {talk.mentioned.length > 0 && (
+            <div><h2 class="font-extrabold">Mentioned in the talk</h2><ul class="mt-3 space-y-2">{talk.mentioned.map((l) => <li><a href={l.url} class="text-electric-blue hover:underline">{l.label}</a></li>)}</ul></div>
+          )}
+        </div>
+      )}
+      <Transcript talk={talk} class="mt-12 border-y border-line" timeClass="text-electric-blue" />
+    </section>
+
+    {more.length > 0 && (
+      <section class="border-t border-line py-16">
+        <h2 class="text-2xl font-extrabold">Also that night</h2>
+        <div class="mt-8 grid gap-5 sm:grid-cols-2">
+          {more.map((t) => (
+            <a href={`/c/talks/${t.id}`} class="group flex items-center gap-4 rounded-2xl bg-canvas p-5 transition hover:-translate-y-0.5">
+              {t.person.photo && <img src={t.person.photo} alt="" class="size-14 rounded-full object-cover" loading="lazy" />}
+              <div><p class="font-extrabold leading-snug group-hover:text-electric-blue">{t.title}</p><p class="text-sm text-ink/60">{t.person.name}</p></div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+
+  <footer class="bg-deep-navy text-soft-white">
+    <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 md:flex-row md:items-center md:justify-between md:px-8">
+      <img src="/assets/logo/ae-wordmark-line-white.svg" alt="Agentic Engineering" class="h-5" />
+      <ul class="flex flex-wrap gap-6 text-sm font-semibold">{socials.map((s) => <li><a href={s.url} class="hover:text-periwinkle">{s.label}</a></li>)}</ul>
+    </div>
+  </footer>
+</Shell>
