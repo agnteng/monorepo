@@ -1,0 +1,27 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import SiteNav from '../../components/SiteNav.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import TalkTile from '../../components/TalkTile.astro';
+import { events, talksAt, longDate, eventSlug, eventName } from '../../lib/data';
+const nights = events.filter((e) => talksAt(e).length);
+---
+<Shell title="Talks | Agentic Engineering" description="Every talk from Agentic Engineering Lisbon: the video, a summary and the full transcript." class="bg-soft-white text-panel-navy">
+  <SiteNav />
+  <main class="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
+    <h1 class="rise font-mono text-4xl font-semibold tracking-tight md:text-6xl">The talks</h1>
+    <p class="rise mt-5 max-w-[56ch] text-lg leading-relaxed text-panel-navy/70" style="--i:1">Every talk with its recording, a summary and the full transcript, newest night first.</p>
+    {nights.map((e) => (
+      <section class="mt-16">
+        <a href={`/events/${eventSlug(e)}`} class="group inline-flex items-baseline gap-3">
+          <h2 class="font-mono text-2xl font-semibold group-hover:text-electric-blue">{eventName(e)}</h2>
+          <span class="text-panel-navy/60">{longDate(e.date)}, {e.venue}</span>
+        </a>
+        <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {talksAt(e).map((t, i) => <li class="reveal"><TalkTile talk={t} index={i} /></li>)}
+        </ul>
+      </section>
+    ))}
+  </main>
+  <SiteFooter />
+</Shell>

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import BrandColorPicker, { BRAND_COLORS } from './BrandColorPicker';
-import Animation, { ANIMATIONS, type AnimName } from './Animation';
-import AnimImage, { type ImagePosition } from './Image';
+import Animation, { ANIMATIONS, type AnimName } from '@agnteng/brand/components/Animation.tsx';
+import AnimImage, { type ImagePosition } from '@agnteng/brand/components/Image.tsx';
 import { Row, Slider, Seg } from './animation-builder/Controls';
 import CollapsibleSection from './animation-builder/CollapsibleSection';
 import CanvasStage from './animation-builder/CanvasStage';
@@ -11,7 +11,7 @@ import { exportJpg, exportVideo, exportGif } from './animation-builder/exporters
 import Template from './Template';
 import { TEMPLATES, findTemplate, aspectToPx, type TemplateExtra, type TemplateLogo } from './animation-builder/templates';
 import { drawOverlay, type Variant } from './animation-builder/overlay';
-import { type Anchor } from './animation-builder/anchor';
+import { type Anchor } from '@agnteng/brand/components/anchor.ts';
 import AlignPad from './animation-builder/AlignPad';
 import { useLogoAssets, useFontsReady } from './animation-builder/useLogoAssets';
 import { useImageList } from './animation-builder/useImageList';

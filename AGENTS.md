@@ -22,7 +22,11 @@ it, in the same pull request. Then these rules:
   a page shows (`mise run fitness:snapshots` only when it should). When
   something breaks that no check caught, add a check to `scripts/fitness.py`
   as part of the fix.
-- **Shared code goes in `packages/`** only once a second app needs it.
+- **Shared code goes in `packages/`** only once a second app needs it. The
+  brand lives in `packages/brand`: build pages from its components, tokens,
+  icons and dither rather than new look-alikes.
+- **Talks and Q&A in `content/<date>/` come from production's
+  `publish_talks.py`.** Change the source there and re-run it.
 - **Event data has one home**: `content/<date>/event.json`. Decks import it;
   don't copy its values into code. Production's `scripts/luma_event.py` fills
   it from Luma.

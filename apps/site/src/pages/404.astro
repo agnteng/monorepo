@@ -1,0 +1,15 @@
+---
+import Shell from '../layouts/Shell.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Button from '@agnteng/brand/components/Button.astro';
+---
+<Shell title="Not found | Agentic Engineering" class="bg-soft-white text-panel-navy">
+  <SiteNav />
+  <main class="mx-auto max-w-3xl px-4 py-32 md:px-8">
+    <h1 class="font-mono text-4xl font-semibold tracking-tight md:text-6xl">Nothing here.</h1>
+    <p class="mt-5 text-lg text-panel-navy/70">The page moved, or never shipped.</p>
+    <div class="mt-8 flex flex-wrap gap-3"><Button href="/">Home</Button><Button variant="outline" href="/talks">The talks</Button></div>
+  </main>
+  <SiteFooter />
+</Shell>

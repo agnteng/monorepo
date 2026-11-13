@@ -1,0 +1,36 @@
+---
+import SocialIcons from '@agnteng/brand/components/SocialIcons.astro';
+import { links } from '../lib/data';
+const site = [
+  { label: 'Talks', href: '/talks' },
+  { label: 'Events', href: '/#events' },
+  { label: 'Speakers', href: '/#speakers' },
+  { label: 'Newsletter', href: '/#newsletter' },
+];
+const elsewhere: { label: string; href: string; icon?: 'youtube' | 'substack' | 'luma' }[] = [
+  { label: 'youtube', href: links.youtube, icon: 'youtube' },
+  { label: 'substack', href: links.substack, icon: 'substack' },
+  { label: 'luma', href: links.luma, icon: 'luma' },
+  { label: 'telegram', href: links.telegram },
+  { label: 'sponsors', href: links.sponsors },
+];
+---
+<footer class="w-full bg-deep-navy">
+  <div class="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 md:flex-row md:items-center md:justify-between md:px-8">
+    <div class="flex items-center gap-2.5">
+      <img src="/assets/logo/ae-mark-white.svg" alt="Agentic Engineering" class="h-7 w-auto" />
+      <img src="/assets/logo/ae-wordmark-white.svg" alt="" class="h-[25px] w-auto" />
+      <span class="ml-1 font-mono text-xs text-soft-white/40">lisbon</span>
+    </div>
+    <nav class="flex flex-col gap-4">
+      <ul class="flex flex-wrap gap-5">
+        {site.map((i) => <li><a href={i.href} class="font-sans text-sm text-soft-white/80 hover:text-soft-white">{i.label}</a></li>)}
+      </ul>
+      <ul class="flex flex-wrap items-center gap-5">
+        {elsewhere.map((i) => (
+          <li><a href={i.href} class="flex items-center gap-2 font-mono text-xs tracking-wide text-soft-white/60 transition-colors hover:text-periwinkle">{i.icon && <SocialIcons name={i.icon} size={16} />}{i.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</footer>

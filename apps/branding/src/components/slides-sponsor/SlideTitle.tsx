@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import Animation from '../Animation';
+import Animation from '@agnteng/brand/components/Animation.tsx';
 import { drawOverlay } from '../animation-builder/overlay';
 import { C, STAGE_H, STAGE_W, type SlideProps } from '../slides/deck';
 import { TITLE } from './content';

@@ -1,6 +1,6 @@
 import { Children, isValidElement, useEffect, useRef, type ReactNode } from 'react';
 import type { ImageProps } from './Image';
-import { anchorFactors } from './animation-builder/anchor';
+import { anchorFactors } from './anchor';
 
 // ─────────────────────────────────────────────────────────────────────────
 // Animation — the standalone animated pixel-field. Its props (animation,

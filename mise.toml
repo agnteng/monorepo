@@ -14,6 +14,10 @@ run = "pnpm install --frozen-lockfile"
 description = "The branding site on 127.0.0.1:4321"
 run = "pnpm --filter branding dev"
 
+[tasks."dev:site"]
+description = "agnteng.com on 127.0.0.1:4330"
+run = "pnpm --filter site dev"
+
 [tasks.build]
 description = "Build every app"
 run = "pnpm build"

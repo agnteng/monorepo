@@ -4,7 +4,7 @@
 // Pure functions ported from BannerBuilder.drawLogo / gradient and
 // LumaCoverBuilder.drawPill / vignette, made variant- and size-aware.
 
-import { anchorFactors, type Anchor } from './anchor';
+import { anchorFactors, type Anchor } from '@agnteng/brand/components/anchor.ts';
 
 export type Grad = 'none' | 'left' | 'right' | 'bottom';
 export type Variant = 'white' | 'blue';

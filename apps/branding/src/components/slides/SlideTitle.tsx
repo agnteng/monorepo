@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import Animation from '../Animation';
-import Image from '../Image';
+import Animation from '@agnteng/brand/components/Animation.tsx';
+import Image from '@agnteng/brand/components/Image.tsx';
 import { drawOverlay } from '../animation-builder/overlay';
 import { C, STAGE_H, STAGE_W, type SlideProps } from './deck';
 import { TONIGHT } from './content';
