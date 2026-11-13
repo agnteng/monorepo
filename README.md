@@ -1,14 +1,14 @@
 # Agentic Engineering
 
-Everything public for the Agentic Engineering meetups in one repository: the
-brand, the decks shown on the night, the sponsor deck, each event's write-ups,
-and the pipeline that turns a recording into published talks. They share one
-context on purpose: the talk descriptions, the decks and the YouTube uploads
-all read the same event data, and the website will join them under `apps/`.
+The Agentic Engineering website: the brand, the decks, the sponsor deck and
+each event's identity (`content/<date>/event.json`). Recordings, talk
+write-ups and the video pipeline live in
+[agnteng/production](https://github.com/agnteng/production), which reads that
+event data from here.
 
 What must not be public (Luma numbers, attendee and supporter lists, sponsor
 terms) lives in the private workspace repository. Video and audio live
-in neither: see *Media* below.
+in no repository.
 
 This repository is public. Credentials live in `.env` (ignored) or come from a
 secrets manager at runtime; never commit one. Every push and pull request is
@@ -27,18 +27,10 @@ git config core.hooksPath .githooks   # needs: brew install gitleaks
 | `apps/branding/src/components/slides/` | The deck engine and primitives; `slides/meetup/` holds the slides every meetup deck shares, `slides-<date>/` one meetup's own. |
 | `apps/branding/src/lib/luma.ts` | Server-only Luma client. Import it only from `.astro` frontmatter or `src/pages/api/`, so `LUMA_API_KEY` stays out of the browser bundle. |
 | `packages/` | Code shared by two or more apps, consumed as raw source. Empty until the website arrives; the brand tokens and logos move here then. |
-| `content/<date>/` | One event: `event.json` (city, venue, Luma ids, speakers; the decks import it as `@content/<date>/event.json`), `README.md`, and one folder per talk with its transcript and descriptions. |
-| `scripts/` | The video pipeline: cut, transcribe, write up, upload. See `scripts/README.md`. |
+| `content/<date>/event.json` | One event's identity: city, venue, Luma ids, speakers. The decks import it as `@content/<date>/event.json`; production reads it for the write-ups. |
+| `scripts/fitness.py` | The fitness checks (`docs/adr/0005`). |
 | `docs/adr/` | Decisions about this repository, and why. Org-wide decisions live in the workspace. |
 | `tests/snapshots/` | What every page renders (without Luma data); `mise run fitness:render` compares against it. |
-| `.claude/skills/` | `meetup-video` (recording → published talks) and `agentic-engineering-description` (the house format for a talk description). |
-
-## Media
-
-Camera files, audio, frames, chunk transcripts and clips are never in the
-repository. They live in `$AGNTENG_MEDIA/<date>/` (`raw/`, `work/`, one `.mp4`
-per talk), the workspace's `media/` unless pointed elsewhere, such as an
-external disk. The scripts find them from the event's date.
 
 ## A new meetup
 
@@ -48,8 +40,8 @@ external disk. The scripts find them from the event's date.
    date), plus `apps/branding/src/pages/slides/<city>-<date>.astro`. Point
    `src/pages/api/audience.json.ts` at the new deck's `content.ts`, so the live
    audience slide polls tonight's event.
-3. After the event, the camera files go in `$AGNTENG_MEDIA/<date>/raw/` and the
-   `meetup-video` skill takes it from there.
+3. After the event, production's `meetup-video` skill turns the recording into
+   published talks.
 
 ## Develop
 
