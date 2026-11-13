@@ -24,7 +24,8 @@ it, in the same pull request. Then these rules:
   as part of the fix.
 - **Shared code goes in `packages/`** only once a second app needs it.
 - **Event data has one home**: `content/<date>/event.json`. Decks import it;
-  don't copy its values into code.
+  don't copy its values into code. Production's `scripts/luma_event.py` fills
+  it from Luma.
 - **A deploy is done when `mise run fitness:live` passes.** A build that loses
   `LUMA_API_KEY` still returns 200 everywhere (`docs/adr/0002`).
 - **Video, write-ups and event tooling live in `agnteng/production`**, checked

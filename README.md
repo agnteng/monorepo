@@ -34,7 +34,9 @@ git config core.hooksPath .githooks   # needs: brew install gitleaks
 
 ## A new meetup
 
-1. `content/<date>/event.json`, copied from the last event and edited.
+1. `content/<date>/event.json`: in production, run
+   `python3 scripts/luma_event.py ae-<city>-<n> --write` (Luma slugs are always
+   `ae-<city>-<n>`), then add speaker photos by hand.
 2. `apps/branding/src/components/slides-<date>/`: copy the last deck's
    `content.ts` and `SlideDeck.tsx` (point the `@content` import at the new
    date), plus `apps/branding/src/pages/slides/<city>-<date>.astro`. Point
