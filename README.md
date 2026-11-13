@@ -29,6 +29,8 @@ git config core.hooksPath .githooks   # needs: brew install gitleaks
 | `packages/` | Code shared by two or more apps, consumed as raw source. Empty until the website arrives; the brand tokens and logos move here then. |
 | `content/<date>/` | One event: `event.json` (city, venue, Luma ids, speakers; the decks import it as `@content/<date>/event.json`), `README.md`, and one folder per talk with its transcript and descriptions. |
 | `scripts/` | The video pipeline: cut, transcribe, write up, upload. See `scripts/README.md`. |
+| `docs/adr/` | Decisions about this repository, and why. Org-wide decisions live in the workspace. |
+| `tests/snapshots/` | What every page renders (without Luma data); `mise run fitness:render` compares against it. |
 | `.claude/skills/` | `meetup-video` (recording → published talks) and `agentic-engineering-description` (the house format for a talk description). |
 
 ## Media
@@ -51,20 +53,23 @@ per talk), and the scripts find them from the event's date. Set
 
 ## Develop
 
-pnpm workspace with Turborepo. Install from the repository root only.
+Tool versions are pinned in `mise.toml`; tasks run the same locally and in CI.
 
 ```sh
-pnpm install
-pnpm --filter branding dev   # Astro on 127.0.0.1:4321
-pnpm build                   # every app, through turbo
+mise install            # node, pnpm, python, gitleaks
+mise run install        # dependencies, from the repository root
+mise run dev            # branding site on 127.0.0.1:4321
+mise run fitness        # the repository checks CI runs
+mise tasks              # everything else
 ```
 
 The deck pages and `api/audience.json` render on demand. `LUMA_API_KEY` is read
-from `.env` at the repository root and inlined at build time; without it they
-render with no Luma data.
+from `.env` at the repository root and inlined at build time
+(`docs/adr/0002`); without it they render with no Luma data.
 
 ## Deploy
 
 Two Dokploy services build from `main`, with the repository root as build
 context: `branding` (`apps/branding/Dockerfile`, a node server) and `sponsors`
 (`apps/branding/Dockerfile.sponsors`, nginx serving only the sponsor deck).
+After every deploy, `mise run fitness:live` checks production.

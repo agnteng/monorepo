@@ -1,0 +1,48 @@
+# Pinned tools and the tasks everyone (and CI) runs. `mise install`, then
+# `mise run <task>`; `mise tasks` lists them.
+[tools]
+node = "22.23.1"
+pnpm = "12.18.0"
+python = "3.12"
+gitleaks = "8.30.1"
+
+[tasks.install]
+description = "Install dependencies (from the repository root only)"
+run = "pnpm install --frozen-lockfile"
+
+[tasks.dev]
+description = "The branding site on 127.0.0.1:4321"
+run = "pnpm --filter branding dev"
+
+[tasks.build]
+description = "Build every app"
+run = "pnpm build"
+
+[tasks.typecheck]
+run = "pnpm typecheck"
+
+[tasks.fitness]
+description = "Repository fitness checks (docs/adr/0005)"
+run = "python3 scripts/fitness.py"
+
+[tasks."fitness:render"]
+description = "Build without Luma data and compare every deck with tests/snapshots/"
+env = { LUMA_API_KEY = "" }
+run = ["pnpm --filter branding build", "python3 scripts/fitness.py --render"]
+
+[tasks."fitness:snapshots"]
+description = "Rewrite tests/snapshots/ after an intended change to what a page shows"
+env = { LUMA_API_KEY = "" }
+run = ["pnpm --filter branding build", "python3 scripts/fitness.py --render --update"]
+
+[tasks."fitness:live"]
+description = "Production answers as it should; run after every deploy"
+run = "python3 scripts/fitness.py --live"
+
+[tasks.secrets]
+description = "gitleaks over the full history"
+run = "gitleaks git . --redact --no-banner"
+
+[tasks.bench]
+description = "Transcription benchmark (docs: scripts/bench_transcription.py)"
+run = "python3 scripts/bench_transcription.py"
