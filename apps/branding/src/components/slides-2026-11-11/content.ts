@@ -1,14 +1,14 @@
-import event from '../../../content/2026-09-23/event.json';
+import event from '@content/2026-11-11/event.json';
 import type { Speaker } from '../slides/deck';
 
 // ─────────────────────────────────────────────────────────────────────────
-// Per-meetup content for the Lisbon — 2026-09-23 deck. Same split as
+// Per-meetup content for the Lisbon — 2026-11-11 deck. Same split as
 // ../slides/content.ts: geometry, palette and slide primitives are shared;
-// only TONIGHT, SPEAKERS, SPONSORS and the Luma event id are this meetup's own.
+// only TONIGHT, SPEAKERS and the Luma event id are this meetup's own.
 // ─────────────────────────────────────────────────────────────────────────
 
 // Identity of the event (city, date, venue, Luma, speakers) lives in
-// content/2026-09-23/event.json, shared with that event's write-up and videos.
+// content/2026-11-11/event.json, shared with that event's write-up and videos.
 export const TONIGHT = { city: event.city, date: event.tonight } as const;
 
 // This event's Luma api_id — the supporter list on the "support" slide and
@@ -26,45 +26,8 @@ export const LUMA_EVENT_URL = event.luma.url;
 // switches to checked-in guests only. See getEventAudience in src/lib/luma.ts.
 export const LUMA_EVENT_START_AT = event.luma.startAt;
 
-export interface Sponsor {
-  name: string;
-  // A finished, full-slide artwork under /assets. When set, it IS the slide —
-  // the name/ask/cta/QR composition below is skipped entirely and the image
-  // fills the stage. Authored 16:9; see SlideSponsor.tsx for how a projector
-  // that isn't 16:9 is handled.
-  fullBleed: string | null;
-  // The composed-slide fields. Only read when fullBleed is null. Image paths
-  // under /assets; each falls back to a labelled placeholder box when unset.
-  logo: string | null;
-  screenshot: string | null;
-  // What they need from the room: hiring, raising, intros, "try the product" —
-  // whatever the pitch is this month.
-  ask: string;
-  // Where the room should go. `text` is the bare domain printed on the slide;
-  // `href` is what the link and the generated QR code actually point at, so
-  // any tracking parameters go there and stay off the slide.
-  cta: { text: string; href: string };
-}
-
-// This month's sponsors — one slide per entry, in order. Swap or extend for
-// whoever sponsors next month.
-export const SPONSORS: Sponsor[] = [
-  {
-    name: 'HackMeridian',
-    // HackMeridian supplied a finished slide, so it replaces the composition
-    // wholesale. The artwork carries its own QR, and that QR decodes to the
-    // same tracked url as cta.href below — verified, not assumed — so nothing
-    // is lost by not drawing ours.
-    fullBleed: '/assets/sponsors/hackmeridian-slide.png',
-    logo: null,
-    screenshot: '/assets/sponsors/hackmeridian-screenshot.jpeg',
-    ask: "Stellar's annual hackathon is happening October 25–26 in Lisbon. For two days, 500 builders will hack to claim a piece of the $30,000 prize pool.",
-    cta: {
-      text: 'hackmeridian.com',
-      href: 'https://www.hackmeridian.com/?utm_source=agentic_engineering&utm_medium=events&utm_campaign=activations',
-    },
-  },
-];
+// No sponsors this month, so this deck has no sponsor slides. To add one
+// back, copy Sponsor/SPONSORS and SlideSponsor.tsx from ../slides-2026-09-23.
 
 // Same copy as the sponsorship deck's slide 02 — a real sentence with a real
 // verb, not the meetup deck's fragment-style subhead.

@@ -1,19 +1,20 @@
-import event from '../../../content/2026-08-26/event.json';
+import event from '@content/2026-09-23/event.json';
 import type { Speaker } from '../slides/deck';
 
 // ─────────────────────────────────────────────────────────────────────────
-// Per-meetup content for the Lisbon — 2026-08-26 deck. Same split as
+// Per-meetup content for the Lisbon — 2026-09-23 deck. Same split as
 // ../slides/content.ts: geometry, palette and slide primitives are shared;
-// only TONIGHT, EVENTS, SPONSORS and the Luma event id are this meetup's own.
+// only TONIGHT, SPEAKERS, SPONSORS and the Luma event id are this meetup's own.
 // ─────────────────────────────────────────────────────────────────────────
 
 // Identity of the event (city, date, venue, Luma, speakers) lives in
-// content/2026-08-26/event.json, shared with that event's write-up and videos.
+// content/2026-09-23/event.json, shared with that event's write-up and videos.
 export const TONIGHT = { city: event.city, date: event.tonight } as const;
 
-// This event's Luma api_id — the supporter list on the "support" slide is
-// pulled from here at build time (see src/lib/luma.ts and the page's
-// frontmatter). Find it via the Luma dashboard or `calendar/list-events`.
+// This event's Luma api_id — the supporter list on the "support" slide and
+// the "who's in the room" numbers are both pulled from here (see
+// src/lib/luma.ts, the page frontmatter, and src/pages/api/audience.json.ts).
+// Find it via the Luma dashboard or `calendar/list-events`.
 export const LUMA_EVENT_API_ID = event.luma.apiId;
 
 // Public registration page — safe to ship to the client, unlike the api key.
@@ -27,14 +28,21 @@ export const LUMA_EVENT_START_AT = event.luma.startAt;
 
 export interface Sponsor {
   name: string;
-  // Image paths under /assets. Falls back to a labelled placeholder box when
-  // unset — see SlideSponsor.tsx.
+  // A finished, full-slide artwork under /assets. When set, it IS the slide —
+  // the name/ask/cta/QR composition below is skipped entirely and the image
+  // fills the stage. Authored 16:9; see SlideSponsor.tsx for how a projector
+  // that isn't 16:9 is handled.
+  fullBleed: string | null;
+  // The composed-slide fields. Only read when fullBleed is null. Image paths
+  // under /assets; each falls back to a labelled placeholder box when unset.
   logo: string | null;
   screenshot: string | null;
   // What they need from the room: hiring, raising, intros, "try the product" —
   // whatever the pitch is this month.
   ask: string;
-  // Where the room should go — a bare domain/path, not a full URL, to print.
+  // Where the room should go. `text` is the bare domain printed on the slide;
+  // `href` is what the link and the generated QR code actually point at, so
+  // any tracking parameters go there and stay off the slide.
   cta: { text: string; href: string };
 }
 
@@ -42,20 +50,19 @@ export interface Sponsor {
 // whoever sponsors next month.
 export const SPONSORS: Sponsor[] = [
   {
-    name: 'PostHog',
-    // Drop a logo file at public/assets/sponsors/posthog-logo.svg and point
-    // this at it — no logo supplied yet, so this stays a placeholder.
-    logo: null,
-    screenshot: '/assets/sponsors/posthog-screenshot.jpeg',
-    ask: 'PostHog Desktop brings coding agents, product context, and team processes into one app. Organize work in spaces, ask agents to produce code or interactive canvases, and turn product signals into action.',
-    cta: { text: 'posthog.com/desktop', href: 'https://posthog.com/desktop' },
-  },
-  {
     name: 'HackMeridian',
+    // HackMeridian supplied a finished slide, so it replaces the composition
+    // wholesale. The artwork carries its own QR, and that QR decodes to the
+    // same tracked url as cta.href below — verified, not assumed — so nothing
+    // is lost by not drawing ours.
+    fullBleed: '/assets/sponsors/hackmeridian-slide.png',
     logo: null,
     screenshot: '/assets/sponsors/hackmeridian-screenshot.jpeg',
     ask: "Stellar's annual hackathon is happening October 25–26 in Lisbon. For two days, 500 builders will hack to claim a piece of the $30,000 prize pool.",
-    cta: { text: 'hackmeridian.com', href: 'https://hackmeridian.com' },
+    cta: {
+      text: 'hackmeridian.com',
+      href: 'https://www.hackmeridian.com/?utm_source=agentic_engineering&utm_medium=events&utm_campaign=activations',
+    },
   },
 ];
 

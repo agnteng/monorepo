@@ -1,0 +1,8 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# Install scripts allowed to run (pnpm runs none by default).
+allowBuilds:
+  esbuild: true
+  sharp: true

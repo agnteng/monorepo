@@ -1,5 +1,5 @@
 import type { PastEvent } from './deck';
-import event from '../../../content/2026-07-29/event.json';
+import event from '@content/2026-07-29/event.json';
 
 // ─────────────────────────────────────────────────────────────────────────
 // Per-meetup content for the Lisbon — 2026-07-29 deck. Geometry, palette and

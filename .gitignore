@@ -1,5 +1,6 @@
 # build output
 dist/
+.turbo/
 # astro generated types
 .astro/
 # deps
@@ -19,13 +20,14 @@ __pycache__/
 *.local
 .vscode/
 
-# event media and scratch. A single talk recording outweighs the whole repo,
-# and GitHub rejects anything over 100MB. Per talk, the markdown and JSON are
-# tracked; the clips are not. work/ (audio, frames, chunk transcripts, cache)
-# is scratch: what is worth keeping ends up in a talk folder or the README.
-content/**/raw/*
-content/**/upload/*
+# Event media never lives in the repository: camera files, audio, frames,
+# chunk transcripts and clips go in ~/agnteng-media/<date>/ (AGNTENG_MEDIA
+# overrides it; see scripts/common.py). These rules are a safety net for media
+# dropped into content/ by mistake.
+content/**/raw/
 content/**/work/
+content/**/upload/
+content/**/clips/
 *.mp4
 *.MP4
 *.mov
@@ -35,7 +37,3 @@ content/**/work/
 *.wav
 *.m4a
 *.mp3
-# keep raw/ so a new event starts from the same layout. The negation works
-# because the glob above ends in /* rather than /: git does not descend into an
-# ignored directory, so a negation inside one is never reached.
-!content/**/raw/.gitkeep

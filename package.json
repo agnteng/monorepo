@@ -1,36 +1,19 @@
 {
   "name": "agnteng",
-  "version": "0.1.0",
   "private": true,
   "type": "module",
   "description": "Agentic Engineering: the branding site, meetup decks, sponsor deck, and every event's videos and write-ups.",
+  "packageManager": "pnpm@12.18.0",
   "platform": {
     "slug": "agnteng",
     "tld": "agnteng.com"
   },
   "scripts": {
-    "dev": "astro dev --host 0.0.0.0 --port 4321",
-    "start": "astro dev --host 0.0.0.0 --port 4321",
-    "build": "astro build",
-    "preview": "astro preview --host 0.0.0.0 --port 4321",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/node": "^9.5.0",
-    "@astrojs/react": "^4.4.0",
-    "@tailwindcss/vite": "^4.1.13",
-    "astro": "^5.16.0",
-    "gifenc": "^1.0.3",
-    "qrcode-generator": "^2.0.4",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.13",
-    "three": "^0.170.0"
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "typecheck": "turbo typecheck"
   },
   "devDependencies": {
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@types/three": "^0.170.0",
-    "typescript": "^5.9.0"
+    "turbo": "^2.11.11"
   }
 }
