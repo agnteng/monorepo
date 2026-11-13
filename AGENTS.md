@@ -9,9 +9,9 @@ it, in the same pull request. Then these rules:
   issues name no internal infrastructure: no secret-store vaults or items,
   secret references, internal repositories or script paths, machine names,
   hostnames, IP addresses or service IDs. Saying it deploys on Dokploy is
-  fine. Private business material goes to `agnteng/private`.
+  fine. Private business material goes to the private workspace.
 - **Media stays out of the repository.** Video, audio, frames and chunk
-  transcripts live in `~/agnteng-media/<date>/`. Never commit them, and never
+  transcripts live in `$AGNTENG_MEDIA/<date>/`. Never commit them, and never
   move them into `content/`.
 - **Tools and tasks come from `mise.toml`.** `mise install` pins node, pnpm,
   python and gitleaks; run tasks as `mise run <task>` (`mise tasks` lists
