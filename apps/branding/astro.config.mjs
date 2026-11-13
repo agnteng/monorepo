@@ -3,6 +3,11 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import node from '@astrojs/node';
 import tailwindcss from '@tailwindcss/vite';
+import { fileURLToPath } from 'node:url';
+
+// The repository root: event data lives in content/ there, and Dokploy writes
+// the service's variables to .env there at build time.
+const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,6 +24,10 @@ export default defineConfig({
   // Tailwind v4 is wired in as a Vite plugin (no separate config file needed).
   vite: {
     plugins: [tailwindcss()],
+    // LUMA_API_KEY is inlined at build time from .env, so read it from the
+    // repository root, where it is in both a local checkout and a Dokploy build.
+    envDir: repoRoot,
+    resolve: { alias: { '@content': `${repoRoot}content` } },
   },
 
   // Dev server only. host:true binds all interfaces, and allowedHosts:true

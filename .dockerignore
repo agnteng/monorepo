@@ -1,21 +1,19 @@
-node_modules
-dist
-.astro
+**/node_modules
+**/dist
+**/.astro
+**/.turbo
 .git
 .gitignore
 *.local
 npm-debug.log*
-.DS_Store
+**/.DS_Store
 .vscode
 # .env is NOT ignored: Dokploy writes the service's variables to .env in the
 # build context, and Astro inlines LUMA_API_KEY from it at build time. Ignoring
 # it ships a deck with no Luma data (2026-11-13). It never reaches dist/client.
-content/**/raw
-content/**/clips
-content/**/upload
-content/**/work
-content/**/*.mp4
-content/**/*.MP4
+**/*.mp4
+**/*.MP4
+**/*.mov
 scripts
 .claude
-__pycache__
+**/__pycache__

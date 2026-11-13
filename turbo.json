@@ -1,0 +1,9 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["LUMA_API_KEY"],
+  "tasks": {
+    "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
+    "typecheck": {},
+    "dev": { "cache": false, "persistent": true }
+  }
+}
