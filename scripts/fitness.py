@@ -300,6 +300,23 @@ def check_photos() -> None:
             fail("photos", f"{where}: not the size of speakers/{photo.name}; re-run speaker_masks.py")
 
 
+# ── a photo never shows before its dither (apps/site/src/styles/site.css) ──
+
+def check_dither() -> None:
+    site = ROOT / "apps" / "site" / "src"
+    css = (site / "styles" / "site.css").read_text()
+    if not re.search(r"\.dither-stage\s*\{[^}]*animation:", css):
+        fail("dither", "site.css: .dither-stage lost its fallback animation, so a failed island hides photos for good")
+    if ".dither-stage" not in (site / "layouts" / "Shell.astro").read_text().split("<noscript>", 1)[-1]:
+        fail("dither", "Shell.astro: no noscript rule shows .dither-stage without JavaScript")
+    for f in sorted(site.rglob("*.astro")):
+        text = f.read_text()
+        # A photo with a DuotoneField over it shows first unless both sit in a stage.
+        for m in re.finditer(r"<DuotoneField\b", text):
+            if "dither-stage" not in text[max(0, m.start() - 1500):m.start()]:
+                fail("dither", f"{f.relative_to(ROOT)}: a DuotoneField outside a .dither-stage")
+
+
 # ── rendered decks unchanged (refactors must not alter what's on screen) ──
 
 PAGES = ["", "brand-guidelines/", "sponsorship/", "slides/",
@@ -415,7 +432,8 @@ def main() -> None:
     else:
         checks = [("internal-names", check_internal_names), ("media", check_media),
                   ("events", check_events), ("talks", check_talks),
-                  ("photos", check_photos), ("search", check_search)]
+                  ("photos", check_photos), ("search", check_search),
+                  ("dither", check_dither)]
     for name, fn in checks:
         before = len(FAILURES)
         fn()

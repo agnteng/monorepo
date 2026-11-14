@@ -30,21 +30,6 @@ const elsewhere: { label: string; href: string; icon?: 'youtube' | 'substack' | 
           <li><a href={i.href} class="inline-flex min-h-6 items-center gap-2 py-1 font-sans text-sm text-soft-white/70 transition-colors hover:text-periwinkle">{i.icon && <SocialIcons name={i.icon} size={16} />}{i.label}</a></li>
         ))}
       </ul>
-      <button type="button" data-motion-toggle class="inline-flex min-h-6 w-fit items-center gap-2 py-1 font-sans text-sm text-soft-white/70 transition-colors hover:text-periwinkle">Pause animation</button>
     </nav>
   </div>
 </footer>
-<script is:inline>
-  {
-    // Every dither on the site holds still while paused (WCAG 2.2.2); remembered per visitor.
-    const toggle = document.querySelector('[data-motion-toggle]');
-    const label = () => (toggle.textContent = document.documentElement.dataset.motion === 'off' ? 'Play animation' : 'Pause animation');
-    label();
-    toggle.addEventListener('click', () => {
-      const off = document.documentElement.dataset.motion !== 'off';
-      off ? (document.documentElement.dataset.motion = 'off') : delete document.documentElement.dataset.motion;
-      try { localStorage.setItem('motion', off ? 'off' : 'on'); } catch {}
-      label();
-    });
-  }
-</script>

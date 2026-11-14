@@ -10,10 +10,8 @@ const { title, description = 'Agentic Engineering: a Lisbon meetup for people bu
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <script is:inline>
-      // A visitor who paused the animation keeps it paused (the footer's switch).
-      try { if (localStorage.getItem('motion') === 'off') document.documentElement.dataset.motion = 'off'; } catch {}
-    </script>
+    <!-- No JS, no dither: show photos at once. -->
+    <noscript><style is:inline>:root .dither-stage { opacity: 1; }</style></noscript>
     <link rel="icon" type="image/svg+xml" href="/assets/logo/ae-icon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

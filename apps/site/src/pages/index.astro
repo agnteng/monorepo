@@ -27,24 +27,27 @@ const night = [
 <Shell title="Agentic Engineering, Lisbon" class="bg-soft-white text-panel-navy">
   <main>
   <section class="relative isolate min-h-[100dvh] overflow-hidden bg-deep-navy text-soft-white md:min-h-[88dvh]">
-    <img src="/assets/photos/events/lisbon-aug2026-room.jpg" alt="" fetchpriority="high" class="absolute inset-0 size-full object-cover" />
-    <!-- The dither rises from the bottom, under the copy, and clears over the crowd. -->
-    <div class="absolute inset-0 [mask-image:linear-gradient(to_top,black_20%,transparent_70%)]">
-    <DuotoneField
-      client:load
-      src="/assets/photos/events/lisbon-aug2026-room.jpg"
-      animation="aurora"
-      color="#1E2BE6"
-      edge="#B5A6FF"
-      bg="#05071E"
-      cell={4}
-      density={0.7}
-      motion={40}
-      contrast={1.25}
-      edgeGlow={1}
-      tone={0.7}
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
-    />
+    <!-- crossorigin matches the dither's request, so the download is reused. -->
+    <div class="dither-stage absolute inset-0">
+      <img src="/assets/photos/events/lisbon-aug2026-room.jpg" alt="" fetchpriority="high" crossorigin="anonymous" class="absolute inset-0 size-full object-cover" />
+      <!-- The dither rises from the bottom, under the copy, and clears over the crowd. -->
+      <div class="absolute inset-0 [mask-image:linear-gradient(to_top,black_20%,transparent_70%)]">
+      <DuotoneField
+        client:load
+        src="/assets/photos/events/lisbon-aug2026-room.jpg"
+        animation="aurora"
+        color="#1E2BE6"
+        edge="#B5A6FF"
+        bg="#05071E"
+        cell={4}
+        density={0.7}
+        motion={40}
+        contrast={1.25}
+        edgeGlow={1}
+        tone={0.7}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+      />
+      </div>
     </div>
     <!-- Dark at the top (nav over the ceiling), clear across the crowd, navy under the copy. -->
     <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg,rgba(5,7,30,0.8) 0%,rgba(5,7,30,0.15) 25%,rgba(5,7,30,0) 45%,rgba(5,7,30,0.45) 75%,#05071E 100%)"></div>
