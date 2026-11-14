@@ -132,6 +132,12 @@ export const coverAt = (e: Event): Photo | undefined => {
   const ps = photosAt(e);
   return ps.find((p) => p.cover) ?? ps[0];
 };
+// Person masks for speaker headshots, written by production's speaker_masks.py.
+const masks = new Set(Object.keys(import.meta.glob('../../../branding/public/assets/speaker-masks/*.png')).map((p) => p.split('/').pop()));
+export const maskFor = (photo: string) => {
+  const name = photo.match(/^\/assets\/speakers\/([^/]+)\.jpg$/)?.[1] + '.png';
+  return masks.has(name) ? `/assets/speaker-masks/${name}` : undefined;
+};
 // One gallery photo by file name. Re-publishing a gallery renumbers its files,
 // so a pick that is no longer there fails the build instead of showing another photo.
 export const galleryPhoto = (date: string, file: string): Photo => {

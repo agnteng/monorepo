@@ -16,10 +16,12 @@ checkout sits in. The patterns never live in this public repository.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
 import socket
+import struct
 import subprocess
 import sys
 import time
@@ -193,6 +195,22 @@ def jpeg_size(data: bytes) -> tuple[int, int]:
     return 0, 0
 
 
+MASK_MAX_BYTES = 100_000
+MASK_METADATA = {b"tEXt", b"zTXt", b"iTXt", b"eXIf", b"iCCP"}
+
+
+def png_chunks(data: bytes) -> dict[bytes, bytes]:
+    """Chunk type → data (the first of each type); empty if not a PNG."""
+    chunks, i = {}, 8
+    if not data.startswith(b"\x89PNG\r\n\x1a\n"):
+        return chunks
+    while i + 8 <= len(data):
+        length, kind = int.from_bytes(data[i:i + 4], "big"), data[i + 4:i + 8]
+        chunks.setdefault(kind, data[i + 8:i + 8 + length])
+        i += 12 + length
+    return chunks
+
+
 def check_photos() -> None:
     listed = set()
     for listing in sorted((ROOT / "content").glob("*/photos.json")):
@@ -227,6 +245,32 @@ def check_photos() -> None:
             fail("photos", f"{where}: over {PHOTO_MAX_BYTES // 1000} KB or {PHOTO_MAX_EDGE}px; run photos.py")
         elif any(m in data for m in PHOTO_METADATA):
             fail("photos", f"{where}: still has EXIF, XMP or IPTC metadata; run photos.py optimize")
+    # Speaker masks from production's speaker_masks.py, one per headshot (org ADR 0010).
+    masks = public / "speaker-masks"
+    sources = json.loads((masks / "sources.json").read_text()) if (masks / "sources.json").exists() else {}
+    for photo in sorted(public.glob("speakers/*.jpg")):
+        if not (masks / f"{photo.stem}.png").is_file():
+            fail("photos", f"{photo.relative_to(ROOT)}: no speaker-masks/{photo.stem}.png; run speaker_masks.py")
+        elif sources.get(photo.name) != hashlib.sha256(photo.read_bytes()).hexdigest():
+            fail("photos", f"{photo.relative_to(ROOT)}: its mask was made from another photo; re-run speaker_masks.py")
+    for f in sorted(masks.glob("*")):
+        if not f.is_file() or f.name.startswith(".") or f.name == "sources.json":
+            continue
+        where, data = f.relative_to(ROOT), f.read_bytes()
+        photo = public / "speakers" / f"{f.stem}.jpg"
+        chunks = png_chunks(data) if f.suffix == ".png" else {}
+        if b"IHDR" not in chunks:
+            fail("photos", f"{where}: masks are .png; make them with speaker_masks.py")
+        elif chunks[b"IHDR"][8:10] != b"\x08\x00":
+            fail("photos", f"{where}: not 8-bit greyscale (mode L); use speaker_masks.py")
+        elif len(data) > MASK_MAX_BYTES:
+            fail("photos", f"{where}: over {MASK_MAX_BYTES // 1000} KB; use speaker_masks.py")
+        elif chunks.keys() & MASK_METADATA:
+            fail("photos", f"{where}: carries text, EXIF or ICC chunks; use speaker_masks.py")
+        elif not photo.is_file():
+            fail("photos", f"{where}: no speakers/{photo.name} to mask")
+        elif jpeg_size(photo.read_bytes()) != struct.unpack(">II", chunks[b"IHDR"][:8]):
+            fail("photos", f"{where}: not the size of speakers/{photo.name}; re-run speaker_masks.py")
 
 
 # ── rendered decks unchanged (refactors must not alter what's on screen) ──

@@ -1,0 +1,13 @@
+---
+// Headshot with the brand dither behind the person; the plain photo if there's no mask.
+import Animation from '@agnteng/brand/components/Animation.tsx';
+import { maskFor } from '../lib/data';
+interface Props { src: string; class?: string }
+const { src, class: cls } = Astro.props;
+const mask = maskFor(src);
+---
+<div class:list={['relative overflow-hidden bg-deep-navy', cls]}>
+  {mask && <Animation client:visible animation="wave" color="#1E2BE6" edge="#B5A6FF" cell={6} density={0.6} motion={45} fade="up" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />}
+  <img src={src} alt="" loading="lazy" class:list={['photo-tint absolute inset-0 size-full object-cover', mask && 'speaker-mask']} style={mask && `--mask: url(${mask})`} />
+  {!mask && <div aria-hidden="true" class="photo-tint-wash pointer-events-none absolute inset-0"></div>}
+</div>

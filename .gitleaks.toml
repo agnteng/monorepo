@@ -1,0 +1,7 @@
+# Gitleaks' default rules, plus the false positives they raise here.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "SHA-256 hashes of public speaker headshots; names like 'papirmeister' contain 'api'"
+paths = ['''^apps/branding/public/assets/speaker-masks/sources\.json$''']
