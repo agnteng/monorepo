@@ -22,9 +22,11 @@ const night = [
 ---
 <Shell title="Agentic Engineering, Lisbon" class="bg-soft-white text-panel-navy">
   <main>
-  <section class="relative isolate min-h-[100dvh] overflow-hidden bg-deep-navy text-soft-white md:min-h-[88dvh]">
+  <section class="relative isolate min-h-[100dvh] overflow-hidden bg-deep-navy text-soft-white md:min-h-[72dvh]">
     <!-- crossorigin matches the dither's request, so the download is reused. -->
-    <div class="dither-stage absolute inset-0">
+    <!-- Taller than the hero on desktop and pinned to its bottom, so the crop takes
+         ceiling, not crowd. -->
+    <div class="dither-stage absolute inset-x-0 bottom-0 h-full md:min-h-[88dvh]">
       <img src="/assets/photos/events/lisbon-aug2026-room.jpg" alt="" fetchpriority="high" crossorigin="anonymous" class="absolute inset-0 size-full object-cover" />
       <!-- The dither rises from the bottom, under the copy, and clears over the crowd. -->
       <div class="absolute inset-0 [mask-image:linear-gradient(to_top,black_20%,transparent_70%)]">
@@ -52,7 +54,7 @@ const night = [
     <SiteNav overlay />
 
     <!-- The skip link lands here, past the nav that sits over the hero. -->
-    <div id="main" class="relative mx-auto grid min-h-[100dvh] max-w-7xl items-end gap-10 px-4 pt-24 pb-12 md:min-h-[88dvh] md:grid-cols-12 md:px-8 md:pb-16">
+    <div id="main" class="relative mx-auto grid min-h-[100dvh] max-w-7xl items-end gap-10 px-4 pt-24 pb-12 md:min-h-[72dvh] md:grid-cols-12 md:px-8 md:pb-16">
       <div class="relative isolate md:col-span-7">
         <!-- A soft scrim behind the copy, so it reads over the brightest dither cells. -->
         <div aria-hidden="true" class="pointer-events-none absolute -inset-x-12 -inset-y-14 -z-10 bg-[radial-gradient(closest-side,rgba(5,7,30,0.8),transparent)]"></div>
