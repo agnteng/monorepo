@@ -28,7 +28,7 @@ const elsewhere: { label: string; href: string; icon?: 'youtube' | 'substack' | 
       </ul>
       <ul class="flex flex-wrap items-center gap-5">
         {elsewhere.map((i) => (
-          <li><a href={i.href} class="flex items-center gap-2 font-mono text-xs tracking-wide text-soft-white/60 transition-colors hover:text-periwinkle">{i.icon && <SocialIcons name={i.icon} size={16} />}{i.label}</a></li>
+          <li><a href={i.href} class="flex items-center gap-2 font-sans text-sm text-soft-white/60 transition-colors hover:text-periwinkle">{i.icon && <SocialIcons name={i.icon} size={16} />}{i.label}</a></li>
         ))}
       </ul>
     </nav>

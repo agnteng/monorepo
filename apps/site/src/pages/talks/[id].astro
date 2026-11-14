@@ -25,7 +25,7 @@ const linkLists = ([
   <main class="mx-auto max-w-5xl px-4 md:px-8">
     <section class="pt-14 pb-10 md:pt-20">
       <a href={`/events/${eventSlug(e)}`} class="rise inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-electric-blue hover:underline">{eventName(e)}, {longDate(e.date)}</a>
-      <h1 class="rise mt-4 max-w-[24ch] font-mono text-3xl font-semibold leading-[1.1] tracking-tight md:text-5xl" style="--i:1">{talk.title}</h1>
+      <h1 class="rise mt-4 max-w-[24ch] font-sans text-3xl font-extrabold leading-[1.1] tracking-tight md:text-5xl" style="--i:1">{talk.title}</h1>
       <div class="rise mt-6 flex items-center gap-3" style="--i:2">
         <Avatar name={talk.person.name} src={talk.person.photo} size={48} />
         <p><span class="font-bold">{talk.person.name}</span>{talk.person.title && <span class="block text-sm text-panel-navy/60">{talk.person.title}</span>}</p>
@@ -37,7 +37,7 @@ const linkLists = ([
         ? <iframe class="absolute inset-0 size-full" src={`https://www.youtube-nocookie.com/embed/${talk.video.youtubeId}`} title={talk.title} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         : <>
             <Animation client:load color="#1E2BE6" edge="#B5A6FF" cell={10} density={0.6} fade="radial" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
-            <p class="absolute inset-x-4 bottom-5 mx-auto w-fit rounded-full bg-deep-navy/90 px-4 py-2 text-center font-mono text-xs text-soft-white/85 md:text-sm">The recording isn't online yet. The write-up and transcript are below.</p>
+            <p class="absolute inset-x-4 bottom-5 mx-auto w-fit rounded-full bg-deep-navy/90 px-4 py-2 text-center font-sans text-xs font-medium text-soft-white/85 md:text-sm">The recording isn't online yet. The write-up and transcript are below.</p>
           </>}
     </div>
 
@@ -54,7 +54,7 @@ const linkLists = ([
       {linkLists.length > 0 && (
         <div class="mt-10 grid gap-8 sm:grid-cols-2">
           {linkLists.map(([heading, list]) => (
-            <div><h2 class="font-mono font-semibold">{heading}</h2><ul class="mt-3 space-y-2">{list.map((l) => <li><a href={l.url} class="inline-flex items-center gap-2 text-electric-blue hover:underline">{l.label}<Icon name="ExternalLink" size={14} /></a></li>)}</ul></div>
+            <div><h2 class="font-sans font-bold">{heading}</h2><ul class="mt-3 space-y-2">{list.map((l) => <li><a href={l.url} class="inline-flex items-center gap-2 text-electric-blue hover:underline">{l.label}<Icon name="ExternalLink" size={14} /></a></li>)}</ul></div>
           ))}
         </div>
       )}
@@ -63,7 +63,7 @@ const linkLists = ([
 
     {more.length > 0 && (
       <section class="border-t border-panel-navy/[0.08] py-16">
-        <h2 class="font-mono text-2xl font-semibold">Also that night</h2>
+        <h2 class="font-sans text-2xl font-extrabold">Also that night</h2>
         <ul class="mt-8 grid gap-5 sm:grid-cols-2">{more.map((t, i) => <li><TalkTile talk={t} index={i} /></li>)}</ul>
       </section>
     )}

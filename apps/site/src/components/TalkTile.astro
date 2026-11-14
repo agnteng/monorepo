@@ -23,7 +23,7 @@ const fade = (['right', 'left', 'radial', 'up', 'down'] as const)[index % 5];
     <p class="mt-3 flex items-center gap-2.5 font-sans text-sm text-panel-navy/60">
       <span aria-hidden="true"><Avatar name={talk.person.name} src={talk.person.photo} size={28} /></span>{talk.person.name}
     </p>
-    <span class="mt-auto inline-flex items-center gap-2 pt-5 font-mono text-xs uppercase tracking-wider text-electric-blue">
+    <span class="mt-auto inline-flex items-center gap-2 pt-5 font-sans text-sm font-semibold text-electric-blue">
       {talk.video ? <><Icon name="Eye" size={14} />Watch the recording</> : <><Icon name="BookOpen" size={14} />Read the talk</>}
     </span>
   </div>
