@@ -417,13 +417,7 @@ def check_live() -> None:
         fail("live", f"{s}/ is not serving the sponsor deck")
     if get(f"{s}/brand-guidelines/")[0] != 404:
         fail("live", f"{s} serves more than the sponsor deck")
-    if SITE_IS_LIVE:
-        check_live_site()
-
-
-# agnteng.com has no public address yet. Set this when it gets one, in the
-# same change, so every deploy after that is checked.
-SITE_IS_LIVE = False
+    check_live_site()
 
 
 def check_live_site() -> None:
