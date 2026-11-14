@@ -251,8 +251,13 @@ def check_photos() -> None:
     for photo in sorted(public.glob("speakers/*.jpg")):
         if not (masks / f"{photo.stem}.png").is_file():
             fail("photos", f"{photo.relative_to(ROOT)}: no speaker-masks/{photo.stem}.png; run speaker_masks.py")
-        elif sources.get(photo.name) != hashlib.sha256(photo.read_bytes()).hexdigest():
+        elif not isinstance(entry := sources.get(photo.name), dict) or entry.get("sha256") != hashlib.sha256(photo.read_bytes()).hexdigest():
             fail("photos", f"{photo.relative_to(ROOT)}: its mask was made from another photo; re-run speaker_masks.py")
+        elif (face := entry.get("face")) is not None and not (
+                len(face) == 3 and all(isinstance(v, (int, float)) and 0 < v < 1 for v in face)):
+            fail("photos", f"{photo.relative_to(ROOT)}: face in sources.json should be [x, y, height] fractions; re-run speaker_masks.py")
+        elif entry.get("size") != list(jpeg_size(photo.read_bytes())):
+            fail("photos", f"{photo.relative_to(ROOT)}: size in sources.json doesn't match; re-run speaker_masks.py")
     for f in sorted(masks.glob("*")):
         if not f.is_file() or f.name.startswith(".") or f.name == "sources.json":
             continue
