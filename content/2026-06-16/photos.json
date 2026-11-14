@@ -1,7 +1,7 @@
 [
   {
     "file": "01.jpg",
-    "alt": "The audience at Full Node in Berlin"
+    "alt": "A standing crowd at the back of the room"
   },
   {
     "file": "02.jpg",
@@ -9,18 +9,34 @@
   },
   {
     "file": "03.jpg",
-    "alt": "Federico Kunze Küllmer presenting One Chat Box, Many Agents"
+    "alt": "Juan Cruz Fortunatti on stage, seen from the back of the room"
   },
   {
     "file": "04.jpg",
-    "alt": "Jean-Loïc Mugnier presenting AI Agents & Crypto: What Could Go Wrong"
+    "alt": "The room filling up, people standing along the side"
   },
   {
     "file": "05.jpg",
-    "alt": "People talking at the bar before the talks"
+    "alt": "Federico Kunze Küllmer presenting One Chat Box, Many Agents"
   },
   {
     "file": "06.jpg",
-    "alt": "A standing crowd at the back of the room"
+    "alt": "Federico Kunze Küllmer walking through a multi-agent architecture"
+  },
+  {
+    "file": "07.jpg",
+    "alt": "The audience at Full Node in Berlin"
+  },
+  {
+    "file": "08.jpg",
+    "alt": "Jean-Loïc Mugnier presenting AI Agents & Crypto: What Could Go Wrong"
+  },
+  {
+    "file": "09.jpg",
+    "alt": "Jean-Loïc Mugnier presenting: constrain actions before execution"
+  },
+  {
+    "file": "10.jpg",
+    "alt": "People talking at the bar before the talks"
   }
 ]

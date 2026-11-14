@@ -1,7 +1,7 @@
 [
   {
     "file": "01.jpg",
-    "alt": "A packed room at The Nest by NEAR"
+    "alt": "The Agentic Engineering Lisbon title slide on the projector"
   },
   {
     "file": "02.jpg",
@@ -9,18 +9,38 @@
   },
   {
     "file": "03.jpg",
-    "alt": "A speaker presenting a live demo, his laptop on the lectern"
+    "alt": "A packed room at The Nest by NEAR"
   },
   {
     "file": "04.jpg",
-    "alt": "The audience listening, some standing at the back"
+    "alt": "People listening near the front, one standing in a red shirt"
   },
   {
     "file": "05.jpg",
-    "alt": "People talking around the long table"
+    "alt": "Pia Steiner speaking beside her slide"
   },
   {
     "file": "06.jpg",
+    "alt": "The audience listening, some standing at the back"
+  },
+  {
+    "file": "07.jpg",
+    "alt": "A speaker presenting a live demo, his laptop on the lectern"
+  },
+  {
+    "file": "08.jpg",
+    "alt": "A speaker at his laptop with code on the screen"
+  },
+  {
+    "file": "09.jpg",
+    "alt": "A speaker at the lectern with two portraits on screen"
+  },
+  {
+    "file": "10.jpg",
+    "alt": "People talking around the long table"
+  },
+  {
+    "file": "11.jpg",
     "alt": "A group in conversation after the talks"
   }
 ]

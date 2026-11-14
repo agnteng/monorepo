@@ -1,26 +1,34 @@
 [
   {
     "file": "01.jpg",
-    "alt": "A full room at The Nest by NEAR for the first Agentic Engineering meetup"
+    "alt": "A speaker answering a question by the windows, a second speaker beside him"
   },
   {
     "file": "02.jpg",
-    "alt": "Alex Lajarre presenting; his slide lists pi-vim at about 1,100 installs a week"
+    "alt": "The audience on benches and stools, listening"
   },
   {
     "file": "03.jpg",
-    "alt": "A speaker walking through tool calls dispatched to a sandbox"
+    "alt": "A full room at The Nest by NEAR for the first Agentic Engineering meetup"
   },
   {
     "file": "04.jpg",
-    "alt": "An audience member asking a question"
+    "alt": "A speaker walking through tool calls dispatched to a sandbox"
   },
   {
     "file": "05.jpg",
-    "alt": "People talking before the talks"
+    "alt": "Alex Lajarre presenting; his slide lists pi-vim at about 1,100 installs a week"
   },
   {
     "file": "06.jpg",
-    "alt": "A speaker answering a question by the windows, a second speaker beside him"
+    "alt": "An audience member asking a question"
+  },
+  {
+    "file": "07.jpg",
+    "alt": "A speaker carrying on while the projector shows no signal"
+  },
+  {
+    "file": "08.jpg",
+    "alt": "People talking before the talks"
   }
 ]
