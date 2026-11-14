@@ -1,20 +1,20 @@
 ---
-import { Image } from 'astro:assets';
 import Shell from '../layouts/Shell.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import TalkTile from '../components/TalkTile.astro';
+import TintedPhoto from '../components/TintedPhoto.astro';
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { nextEvent, past, talks, talksAt, photosAt, galleryPhoto, speakers, links, register, cardDate, shortDate, startTime, eventSlug, eventName, plural } from '../lib/data';
+import { nextEvent, past, talks, talksAt, coverAt, galleryPhoto, speakers, links, register, cardDate, shortDate, startTime, eventSlug, eventName, plural } from '../lib/data';
 import { latestPosts } from '../lib/newsletter';
 
 const posts = await latestPosts();
 const night = [
-  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: galleryPhoto('2026-11-11', '15.jpg') },
-  { time: '19:45', title: 'Three talks', body: 'Ten minutes each, on something the speaker built or broke. Product pitches get turned down.', photo: galleryPhoto('2026-11-11', '18.jpg') },
+  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: galleryPhoto('2026-07-29', '03.jpg') },
+  { time: '19:45', title: 'Three talks', body: 'Ten minutes each, on something the speaker built or broke. Product pitches get turned down.', photo: galleryPhoto('2026-11-11', '13.jpg') },
   { time: '20:15', title: 'Questions', body: 'The room asks, the speakers answer. It usually carries on over drinks.', photo: galleryPhoto('2026-11-11', '28.jpg') },
 ];
 const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
@@ -80,7 +80,7 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
     <ol class="mt-14 grid gap-12 md:grid-cols-3 md:gap-6">
       {night.map((n, i) => (
         <li class:list={['reveal', i === 1 && 'md:mt-16', i === 2 && 'md:mt-32']}>
-          <Image src={n.photo.img} alt={n.photo.alt} widths={[480, 960]} sizes="(min-width: 768px) 33vw, 100vw" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy" />
+          <TintedPhoto src={n.photo.img} alt={n.photo.alt} corner={(['bl', 'br', 'bl'] as const)[i]} sizes="(min-width: 768px) 33vw, 100vw" class="aspect-[4/5] w-full rounded-2xl" />
           <p class="mt-5 font-mono text-sm font-semibold text-electric-blue">{n.time}</p>
           <p class="mt-1 font-sans text-2xl font-extrabold">{n.title}</p>
           <p class="mt-2 max-w-[38ch] leading-relaxed text-panel-navy/70">{n.body}</p>
@@ -112,15 +112,13 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
     <ul class="mt-12 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
       {past.map((e) => {
         const n = talksAt(e).length;
-        const cover = photosAt(e)[0];
+        const cover = coverAt(e);
         return (
           <li class="reveal">
             <a href={n ? `/events/${eventSlug(e)}` : e.luma?.url ?? links.luma} class="group block">
-              <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-deep-navy">
-                {cover
-                  ? <Image src={cover.img} alt={cover.alt} widths={[480, 960]} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="size-full object-cover transition duration-500 group-hover:scale-[1.03]" loading="lazy" />
-                  : <Animation client:visible paused color="#1E2BE6" edge="#B5A6FF" cell={8} density={0.6} fade="radial" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />}
-              </div>
+              {cover
+                ? <TintedPhoto src={cover.img} alt={cover.alt} corner="br" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" zoom class="aspect-[4/3] rounded-2xl" />
+                : <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-deep-navy"><Animation client:visible paused color="#1E2BE6" edge="#B5A6FF" cell={8} density={0.6} fade="radial" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} /></div>}
               <p class="mt-4 font-sans text-lg font-bold group-hover:text-electric-blue">{eventName(e)}</p>
               <p class="mt-0.5 text-sm text-panel-navy/60">{shortDate(e.date)}</p>
             </a>
@@ -137,14 +135,12 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
         {speakers.map((s, i) => (
           <li class="reveal">
             <a href={s.href} class="group block">
-              <div class="relative aspect-[3/4] overflow-hidden rounded-2xl bg-deep-navy transition duration-300 group-hover:-translate-y-1">
-                {s.photo
-                  ? <img src={s.photo} alt="" class="size-full object-cover" loading="lazy" />
-                  : <>
+              {s.photo
+                ? <TintedPhoto src={s.photo} alt="" corner={i % 2 ? 'br' : 'bl'} spread={36} class="aspect-[3/4] rounded-2xl transition duration-300 group-hover:-translate-y-1" />
+                : <div class="relative aspect-[3/4] overflow-hidden rounded-2xl bg-deep-navy transition duration-300 group-hover:-translate-y-1">
                       <Animation client:visible paused animation="drift" color="#1E2BE6" edge="#B5A6FF" cell={7} density={0.55} fade={fades[i % fades.length]} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
                       <span aria-hidden="true" class="absolute inset-0 grid place-items-center font-sans text-4xl font-extrabold text-soft-white [text-shadow:0_0_6px_#05071E,0_0_18px_#05071E]">{s.name.split(' ').map((w) => w[0]).join('').slice(0, 2)}</span>
-                    </>}
-              </div>
+                  </div>}
               <p class="mt-3 font-sans font-bold leading-tight">{s.name}</p>
               {s.title && <p class="mt-0.5 text-sm text-panel-navy/60">{s.title}</p>}
             </a>

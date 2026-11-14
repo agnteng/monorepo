@@ -118,14 +118,19 @@ export const talksAt = (e: Event) => talks.filter((t) => t.event.date === e.date
 
 // The night's gallery: web copies written by production's event_photos.py.
 const photoFiles = import.meta.glob<ImageMetadata>('@content/*/photos/*.jpg', { eager: true, import: 'default' });
-const photoLists = import.meta.glob<{ file: string; alt: string }[]>('@content/*/photos.json', { eager: true, import: 'default' });
-export type Photo = { file: string; img: ImageMetadata; alt: string };
+const photoLists = import.meta.glob<{ file: string; alt: string; cover?: boolean }[]>('@content/*/photos.json', { eager: true, import: 'default' });
+export type Photo = { file: string; img: ImageMetadata; alt: string; cover?: boolean };
 export const photosAt = (e: Event): Photo[] => {
   const list = Object.entries(photoLists).find(([path]) => dateOf(path) === e.date)?.[1] ?? [];
-  return list.flatMap(({ file, alt }) => {
+  return list.flatMap(({ file, alt, cover }) => {
     const img = Object.entries(photoFiles).find(([path]) => path.endsWith(`${e.date}/photos/${file}`))?.[1];
-    return img ? [{ file, img, alt }] : [];
+    return img ? [{ file, img, alt, cover }] : [];
   });
+};
+// The photo that stands for the night (flagged cover in production's gallery.tsv).
+export const coverAt = (e: Event): Photo | undefined => {
+  const ps = photosAt(e);
+  return ps.find((p) => p.cover) ?? ps[0];
 };
 // One gallery photo by file name. Re-publishing a gallery renumbers its files,
 // so a pick that is no longer there fails the build instead of showing another photo.

@@ -9,7 +9,7 @@ import Animation from '@agnteng/brand/components/Animation.tsx';
 import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { events, talksAt, questionsAt, photosAt, longDate, eventSlug, eventName, links, type Event } from '../../lib/data';
+import { events, talksAt, questionsAt, photosAt, coverAt, longDate, eventSlug, eventName, links, type Event } from '../../lib/data';
 
 export function getStaticPaths() {
   return events.filter((e) => talksAt(e).length).map((event) => ({ params: { slug: eventSlug(event) }, props: { event } }));
@@ -18,13 +18,12 @@ const { event: e } = Astro.props as { event: Event };
 const talks = talksAt(e);
 const questions = questionsAt(e);
 const photos = photosAt(e);
-// The header dithers a wide shot of the room when the gallery has one.
-const room = photos.find((p) => /room|audience/i.test(p.alt)) ?? photos[0];
-const header = room && (await getImage({ src: room.img, width: 1600, format: 'webp' })).src;
+const cover = coverAt(e);
+const header = cover && (await getImage({ src: cover.img, width: 1600, format: 'webp' })).src;
 ---
 <Shell title={`${eventName(e)}, ${longDate(e.date)} | Agentic Engineering`} description={`Agentic Engineering ${eventName(e)}: ${talks.map((t) => t.title).join(', ')}.`} class="bg-soft-white text-panel-navy">
   <section class="relative isolate overflow-hidden bg-deep-navy text-soft-white">
-    {room
+    {cover
       ? <>
           <img src={header} alt="" class="absolute inset-0 size-full object-cover" />
           <div class="absolute inset-0 [mask-image:linear-gradient(to_right,black_25%,transparent_75%)]">

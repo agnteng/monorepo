@@ -29,7 +29,8 @@
   },
   {
     "file": "08.jpg",
-    "alt": "The room at Lunar Strategy during a talk"
+    "alt": "The room at Lunar Strategy during a talk",
+    "cover": true
   },
   {
     "file": "09.jpg",

@@ -13,7 +13,8 @@
   },
   {
     "file": "04.jpg",
-    "alt": "A full room at The Nest by NEAR"
+    "alt": "A full room at The Nest by NEAR",
+    "cover": true
   },
   {
     "file": "05.jpg",
