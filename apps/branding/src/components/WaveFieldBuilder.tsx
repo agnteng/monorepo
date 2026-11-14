@@ -376,7 +376,7 @@ export default function WaveFieldBuilder() {
               )}
               {tpl.group !== 'cover' && tpl.group !== 'speaker' && tpl.group !== 'sponsor' && !logo.mark && (
                 <Row label="Logo size" value={logo.scale.toFixed(2)}>
-                  <Slider min={0.15} max={0.55} step={0.01} value={logo.scale} onChange={(v) => setLogoK('scale', v)} />
+                  <Slider min={0.15} max={tpl.logoMaxScale ?? 0.55} step={0.01} value={logo.scale} onChange={(v) => setLogoK('scale', v)} />
                 </Row>
               )}
               {tpl.group !== 'sponsor' && (

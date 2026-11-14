@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 // Load a list of image sources (blob: URLs from a file upload, typically)
 // into <img> elements the canvas can draw synchronously. Mirrors
-// useLogoAssets' load-then-set pattern, generalised to N slots instead of 4
+// useLogoAssets' load-then-set pattern, generalised to N slots instead of a fixed set
 // fixed ones — speaker photos and sponsor logos are user-uploaded, so the
 // count and the URLs themselves change as the user edits the form.
 export function useImageList(srcs: (string | null)[]): (HTMLImageElement | null)[] {
