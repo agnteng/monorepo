@@ -2,11 +2,12 @@
 // Headshot with the brand dither behind the person; the plain photo if there's no mask.
 // Colour, animation and fade cycle with the tile's index; the person takes the tint.
 // Five palettes: co-prime with 6, 3 and 2 columns, so no tile repeats its neighbours'.
+// The photo is placed by its detected face; edges inside the tile fade.
 import Animation from '@agnteng/brand/components/Animation.tsx';
-import { maskFor } from '../lib/data';
+import { headshot } from '../lib/data';
 interface Props { src: string; index?: number; class?: string }
 const { src, index = 0, class: cls } = Astro.props;
-const mask = maskFor(src);
+const shot = headshot(src);
 
 // [tint and dither, highlight cells]: mostly the brand blues, a few accents.
 const palettes = [
@@ -21,13 +22,29 @@ const fades = ['up', 'radial', 'down', 'left', 'right'] as const;
 const [tint, edge] = palettes[index % palettes.length];
 const animation = animations[(index * 3) % animations.length];
 const fade = fades[(index * 2) % fades.length];
+
+// The tile is 3:4 (its aspect class above). Faces are FACE of its height, centred at (50%, AT); a photo
+// framed too tightly may grow the face up to GROW times so less edge shows.
+const TILE = 3 / 4, FACE = 0.34, AT = 0.4, GROW = 1.35;
+let place = 'inset: 0; --mask-size: cover'; // no face: the usual cover crop
+if (shot?.face) {
+  const [cx, cy, fh] = shot.face;
+  const aspect = shot.size[0] / shot.size[1];
+  const natural = FACE / fh; // photo height, in tile heights
+  const h = Math.max(natural, Math.min((1 - AT) / (1 - cy), natural * GROW));
+  const w = (h * aspect) / TILE;
+  const pct = (n: number) => `${(n * 100).toFixed(2)}%`;
+  place = `left: ${pct(0.5 - cx * w)}; top: ${pct(AT - cy * h)}; width: ${pct(w)}; height: ${pct(h)}`;
+}
 ---
-<div class:list={['relative isolate overflow-hidden bg-deep-navy', cls]} style={`--tint: ${tint}${mask ? `; --mask: url(${mask})` : ''}`}>
-  {mask
+<div class:list={['relative isolate aspect-[3/4] overflow-hidden bg-deep-navy', cls]} style={`--tint: ${tint}${shot ? `; --mask: url(${shot.mask})` : ''}`}>
+  {shot
     ? <>
         <Animation client:visible animation={animation} color={tint} edge={edge} cell={6} density={0.6} motion={45} fade={fade} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
-        <img src={src} alt="" loading="lazy" class="speaker-mask speaker-tint absolute inset-0 size-full object-cover" />
-        <div aria-hidden="true" class="speaker-mask speaker-tint-wash pointer-events-none absolute inset-0"></div>
+        <div class="absolute" style={place}>
+          <img src={src} alt="" loading="lazy" class="speaker-mask speaker-tint absolute inset-0 size-full object-cover" />
+          <div aria-hidden="true" class="speaker-mask speaker-tint-wash pointer-events-none absolute inset-0"></div>
+        </div>
       </>
     : <>
         <img src={src} alt="" loading="lazy" class="photo-tint absolute inset-0 size-full object-cover" />
