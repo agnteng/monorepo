@@ -25,7 +25,7 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
     <ol data-search-results hidden class="mt-2 divide-y divide-panel-navy/10"></ol>
 
     <ul data-talk-grid class="mt-2 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {talks.map((t, i) => <li data-meetup={eventName(t.event)}><TalkTile talk={t} index={i} /></li>)}
+      {talks.map((t, i) => <li data-meetup={eventName(t.event)} data-text={`${t.title} ${t.person.name} ${t.summary}`.toLowerCase()}><TalkTile talk={t} index={i} /></li>)}
     </ul>
   </main>
   <SiteFooter />
@@ -40,11 +40,10 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
     const params = new URLSearchParams(location.search);
     let meetup = params.get('meetup') ?? '';
     input.value = params.get('q') ?? '';
-    if (location.hash === '#search' || params.has('q')) {
-      input.focus();
+    if (params.has('focus') || params.has('q')) {
+      input.focus({ preventScroll: true });
       input.setSelectionRange(input.value.length, input.value.length);
     }
-    addEventListener('hashchange', () => location.hash === '#search' && input.focus());
 
     const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
     let pagefind;
@@ -57,7 +56,7 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
     const row = (r) => {
       const moments = r.sub_results.filter((s) => /#t-\d+$/.test(s.url)).slice(0, 2);
       return `<li class="py-6"><a href="${esc(r.url)}" class="group grid gap-5 sm:grid-cols-[12rem_1fr]">
-        ${r.meta.image ? `<img src="${esc(r.meta.image)}" alt="" loading="lazy" class="aspect-video w-full rounded-xl object-cover">` : '<span></span>'}
+        ${r.meta.image ? `<img src="${esc(r.meta.image)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'" class="aspect-video w-full rounded-xl bg-deep-navy object-cover">` : '<span></span>'}
         <span>
           <span class="block font-mono text-[11px] uppercase tracking-wider text-electric-blue">${esc(r.meta.date)}</span>
           <span class="mt-1 block font-sans text-xl font-bold leading-snug group-hover:text-electric-blue">${esc(r.meta.title)}</span>
@@ -73,6 +72,7 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
       const mine = ++run; // a newer update makes any search still in flight stale
       const q = input.value.trim();
       const url = new URL(location.href);
+      url.searchParams.delete('focus');
       q ? url.searchParams.set('q', q) : url.searchParams.delete('q');
       meetup ? url.searchParams.set('meetup', meetup) : url.searchParams.delete('meetup');
       history.replaceState(null, '', url);
@@ -93,9 +93,18 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
         found = await pf.search(q, { filters: meetup ? { meetup } : {} });
         data = await Promise.all(found.results.slice(0, 20).map((r) => r.data()));
       } catch {
-        if (mine === run) status.textContent = 'Search isn’t available right now. The full list is below.';
+        // No index (a dev server before the first build, or offline): match titles,
+        // speakers and summaries in the list itself.
+        if (mine !== run) return;
+        const words = q.toLowerCase().split(/\s+/);
+        let shown = 0;
+        for (const li of grid.children) {
+          li.hidden = (!!meetup && li.dataset.meetup !== meetup) || !words.every((w) => (li.dataset.text ?? '').includes(w));
+          shown += !li.hidden;
+        }
         list.hidden = true;
         grid.hidden = false;
+        status.textContent = shown ? `${shown} ${shown === 1 ? 'talk' : 'talks'} for “${q}”` : `Nothing for “${q}”.`;
         return;
       }
       if (mine !== run) return;

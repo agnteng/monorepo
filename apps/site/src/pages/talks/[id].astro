@@ -34,12 +34,12 @@ const linkLists = ([
       <h1 class="rise mt-4 max-w-[24ch] font-sans text-3xl font-extrabold leading-[1.1] tracking-tight md:text-5xl" style="--i:1">{talk.title}</h1>
       <div class="rise mt-6 flex items-center gap-3" style="--i:2">
         <Avatar name={talk.person.name} src={talk.person.photo} size={48} />
-        <p><span class="font-bold">{talk.person.name}</span>{talk.person.title && <span class="block text-sm text-panel-navy/60">{talk.person.title}</span>}</p>
+        <p><span class="font-bold">{talk.person.name}</span>{talk.person.title && <span class="block text-sm text-panel-navy/60"> {talk.person.title}</span>}</p>
       </div>
     </section>
 
     <!-- No .rise here: an animated transform would anchor the floating player to this box. -->
-    <div data-video-slot class="relative aspect-video rounded-2xl bg-deep-navy">
+    <div data-video-slot data-pagefind-ignore class="relative aspect-video rounded-2xl bg-deep-navy">
       {talk.video
         ? <div data-video class="video-player absolute inset-0 overflow-hidden rounded-2xl bg-deep-navy">
             <iframe class="absolute inset-0 size-full" src={`https://www.youtube-nocookie.com/embed/${talk.video.youtubeId}?enablejsapi=1`} title={talk.title} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
