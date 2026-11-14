@@ -23,4 +23,5 @@ Decision, Consequences.
 | [0004](0004-pnpm-workspace.md) | pnpm workspace; `packages/` only for code two apps share | Accepted |
 | [0005](0005-fitness-checks.md) | Every past failure becomes a fitness check | Accepted |
 | [0006](0006-production-is-its-own-repository.md) | Video, write-ups and event tooling live in `agnteng/production` | Accepted |
-| [0007](0007-brand-package-and-shared-public.md) | The brand is `packages/brand`; logos and photos stay in `apps/branding/public` | Accepted |
+| [0007](0007-brand-package-and-shared-public.md) | The brand is `packages/brand`; logos and photos stay in `apps/branding/public` | Accepted; event photos superseded by 0008 |
+| [0008](0008-event-galleries-in-content.md) | Each event's gallery lives in `content/<date>/photos/` | Accepted |

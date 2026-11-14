@@ -1,6 +1,6 @@
 # 0007. The brand is a package; logos and photos stay in one public folder
 
-- Status: Accepted
+- Status: Accepted; event photos superseded by 0008
 - Date: 2026-11-13
 
 ## Context

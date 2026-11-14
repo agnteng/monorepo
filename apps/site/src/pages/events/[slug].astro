@@ -3,10 +3,11 @@ import Shell from '../../layouts/Shell.astro';
 import SiteNav from '../../components/SiteNav.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import TalkTile from '../../components/TalkTile.astro';
+import Gallery from '../../components/Gallery.astro';
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { events, talksAt, questionsAt, longDate, eventSlug, eventName, links, plural, type Event } from '../../lib/data';
+import { events, talksAt, questionsAt, photosAt, longDate, eventSlug, eventName, links, plural, type Event } from '../../lib/data';
 
 export function getStaticPaths() {
   return events.filter((e) => talksAt(e).length).map((event) => ({ params: { slug: eventSlug(event) }, props: { event } }));
@@ -14,6 +15,7 @@ export function getStaticPaths() {
 const { event: e } = Astro.props as { event: Event };
 const talks = talksAt(e);
 const questions = questionsAt(e);
+const photos = photosAt(e);
 ---
 <Shell title={`${eventName(e)}, ${longDate(e.date)} | Agentic Engineering`} description={`Agentic Engineering ${eventName(e)} at ${e.venue}: ${talks.map((t) => t.title).join(', ')}.`} class="bg-soft-white text-panel-navy">
   <section class="relative isolate overflow-hidden bg-deep-navy text-soft-white">
@@ -34,6 +36,13 @@ const questions = questionsAt(e);
       <h2 class="font-mono text-3xl font-semibold tracking-tight md:text-4xl">The talks</h2>
       <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{talks.map((t, i) => <li class="reveal"><TalkTile talk={t} index={i} /></li>)}</ul>
     </section>
+
+    {photos.length > 0 && (
+      <section class="border-t border-panel-navy/[0.08] py-16 md:py-24">
+        <h2 class="font-mono text-3xl font-semibold tracking-tight md:text-4xl">The night</h2>
+        <Gallery photos={photos} />
+      </section>
+    )}
 
     {questions.length > 0 && (
       <section class="border-t border-panel-navy/[0.08] py-16 md:py-24">

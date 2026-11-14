@@ -12,7 +12,8 @@ it, in the same pull request. Then these rules:
   fine. Private business material goes to the private workspace.
 - **Media stays out of the repository.** Video, audio, frames and chunk
   transcripts live in `$AGNTENG_MEDIA/<date>/`. Never commit them, and never
-  move them into `content/`.
+  move them into `content/`. A gallery's photos enter only as the web copies
+  production's `event_photos.py` writes to `content/<date>/photos/`.
 - **Tools and tasks come from `mise.toml`.** `mise install` pins node, pnpm,
   python and gitleaks; run tasks as `mise run <task>` (`mise tasks` lists
   them), which is what CI runs too. Install dependencies from the repository
