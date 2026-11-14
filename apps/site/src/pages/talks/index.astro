@@ -1,6 +1,6 @@
 ---
 // Every talk in one archive, newest first. The nav's search box searches titles,
-// speakers, summaries and transcripts here (Pagefind, built with the site); the
+// speakers, summaries and transcripts here (src/lib/search.js over /search.json); the
 // meetup chips narrow it. Search filters and reorders the same grid of cards,
 // each showing the moment the words were said. ?q= and ?meetup= are shareable.
 import Shell from '../../layouts/Shell.astro';
@@ -26,7 +26,7 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
 
     <!-- Search filters and reorders this grid in place; nothing switches layout. -->
     <ul data-talk-grid class="mt-2 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {talks.map((t, i) => <li data-meetup={eventName(t.event)} data-path={`/talks/${t.id}`} data-order={i} data-text={`${t.title} ${t.person.name} ${t.summary}`.toLowerCase()}><TalkTile talk={t} index={i} /></li>)}
+      {talks.map((t, i) => <li data-meetup={eventName(t.event)} data-path={`/talks/${t.id}`} data-order={i}><TalkTile talk={t} index={i} /></li>)}
     </ul>
     <div data-empty hidden class="mt-6 rounded-2xl border border-dashed border-panel-navy/15 px-6 py-12 text-center">
       <p class="font-sans text-lg font-bold" aria-hidden="true">No talk mentions that.</p>
@@ -35,14 +35,16 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
   </main>
   <SiteFooter />
 
-  <script type="module" is:inline>
-    const input = document.getElementById('search');
-    const form = document.querySelector('[data-search-form]');
-    const status = document.querySelector('[data-search-status]');
-    const grid = document.querySelector('[data-talk-grid]');
-    const empty = document.querySelector('[data-empty]');
-    const chips = [...document.querySelectorAll('[data-meetup][aria-pressed]')];
-    const cards = [...grid.children];
+  <script>
+    import { search } from '../../lib/search.js';
+
+    const input = document.getElementById('search') as HTMLInputElement;
+    const form = document.querySelector('[data-search-form]')!;
+    const status = document.querySelector('[data-search-status]')!;
+    const grid = document.querySelector('[data-talk-grid]')!;
+    const empty = document.querySelector('[data-empty]') as HTMLElement;
+    const chips = [...document.querySelectorAll<HTMLElement>('[data-meetup][aria-pressed]')];
+    const cards = [...grid.children] as HTMLElement[];
     const params = new URLSearchParams(location.search);
     let meetup = params.get('meetup') ?? '';
     input.value = params.get('q') ?? '';
@@ -51,36 +53,27 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
       input.setSelectionRange(input.value.length, input.value.length);
     }
 
-    let pagefind;
-    const load = async () => {
-      // Built with the site (`pagefind --site dist`).
-      try { pagefind ??= await import('/pagefind/pagefind.js'); } catch { pagefind = null; }
-      return pagefind;
-    };
+    let index: Promise<any[]> | undefined;
+    const load = () => (index ??= fetch('/search.json').then((r) => r.json()));
     input.addEventListener('focus', load, { once: true });
 
-    // Show `hits` (path → { url, snippet }) in this order; null shows every talk as it was.
-    const show = (hits) => {
+    // Show `hits` (path → { url, snippet }) in their order; null shows every talk as it was.
+    const show = (hits: Map<string, { url: string; snippet: string }> | null) => {
       const order = hits ? [...hits.keys()] : null;
       for (const li of cards) {
-        const hit = hits?.get(li.dataset.path);
-        const a = li.querySelector('a'), snip = li.querySelector('[data-snippet]');
-        li.hidden = (!!meetup && li.dataset.meetup !== meetup) || (hits && !hit);
-        a.href = hit?.url ?? li.dataset.path;
+        const hit = hits?.get(li.dataset.path!);
+        const a = li.querySelector('a')!, snip = li.querySelector('[data-snippet]') as HTMLElement;
+        li.hidden = (!!meetup && li.dataset.meetup !== meetup) || (!!hits && !hit);
+        a.href = hit?.url ?? li.dataset.path!;
         snip.hidden = !hit?.snippet;
         snip.innerHTML = hit?.snippet ?? '';
       }
       // Move the cards themselves, so tab order follows what's on screen.
-      const rank = (li) => (order ? order.indexOf(li.dataset.path) : 0) * 1000 + Number(li.dataset.order);
+      const rank = (li: HTMLElement) => (order ? order.indexOf(li.dataset.path!) : 0) * 1000 + Number(li.dataset.order);
       grid.append(...[...cards].sort((x, y) => rank(x) - rank(y)));
       const shown = cards.filter((li) => !li.hidden).length;
       empty.hidden = shown > 0;
       return shown;
-    };
-
-    const fallback = (q) => {
-      const words = q.toLowerCase().split(/\s+/);
-      return new Map(cards.filter((li) => words.every((w) => (li.dataset.text ?? '').includes(w))).map((li) => [li.dataset.path, {}]));
     };
 
     let run = 0;
@@ -93,39 +86,23 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
       meetup ? url.searchParams.set('meetup', meetup) : url.searchParams.delete('meetup');
       history.replaceState(null, '', url);
       chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.meetup === meetup)));
-
       if (!q) {
         const n = show(null);
         status.textContent = meetup ? `${n} ${n === 1 ? 'talk' : 'talks'} from ${meetup}` : '';
         return;
       }
-      let hits;
-      const pf = await load();
-      try {
-        if (!pf) throw new Error('no index');
-        const found = await pf.search(q, { filters: meetup ? { meetup } : {} });
-        const data = await Promise.all(found.results.map((r) => r.data()));
-        hits = new Map(data.map((d) => {
-          const path = new URL(d.url, location.origin).pathname.replace(/\/$/, '');
-          // The transcript moment with the most matches, else the page's own excerpt.
-          const moment = d.sub_results.filter((r) => /#t-\d+$/.test(r.url))
-            .sort((a, b) => (b.locations?.length ?? 0) - (a.locations?.length ?? 0))[0];
-          return [path, moment
-            ? { url: moment.url, snippet: moment.excerpt.replace(/^\s*[\d:]+\.?\s*/, '') }
-            : { url: d.url, snippet: d.excerpt }];
-        }));
-      } catch {
-        hits = fallback(q);  // no index: titles, speakers and summaries
-      }
+      const hits = search(await load(), q);
       if (mine !== run) return;
-      const n = show(hits);
-      status.textContent = n ? `${n} ${n === 1 ? 'talk' : 'talks'} for “${q}”${meetup ? ` from ${meetup}` : ''}` : `No talk mentions “${q}”.`;
+      const n = show(new Map(hits.map((h) => [h.path, h])));
+      status.textContent = n
+        ? `${n} ${n === 1 ? 'talk' : 'talks'} for “${q}”${meetup ? ` from ${meetup}` : ''}`
+        : `No talk mentions “${q}”${meetup ? ` from ${meetup}` : ''}.`;
     };
 
-    let wait;
-    input.addEventListener('input', () => { clearTimeout(wait); wait = setTimeout(update, 120); });
+    let wait: ReturnType<typeof setTimeout>;
+    input.addEventListener('input', () => { clearTimeout(wait); wait = setTimeout(update, 80); });
     form.addEventListener('submit', (e) => { e.preventDefault(); update(); });
-    chips.forEach((c) => c.addEventListener('click', () => { meetup = c.dataset.meetup; update(); }));
+    chips.forEach((c) => c.addEventListener('click', () => { meetup = c.dataset.meetup!; update(); }));
     update();
   </script>
 </Shell>

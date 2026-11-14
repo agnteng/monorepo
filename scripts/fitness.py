@@ -371,6 +371,16 @@ def get(url: str) -> tuple[int, bytes]:
         return e.code, b""
 
 
+# ── talks search finds exactly what the content says ──
+
+def check_search() -> None:
+    r = subprocess.run(["node", str(ROOT / "scripts" / "search-check.mjs")], capture_output=True, text=True)
+    for line in (r.stdout + r.stderr).splitlines():
+        fail("search", line)
+    if r.returncode and not (r.stdout + r.stderr).strip():
+        fail("search", f"search-check.mjs exited {r.returncode}")
+
+
 def check_live() -> None:
     b, s = "https://branding.agnteng.com", "https://sponsors.agnteng.com"
     for page in PAGES:
@@ -405,7 +415,7 @@ def main() -> None:
     else:
         checks = [("internal-names", check_internal_names), ("media", check_media),
                   ("events", check_events), ("talks", check_talks),
-                  ("photos", check_photos)]
+                  ("photos", check_photos), ("search", check_search)]
     for name, fn in checks:
         before = len(FAILURES)
         fn()

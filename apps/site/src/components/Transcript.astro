@@ -7,14 +7,14 @@ const at = (ts: string) => ts.split(':').reduce((s, n) => s * 60 + Number(n), 0)
 ---
 {talk.transcript && (
   <details data-transcript class:list={['group', cls]}>
-    <summary data-pagefind-ignore class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold [&::-webkit-details-marker]:hidden">
+    <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold [&::-webkit-details-marker]:hidden">
       <h2 class="text-base font-semibold">Transcript</h2>
       <span class="font-mono text-sm transition group-open:rotate-45">+</span>
     </summary>
     <div class="space-y-4 pb-6 leading-relaxed">
       {paras.map((p) => (
         <div class="grid scroll-mt-24 grid-cols-[3.5rem_1fr] gap-3 rounded-lg has-[:target]:bg-periwinkle/25">
-          <!-- Each timestamp is a heading, so search can point at the moment a word was said. -->
+          <!-- Each timestamp's id (#t-SECONDS) lets search link to the moment a word was said. -->
           <h3 id={p.at ? `t-${at(p.at)}` : undefined} class="font-mono text-sm font-normal text-electric-blue">
             {p.at && talk.video ? <a href={watchAt(talk, at(p.at))} class="hover:underline">{p.at}</a> : p.at}
           </h3>

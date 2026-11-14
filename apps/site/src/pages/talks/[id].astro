@@ -7,7 +7,7 @@ import Transcript from '../../components/Transcript.astro';
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import Avatar from '@agnteng/brand/components/Avatar.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { talks, talksAt, longDate, shortDate, thumbnail, eventSlug, eventName, type Talk } from '../../lib/data';
+import { talks, talksAt, longDate, eventSlug, eventName, type Talk } from '../../lib/data';
 
 export function getStaticPaths() {
   return talks.map((talk) => ({ params: { id: talk.id }, props: { talk } }));
@@ -22,15 +22,9 @@ const linkLists = ([
 ---
 <Shell title={`${talk.title}, ${talk.person.name} | Agentic Engineering`} description={talk.summary} class="bg-soft-white text-panel-navy">
   <SiteNav />
-  <main id="main" data-pagefind-body class="mx-auto max-w-5xl px-4 md:px-8">
-    <!-- What search shows with each result, and what it can filter on. -->
-    <span data-pagefind-meta={`speaker:${talk.person.name}`}></span>
-    <span data-pagefind-meta={`meetup:${eventName(e)}`}></span>
-    <span data-pagefind-meta={`date:${shortDate(e.date)}`}></span>
-    {thumbnail(talk) && <span data-pagefind-meta={`image:${thumbnail(talk)}`}></span>}
-    <span data-pagefind-filter={`meetup:${eventName(e)}`}></span>
+  <main id="main" class="mx-auto max-w-5xl px-4 md:px-8">
     <section class="pt-14 pb-10 md:pt-20">
-      <a data-pagefind-ignore href={`/events/${eventSlug(e)}`} class="rise inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-electric-blue hover:underline">{eventName(e)}, {longDate(e.date)}</a>
+      <a href={`/events/${eventSlug(e)}`} class="rise inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-electric-blue hover:underline">{eventName(e)}, {longDate(e.date)}</a>
       <h1 class="rise mt-4 font-sans text-3xl font-extrabold leading-[1.1] tracking-tight md:text-5xl" style="--i:1">{talk.title}</h1>
       <div class="rise mt-6 flex items-center gap-3" style="--i:2">
         <Avatar name={talk.person.name} src={talk.person.photo} size={48} />
@@ -39,7 +33,7 @@ const linkLists = ([
     </section>
 
     <!-- No .rise here: an animated transform would anchor the floating player to this box. -->
-    <div data-video-slot data-pagefind-ignore class="relative aspect-video rounded-2xl bg-deep-navy">
+    <div data-video-slot class="relative aspect-video rounded-2xl bg-deep-navy">
       {talk.video
         ? <div data-video class="video-player absolute inset-0 overflow-hidden rounded-2xl bg-deep-navy">
             <iframe class="absolute inset-0 size-full" src={`https://www.youtube-nocookie.com/embed/${talk.video.youtubeId}?enablejsapi=1`} title={talk.title} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -62,7 +56,7 @@ const linkLists = ([
         </div>
       )}
       {linkLists.length > 0 && (
-        <div data-pagefind-ignore class="mt-10 grid gap-8 sm:grid-cols-2">
+        <div class="mt-10 grid gap-8 sm:grid-cols-2">
           {linkLists.map(([heading, list]) => (
             <div><h2 class="font-sans font-bold">{heading}</h2><ul class="mt-3 space-y-2">{list.map((l) => <li><a href={l.url} class="inline-flex items-center gap-2 text-electric-blue hover:underline">{l.label}<Icon name="ExternalLink" size={14} /></a></li>)}</ul></div>
           ))}
@@ -72,7 +66,7 @@ const linkLists = ([
     </section>
 
     {more.length > 0 && (
-      <section data-pagefind-ignore class="border-t border-panel-navy/[0.08] py-16">
+      <section class="border-t border-panel-navy/[0.08] py-16">
         <h2 class="font-sans text-2xl font-extrabold">More from {eventName(e)}</h2>
         <ul class="mt-8 grid gap-5 sm:grid-cols-2">{more.map((t, i) => <li><TalkTile talk={t} index={i} /></li>)}</ul>
       </section>
