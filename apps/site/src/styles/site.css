@@ -19,6 +19,17 @@ p, li { text-wrap: pretty; }
   .reveal { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 40%; }
 }
 
+/* Hidden until the dither's first frame (canvas[data-painted]); shown anyway after 1.5s.
+   Keep the transition off the base rule: there it fades 1 -> 0 if style was computed
+   before this sheet applied. */
+.dither-stage { opacity: 0; animation: dither-in 0.35s ease-out 1.5s forwards; }
+.dither-stage:has(canvas[data-painted]) { opacity: 1; animation: none; transition: opacity 0.35s ease-out; }
+@keyframes dither-in { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .dither-stage { animation-duration: 0s; }
+  .dither-stage:has(canvas[data-painted]) { transition: none; }
+}
+
 /* One tint for every photo: a little less colour, pulled towards the brand's blue. */
 .photo-tint { filter: saturate(0.7) contrast(1.05); }
 .photo-tint-wash { background: linear-gradient(160deg, rgb(30 43 230 / 0.28), rgb(5 7 30 / 0.25)); mix-blend-mode: soft-light; }

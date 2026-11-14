@@ -290,11 +290,16 @@ export default function Animation({
     // instead of re-sampling the field to a different resolution. For untrans-
     // formed consumers these are numerically identical.
     const size = (entry?: ResizeObserverEntry) => {
-      painted = false;
       const box = entry?.borderBoxSize?.[0];
-      w = box ? Math.round(box.inlineSize) : canvas.clientWidth;
-      h = box ? Math.round(box.blockSize) : canvas.clientHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const nw = box ? Math.round(box.inlineSize) : canvas.clientWidth;
+      const nh = box ? Math.round(box.blockSize) : canvas.clientHeight;
+      const ndpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Skip no-op resizes; the observer's first report would wipe frame one.
+      if (nw === w && nh === h && ndpr === dpr) return;
+      painted = false;
+      w = nw;
+      h = nh;
+      dpr = ndpr;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       const c = Math.max(2, cell);
@@ -326,9 +331,7 @@ export default function Animation({
       // Hold the current frame while paused or under reduced motion; resume
       // without a time jump. Gated on `painted` so an instance still repaints
       // after a resize, or once its image has loaded.
-      // A visitor can pause every field on the page: <html data-motion="off">.
-      const userOff = document.documentElement.dataset.motion === 'off';
-      if ((reduce || userOff || pausedRef.current || !onScreen) && painted) {
+      if ((reduce || pausedRef.current || !onScreen) && painted) {
         if (!pauseStart) pauseStart = now;
         raf = requestAnimationFrame(frame);
         return;
@@ -414,6 +417,8 @@ export default function Animation({
           }
         }
         painted = true;
+        // First real frame; CSS (.dither-stage) waits for this.
+        canvas.dataset.painted ??= '';
       }
       raf = requestAnimationFrame(frame);
     };
