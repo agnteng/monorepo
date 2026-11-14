@@ -160,8 +160,12 @@ export const eventSlug = (e: Event) => `${slugify(e.city)}-${e.number}`;
 export const eventName = (e: Event) => `${e.city} #${e.number}`;
 
 
+// Rendered thumbnails, published beside each talk by production's publish_talks.py.
+const stills = import.meta.glob<ImageMetadata>('@content/*/talks/*.jpg', { eager: true, import: 'default' });
+export const still = (t: Talk): ImageMetadata | undefined =>
+  Object.entries(stills).find(([path]) => path.endsWith(`${t.event.date}/talks/${String(t.order).padStart(2, '0')}-${t.slug}.jpg`))?.[1];
 export const thumbnail = (t: Talk) =>
-  t.video ? `https://i.ytimg.com/vi/${t.video.youtubeId}/maxresdefault.jpg` : undefined;
+  still(t)?.src ?? (t.video ? `https://i.ytimg.com/vi/${t.video.youtubeId}/maxresdefault.jpg` : undefined);
 
 export const watchAt = (t: Talk, seconds: number) =>
   t.video ? `https://www.youtube.com/watch?v=${t.video.youtubeId}&t=${seconds}s` : undefined;

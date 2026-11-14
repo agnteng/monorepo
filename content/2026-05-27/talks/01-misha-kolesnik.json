@@ -1,14 +1,15 @@
 {
   "slug": "misha-kolesnik",
   "order": 1,
-  "title": "What The Hell Is An Agent?",
+  "title": "Why Claude Code Is Probably Not an Agent",
   "speaker": "Misha Kolesnik",
-  "summary": "Misha Kolesnik describes seven pillars that make up an agent stacked together, with orchestration as the line that separates an \"agent\" from a \"function call.\"",
+  "summary": "Misha Kolesnik builds an agent up layer by layer from a bare LLM API, and argues orchestration is what separates an agent from a function call.",
   "takeaways": [
-    "An agent isn't one thing. It's seven: API, sessions, tools, tool-execution, persistent resources, harness, orchestration.",
-    "Tool-execution, as in letting the agent build and run its own tools at runtime, is what made Claude Code resonate with so many developers.",
-    "Orchestration is the line between \"agent\" and \"function call.\"",
-    "Each pillar evolves independently. That's the strength."
+    "An LLM API plus sessions can remember what it said. Still not an agent",
+    "You will never build enough tools, so let the agent build its own",
+    "Claude Code took off by handing the agent simple bash tools",
+    "OpenClaw is an agent; Claude Code and Codex probably aren't. They finish and die",
+    "Every piece is swappable and must evolve in isolation, as in Anthropic's Managed Agents design"
   ],
   "speakerLinks": [
     {
@@ -24,7 +25,24 @@
       "url": "https://github.com/tenequm"
     }
   ],
-  "mentioned": [],
+  "mentioned": [
+    {
+      "label": "Claude Code",
+      "url": "https://www.claude.com/product/claude-code"
+    },
+    {
+      "label": "OpenClaw",
+      "url": "https://openclaw.ai/"
+    },
+    {
+      "label": "Codex",
+      "url": "https://github.com/openai/codex"
+    },
+    {
+      "label": "Scaling Managed Agents",
+      "url": "https://www.anthropic.com/engineering/managed-agents"
+    }
+  ],
   "video": {
     "youtubeId": "KSmPCenbWJk",
     "url": "https://www.youtube.com/watch?v=KSmPCenbWJk"

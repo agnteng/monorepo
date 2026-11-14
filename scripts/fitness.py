@@ -174,6 +174,15 @@ def check_talks() -> None:
         video = t.get("video")
         if video is not None and not re.fullmatch(r"[\w-]{11}", str(video.get("youtubeId", ""))):
             fail("talks", f"{where}: video.youtubeId is not a YouTube id")
+    # Rendered thumbnails beside their talks (production's publish_talks.py).
+    for f in sorted((ROOT / "content").glob("*/talks/*.jpg")):
+        where, data = f.relative_to(ROOT), f.read_bytes()
+        if not f.with_suffix(".json").exists():
+            fail("talks", f"{where}: no talk {f.stem}.json beside it")
+        elif len(data) > PHOTO_MAX_BYTES or max(jpeg_size(data)) > PHOTO_MAX_EDGE:
+            fail("talks", f"{where}: over {PHOTO_MAX_BYTES // 1000} KB or {PHOTO_MAX_EDGE}px")
+        elif any(m in data for m in PHOTO_METADATA):
+            fail("talks", f"{where}: carries EXIF, XMP or IPTC metadata")
 
 
 # ── event galleries (org ADR 0008) ──
