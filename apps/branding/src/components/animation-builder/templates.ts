@@ -28,7 +28,7 @@ export interface Template {
   frame: { w: number; h: number };
   chrome?: 'x' | 'linkedin' | 'substack' | 'luma' | 'telegram' | 'youtube';
   defaults: { logoAnchor: Anchor; logoScale: number; variant: Variant; mark: boolean };
-  logoMaxScale?: number; // upper end of the logo-size slider; 0.55 when unset
+  logoMaxScale?: number; // logo-size slider maximum
   build(text: TemplateText, logo: TemplateLogo, extra: TemplateExtra): OverlaySpec;
 }
 
@@ -64,9 +64,8 @@ export const TEMPLATES: Template[] = [
   banner('banner-x', 'X header', 1500, 500, 'right', false, 'none', 'x'),
   banner('banner-linkedin', 'LinkedIn cover', 1584, 264, 'right', false, 'none', 'linkedin'),
   banner('banner-substack', 'Substack masthead', 1344, 256, 'right', false, 'none', 'substack'),
-  // Substack's wordmark replaces the publication name in the header, where it
-  // is shown a few dozen pixels tall — so the single-line lockup, centred and
-  // nearly frame-wide, with no platform mockup around it.
+  // Substack shows the wordmark a few dozen pixels tall in place of the
+  // publication name, hence the single-line lockup at near frame width.
   {
     id: 'banner-substack-wordmark',
     group: 'banner',

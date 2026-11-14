@@ -111,8 +111,8 @@ export function drawLogo(ctx: Ctx, W: number, H: number, anchor: Anchor, scale: 
   }
   if (!ok(word)) return 0;
   const WAR = word.naturalWidth / word.naturalHeight;
-  const gf = line ? 0.33 : 0.22; // gap and wordmark height, as fractions of the mark's
-  const wf = line ? 0.89 : 0.92;
+  // gap and wordmark height, as fractions of the mark height
+  const [gf, wf] = line ? [0.33, 0.89] : [0.22, 0.92];
   const k = MAR + gf + wf * WAR;
   let mh = (W * scale) / k;
   const maxH = H * 0.6;
