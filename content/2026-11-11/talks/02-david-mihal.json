@@ -1,7 +1,7 @@
 {
   "slug": "david-mihal",
   "order": 2,
-  "title": "Does Your Agent Know \"Why\"?",
+  "title": "How We Tell AI Agents Why the Code Is Weird",
   "speaker": "David Mihal",
   "summary": "David Mihal argues agents need the reasons behind a codebase, not just the code, and shows how Meridian gives them those reasons with architecture decision records (ADRs).",
   "takeaways": [

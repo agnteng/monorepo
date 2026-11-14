@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Shell from '../layouts/Shell.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
@@ -10,15 +11,15 @@ import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
 import Avatar from '@agnteng/brand/components/Avatar.astro';
-import { nextEvent, past, talks, talksAt, coverAt, galleryPhoto, speakers, links, register, cardDate, shortDate, startTime, thumbnail, eventSlug, eventName } from '../lib/data';
+import { nextEvent, past, talks, talksAt, coverAt, galleryPhoto, speakers, links, register, cardDate, shortDate, startTime, thumbnail, still as stillOf, eventSlug, eventName } from '../lib/data';
 import { latestPosts } from '../lib/newsletter';
 
 const posts = await latestPosts();
 const [latest] = talks;
 const recent = talks.slice(1, 7);
-const still = thumbnail(latest);
+const still = stillOf(latest);
 const night = [
-  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: galleryPhoto('2026-07-29', '03.jpg') },
+  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: galleryPhoto('2026-08-26', '04.jpg') },
   { time: '19:45', title: 'Three talks', body: 'Ten minutes each, on something the speaker built or broke. Product pitches get turned down.', photo: galleryPhoto('2026-11-11', '13.jpg') },
   { time: '20:15', title: 'Questions', body: 'The room asks, the speakers answer. It usually carries on over drinks.', photo: galleryPhoto('2026-11-11', '28.jpg') },
 ];
@@ -26,13 +27,12 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
 ---
 <Shell title="Agentic Engineering, Lisbon" class="bg-soft-white text-panel-navy">
   <section class="relative isolate min-h-[100dvh] overflow-hidden bg-deep-navy text-soft-white md:min-h-[88dvh]">
-    <img src="/assets/photos/events/lisbon-jul2026.jpg" alt="" fetchpriority="high" class="absolute inset-0 size-full object-cover object-bottom" />
+    <img src="/assets/photos/events/lisbon-aug2026-room.jpg" alt="" fetchpriority="high" class="absolute inset-0 size-full object-cover" />
     <!-- The dither rises from the bottom, under the copy, and clears over the crowd. -->
     <div class="absolute inset-0 [mask-image:linear-gradient(to_top,black_20%,transparent_70%)]">
     <DuotoneField
       client:load
-      src="/assets/photos/events/lisbon-jul2026.jpg"
-      position="bottom"
+      src="/assets/photos/events/lisbon-aug2026-room.jpg"
       animation="aurora"
       color="#1E2BE6"
       edge="#B5A6FF"
@@ -91,7 +91,9 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
     </div>
     <a href={`/talks/${latest.id}`} class="group mt-12 grid gap-8 md:grid-cols-12 md:items-center">
       <div class="relative aspect-video overflow-hidden rounded-2xl bg-deep-navy md:col-span-7">
-        {still && <img src={still} alt="" class="size-full object-cover transition duration-500 group-hover:scale-[1.02]" />}
+        {still
+          ? <Image src={still} alt="" widths={[640, 1280]} sizes="(min-width: 768px) 58vw, 100vw" class="size-full object-cover transition duration-500 group-hover:scale-[1.02]" />
+          : thumbnail(latest) && <img src={thumbnail(latest)} alt="" class="size-full object-cover transition duration-500 group-hover:scale-[1.02]" />}
         <span aria-hidden="true" class="absolute bottom-5 left-5"><span class="grid size-16 place-items-center rounded-full bg-electric-blue/90 shadow-xl shadow-deep-navy/40 transition group-hover:scale-110"><span class="ml-1 border-y-[11px] border-l-[18px] border-y-transparent border-l-white"></span></span></span>
       </div>
       <div class="md:col-span-5">

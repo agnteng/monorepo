@@ -1,14 +1,15 @@
 {
   "slug": "tim-haldorsson",
   "order": 1,
-  "title": "Agentic Marketing with Grok Bot",
+  "title": "My Content Team Is a Group Chat of Grok Bots",
   "speaker": "Tim Haldorsson",
-  "summary": "Tim Haldorsson shows the Grokbot setup his marketing agency runs on, with a separate bot for each part of his day.",
+  "summary": "Tim Haldorsson shows the Grok Bot setup behind his marketing agency: one bot per part of his day, then group chats where several work as a team.",
   "takeaways": [
-    "He replaced the six sites he used to read every morning with one bot that briefs him twice a day",
-    "An \"overheard\" bot watches Reddit and X for mentions the team would otherwise hear about secondhand",
-    "His content and BD \"teams\" are several agents in one chat, each with its own history, and he asks them for status like people",
-    "Grokbot is free with X Premium and comes with X API credits, which is why he moved off everything else"
+    "His Intel bot replaced five or six daily news sites with two briefings a day",
+    "An \"overheard\" bot watches Reddit and X for brand mentions the team used to miss",
+    "From a CRM of around 1,000 contacts, a bot finds similar accounts and drafts openers",
+    "His content \"team\" is several agents in one chat, each with its own history",
+    "Grok Bot is free with X Premium for now, with X API credits built in"
   ],
   "speakerLinks": [
     {
@@ -20,7 +21,32 @@
       "url": "https://www.linkedin.com/in/timhaldorsson/"
     }
   ],
-  "mentioned": [],
+  "mentioned": [
+    {
+      "label": "Grok Bot",
+      "url": "https://x.ai/bot"
+    },
+    {
+      "label": "Hermes Agent",
+      "url": "https://hermes-agent.nousresearch.com/"
+    },
+    {
+      "label": "OpenClaw",
+      "url": "https://openclaw.ai/"
+    },
+    {
+      "label": "Cursor",
+      "url": "https://cursor.com/"
+    },
+    {
+      "label": "Vercel",
+      "url": "https://vercel.com/"
+    },
+    {
+      "label": "Fireflies",
+      "url": "https://fireflies.ai/"
+    }
+  ],
   "video": {
     "youtubeId": "WxRms6XGD2E",
     "url": "https://www.youtube.com/watch?v=WxRms6XGD2E"
