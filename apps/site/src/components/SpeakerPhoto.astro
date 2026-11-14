@@ -1,7 +1,6 @@
 ---
 // Headshot with the brand dither behind the person; the plain photo if there's no mask.
-// Colour, animation and fade cycle with the tile's index; the person takes the tint.
-// Five palettes: co-prime with 6, 3 and 2 columns, so no tile repeats its neighbours'.
+// Preset and animation cycle with the tile's index, so neighbouring tiles differ.
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import { headshot } from '../lib/data';
 import framing from '../speaker-framing.json';
@@ -9,19 +8,18 @@ interface Props { src: string; index?: number; class?: string }
 const { src, index = 0, class: cls } = Astro.props;
 const shot = headshot(src);
 
-// [tint and dither, highlight cells]: mostly the brand blues, a few accents.
-const palettes = [
-  ['#1E2BE6', '#B5A6FF'], // electric blue, periwinkle
-  ['#7C4DF5', '#ED4BA0'], // violet, magenta
-  ['#1FC6E6', '#B5A6FF'], // cyan, periwinkle
-  ['#ED4BA0', '#B5A6FF'], // magenta, periwinkle
-  ['#3A4DFF', '#16D9A6'], // bright blue, mint
+// The brand's speaker presets (from the animation builder): the person takes `color`
+// as their tint; `bg` is the tile's own background (pattern cells leave it unpainted).
+const presets = [
+  { color: '#1E2BE6', edge: '#7C4DF5', bg: '#B5A6FF', density: 0.62 },
+  { color: '#1E2BE6', edge: '#ED4BA0', bg: '#1FC6E6', density: 0.65 },
+  { color: '#3A4DFF', edge: '#B5A6FF', bg: '#FF6E4D', density: 0.65 },
+  { color: '#3A4DFF', edge: '#1FC6E6', bg: '#F9C835', density: 0.65 },
+  { color: '#B5A6FF', edge: '#1E2BE6', bg: '#7C4DF5', density: 0.65 },
 ] as const;
-const animations = ['wave', 'aurora', 'drift', 'rain', 'bloom', 'swarm', 'radar'] as const;
-const fades = ['up', 'radial', 'down', 'left', 'right'] as const;
-const [tint, edge] = palettes[index % palettes.length];
+const animations = ['aurora', 'drift', 'bloom', 'swarm'] as const;
+const { color: tint, edge, bg, density } = presets[index % presets.length];
 const animation = animations[(index * 3) % animations.length];
-const fade = fades[(index * 2) % fades.length];
 
 // Every face the same size at the same point (speaker-framing.json). Headshots
 // that would end inside the tile are extended by production's extend_headshots.py.
@@ -38,10 +36,10 @@ if (shot?.face) {
   place = `left: ${pct(0.5 - cx * w)}; top: ${pct(AT - cy * h)}; width: ${pct(w)}; height: ${pct(h)}`;
 }
 ---
-<div class:list={['relative isolate aspect-square overflow-hidden bg-deep-navy', cls]} style={`--tint: ${tint}${shot ? `; --mask: url(${shot.mask})` : ''}`}>
+<div class:list={['relative isolate aspect-square overflow-hidden bg-deep-navy', cls]} style={`--tint: ${tint}${shot ? `; --mask: url(${shot.mask}); background: ${bg}` : ''}`}>
   {shot
     ? <>
-        <Animation client:visible animation={animation} color={tint} edge={edge} cell={6} density={0.6} motion={45} fade={fade} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+        <Animation client:visible animation={animation} color={tint} edge={edge} cell={4} gap={0} density={density} motion={82} fade="none" shape="square" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
         <div class="absolute" style={place}>
           <img src={src} alt="" loading="lazy" class="speaker-mask speaker-tint absolute inset-0 size-full object-cover" />
           <div aria-hidden="true" class="speaker-mask speaker-tint-wash pointer-events-none absolute inset-0"></div>
