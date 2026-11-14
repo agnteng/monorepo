@@ -305,6 +305,10 @@ export default function Animation({
     size();
     const ro = new ResizeObserver((entries) => size(entries[0]));
     ro.observe(canvas);
+    // Hold the frame while off screen, like a pause.
+    let onScreen = true;
+    const io = new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; });
+    io.observe(canvas);
 
     // motion tuning differs by mode (image animation is subtle)
     const speed = isImage ? 0.4 + m * 1.2 : 0.4 + m * 1.8;
@@ -322,7 +326,7 @@ export default function Animation({
       // Hold the current frame while paused or under reduced motion; resume
       // without a time jump. Gated on `painted` so an instance still repaints
       // after a resize, or once its image has loaded.
-      if ((reduce || pausedRef.current) && painted) {
+      if ((reduce || pausedRef.current || !onScreen) && painted) {
         if (!pauseStart) pauseStart = now;
         raf = requestAnimationFrame(frame);
         return;
@@ -416,6 +420,7 @@ export default function Animation({
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      io.disconnect();
     };
   }, [animation, density, fade, color, edge, bg, gap, cell, motion, shape, imgSrc, imgContrast, imgEdgeGlow, imgTone, imgPos]);
 

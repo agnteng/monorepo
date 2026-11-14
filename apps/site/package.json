@@ -6,7 +6,7 @@
   "description": "agnteng.com: the Agentic Engineering website. Events, talks, speakers.",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1 --port 4330",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview --host 127.0.0.1 --port 4330",
     "typecheck": "tsc --noEmit",
     "astro": "astro"
@@ -25,6 +25,7 @@
     "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "pagefind": "1.5.2",
     "typescript": "^5.9.3"
   }
 }

@@ -1,6 +1,7 @@
 ---
 // `overlay` sits on the hero's dither; otherwise the bar is deep navy.
 import Button from '@agnteng/brand/components/Button.astro';
+import Icon from '@agnteng/brand/components/Icon.astro';
 import { register, nextEvent, links } from '../lib/data';
 interface Props { overlay?: boolean }
 const { overlay = false } = Astro.props;
@@ -23,11 +24,32 @@ const items = [
       {items.map((i) => <a href={i.href} class="font-sans text-sm text-soft-white/70 transition-colors hover:text-soft-white">{i.label}</a>)}
     </nav>
     <div class="flex items-center gap-5">
+      <a href="/talks#search" data-search-link aria-label="Search the talks" title="Search (/)" class="grid size-9 place-items-center rounded-full text-soft-white/75 transition hover:bg-white/10 hover:text-soft-white"><Icon name="Search" size={18} /></a>
       <a href="/talks" class="font-sans text-sm text-soft-white/70 hover:text-soft-white md:hidden">Talks</a>
       <Button variant="primary" href={register} class="js-register !px-5 !py-2.5 !text-sm">Register</Button>
     </div>
   </div>
 </header>
+<script is:inline>
+  // Search from anywhere: the page's own search box if it has one, else /talks.
+  // "/" and Ctrl-K only outside text fields (Ctrl-K edits text on macOS); Cmd-K always.
+  const toSearch = (e) => {
+    const box = document.getElementById('search');
+    if (!box) return;
+    e.preventDefault();
+    box.focus();
+  };
+  addEventListener('keydown', (e) => {
+    const el = document.activeElement;
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '') || el?.isContentEditable;
+    const plain = !e.metaKey && !e.ctrlKey && !e.altKey;
+    if ((e.key === '/' && plain && !typing) || (e.key === 'k' && (e.metaKey || (e.ctrlKey && !typing)))) {
+      e.preventDefault();
+      document.getElementById('search') ? toSearch(e) : (location.href = '/talks#search');
+    }
+  });
+  document.querySelector('[data-search-link]')?.addEventListener('click', toSearch);
+</script>
 <script is:inline define:vars={{ starts, luma }}>
   // The site is rebuilt only on deploy: once the next event has started, every
   // register link and the home page's next-event card point to the Luma calendar.
