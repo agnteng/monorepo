@@ -12,7 +12,10 @@ COPY packages/brand/package.json packages/brand/
 RUN pnpm install --frozen-lockfile
 COPY . .
 # LUMA_API_KEY is inlined here, from the .env Dokploy writes to the build
-# context (astro.config.mjs reads .env from the repository root).
+# context. Dokploy puts it beside this Dockerfile; astro.config.mjs reads .env
+# from the repository root, so copy it there. Without this the build succeeds
+# and the deck has no audience (docs/adr/0002).
+RUN if [ -f apps/branding/.env ]; then cp apps/branding/.env .env; fi
 RUN pnpm --filter branding build
 # A self-contained copy of the app with production dependencies only: the SSR
 # output imports react and astro's runtime rather than bundling them.
