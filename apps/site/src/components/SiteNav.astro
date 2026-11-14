@@ -18,8 +18,11 @@ const luma = links.luma;
     <form action="/talks" role="search" data-search-form class="relative w-full">
       <label for="search" class="sr-only">Search the talks</label>
       <span aria-hidden="true" class="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-soft-white/70"><Icon name="Search" size={16} /></span>
-      <input id="search" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search talks" aria-keyshortcuts="Meta+K Control+K /" class="peer h-10 w-full rounded-full border border-white/15 bg-white/10 pl-10 pr-4 font-sans text-base text-soft-white outline-none backdrop-blur transition placeholder:text-soft-white/55 focus:border-periwinkle focus:bg-deep-navy/80 md:pr-14 md:text-sm" />
-      <kbd aria-hidden="true" data-kbd class="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] text-soft-white/60 peer-focus:hidden md:block">⌘K</kbd>
+      <input id="search" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search talks" aria-keyshortcuts="Meta+K Control+K /" class="peer h-10 w-full rounded-full border border-white/15 bg-white/10 pl-10 pr-10 font-sans text-base text-soft-white outline-none backdrop-blur transition placeholder:text-soft-white/55 focus:border-periwinkle focus:bg-deep-navy/80 md:pr-14 md:text-sm" />
+      <kbd aria-hidden="true" data-kbd class="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] text-soft-white/60 peer-focus:hidden peer-[:not(:placeholder-shown)]:hidden md:block">⌘K</kbd>
+      <button type="button" data-search-clear aria-label="Clear the search" class="absolute right-2 top-1/2 hidden size-6 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-soft-white transition hover:bg-white/25 peer-[:not(:placeholder-shown)]:grid">
+        <svg aria-hidden="true" viewBox="0 0 12 12" class="size-2.5"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+      </button>
     </form>
     <Button variant="primary" href={register} class="js-register justify-self-end !px-5 !py-2.5 !text-sm">Register</Button>
   </div>
@@ -37,16 +40,25 @@ const luma = links.luma;
       const plain = !e.metaKey && !e.ctrlKey && !e.altKey;
       if ((e.key === '/' && plain && !typing) || (e.key === 'k' && (e.metaKey || (e.ctrlKey && !typing)))) {
         e.preventDefault();
-        if (searchPage) { box.focus(); box.select(); } else location.href = '/talks#search';
+        if (searchPage) { box.focus(); box.select(); } else location.href = '/talks?focus';
       }
     });
-    // Off /talks, a pause in typing (never mid-composition) carries the search there.
+    // Off /talks, the search lives on /talks: clicking the box, or typing in it,
+    // goes there. Tabbing through the nav doesn't.
     if (!searchPage) {
-      let wait;
-      const go = () => box.value.trim() && (location.href = `/talks?q=${encodeURIComponent(box.value)}`);
-      box.addEventListener('input', (e) => { clearTimeout(wait); if (!e.isComposing) wait = setTimeout(go, 400); });
-      box.addEventListener('compositionend', () => { clearTimeout(wait); wait = setTimeout(go, 400); });
+      box.addEventListener('pointerdown', (e) => { e.preventDefault(); location.href = '/talks?focus'; });
+      box.addEventListener('keydown', (e) => {
+        if (e.key.length !== 1 || e.metaKey || e.ctrlKey || e.altKey || e.isComposing) return;
+        e.preventDefault();
+        location.href = `/talks?q=${encodeURIComponent(box.value + e.key)}`;
+      });
+      box.addEventListener('compositionend', () => { location.href = `/talks?q=${encodeURIComponent(box.value)}`; });
     }
+    document.querySelector('[data-search-clear]').addEventListener('click', () => {
+      box.value = '';
+      box.dispatchEvent(new Event('input', { bubbles: true }));
+      box.focus();
+    });
   }
 </script>
 <script is:inline define:vars={{ starts, luma }}>

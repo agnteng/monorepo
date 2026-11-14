@@ -20,6 +20,9 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 .photo-tint { filter: saturate(0.7) contrast(1.05); }
 .photo-tint-wash { background: linear-gradient(160deg, rgb(30 43 230 / 0.28), rgb(5 7 30 / 0.25)); mix-blend-mode: soft-light; }
 
+/* The search box draws its own clear button. */
+input[type='search']::-webkit-search-cancel-button { appearance: none; display: none; }
+
 /* Search hits, highlighted by Pagefind. */
 .search-excerpt mark { background: rgb(181 166 255 / 0.45); color: inherit; border-radius: 2px; padding-inline: 1px; }
 
