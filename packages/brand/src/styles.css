@@ -9,6 +9,9 @@
  * Each token becomes a Tailwind utility automatically, e.g.
  *   --color-electric-blue → bg-electric-blue / text-electric-blue / border-electric-blue
  *   --font-mono           → font-mono
+ *
+ * Type: Manrope (font-sans) for headings, labels and body; Kode Mono
+ * (font-mono) in small doses only: dates, times, pills, small labels, code.
  */
 @theme {
   /* Brand palette */

@@ -1,30 +1,20 @@
 ---
-// A photo in the site's tint, dissolving into the brand's pixel dither at one corner.
-import { Image, getImage } from 'astro:assets';
-import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
+// A photo in the site's one tint.
+import { Image } from 'astro:assets';
 interface Props {
   src: ImageMetadata | string;
   alt: string;
-  corner?: 'tl' | 'tr' | 'bl' | 'br';
   sizes?: string;
   class?: string;
   zoom?: boolean; // grow a little when the enclosing .group is hovered
-  spread?: number; // how far the dither reaches from its corner, in % of the photo
 }
-const { src, alt, corner = 'bl', sizes = '33vw', class: cls, zoom = false, spread = 48 } = Astro.props;
-const ditherSrc = typeof src === 'string' ? src : (await getImage({ src, width: 480, format: 'webp' })).src;
-const at = { tl: '0% 0%', tr: '100% 0%', bl: '0% 100%', br: '100% 100%' }[corner];
-const fade = corner[0] === 't' ? 'up' : 'down';
+const { src, alt, sizes = '33vw', class: cls, zoom = false } = Astro.props;
+const img = ['photo-tint absolute inset-0 size-full object-cover', zoom && 'transition duration-500 group-hover:scale-[1.03]'];
 ---
 <div class:list={['relative overflow-hidden bg-deep-navy', cls]}>
-  <div class:list={['absolute inset-0', zoom && 'transition duration-500 group-hover:scale-[1.03]']}>
-    {typeof src === 'string'
-      ? <img src={src} alt={alt} loading="lazy" class="photo-tint absolute inset-0 size-full object-cover" />
-      : <Image src={src} alt={alt} widths={[480, 960]} sizes={sizes} loading="lazy" class="photo-tint absolute inset-0 size-full object-cover" />}
-    <div aria-hidden="true" class="photo-tint-wash pointer-events-none absolute inset-0"></div>
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0" style={`mask-image: radial-gradient(circle at ${at}, black 0%, black ${spread * 0.45}%, transparent ${spread}%)`}>
-      <DuotoneField client:visible paused src={ditherSrc} animation="drift" color="#1E2BE6" edge="#B5A6FF" bg="#05071E" cell={6} density={0.95} fade={fade} contrast={1.2} edgeGlow={1} tone={0.7} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
-    </div>
-  </div>
+  {typeof src === 'string'
+    ? <img src={src} alt={alt} loading="lazy" class:list={img} />
+    : <Image src={src} alt={alt} widths={[480, 960]} sizes={sizes} loading="lazy" class:list={img} />}
+  <div aria-hidden="true" class="photo-tint-wash pointer-events-none absolute inset-0"></div>
   <slot />
 </div>

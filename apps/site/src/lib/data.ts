@@ -155,7 +155,6 @@ export const thumbnail = (t: Talk) =>
 export const watchAt = (t: Talk, seconds: number) =>
   t.video ? `https://www.youtube.com/watch?v=${t.video.youtubeId}&t=${seconds}s` : undefined;
 
-export const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 const fmt = (date: string, opts: Intl.DateTimeFormatOptions) =>
   new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { timeZone: 'UTC', ...opts });

@@ -2,12 +2,6 @@
 
 @source "../";
 
-/* The talk rail scrolls edge to edge but snaps cards to the page grid. */
-.talk-rail { --gutter: 1rem; padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); scrollbar-width: thin; }
-@media (min-width: 768px) {
-  .talk-rail { --gutter: max(2rem, calc((100vw - 80rem) / 2 + 2rem)); }
-}
-
 /* Set by the script in talks/[id].astro. */
 .video-player.is-floating { position: fixed; inset: auto 1rem 1rem auto; z-index: 50; width: min(22rem, calc(100vw - 2rem)); height: auto; aspect-ratio: 16 / 9; box-shadow: 0 20px 40px -12px rgb(5 7 30 / 0.5); }
 .video-player.is-floating [data-video-close] { display: grid; }
@@ -25,3 +19,6 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 /* One tint for every photo: a little less colour, pulled towards the brand's blue. */
 .photo-tint { filter: saturate(0.7) contrast(1.05); }
 .photo-tint-wash { background: linear-gradient(160deg, rgb(30 43 230 / 0.28), rgb(5 7 30 / 0.25)); mix-blend-mode: soft-light; }
+
+/* Search hits, highlighted by Pagefind. */
+.search-excerpt mark { background: rgb(181 166 255 / 0.45); color: inherit; border-radius: 2px; padding-inline: 1px; }
