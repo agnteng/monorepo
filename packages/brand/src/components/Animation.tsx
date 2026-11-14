@@ -326,7 +326,9 @@ export default function Animation({
       // Hold the current frame while paused or under reduced motion; resume
       // without a time jump. Gated on `painted` so an instance still repaints
       // after a resize, or once its image has loaded.
-      if ((reduce || pausedRef.current || !onScreen) && painted) {
+      // A visitor can pause every field on the page: <html data-motion="off">.
+      const userOff = document.documentElement.dataset.motion === 'off';
+      if ((reduce || userOff || pausedRef.current || !onScreen) && painted) {
         if (!pauseStart) pauseStart = now;
         raf = requestAnimationFrame(frame);
         return;

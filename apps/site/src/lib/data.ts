@@ -172,7 +172,7 @@ export const watchAt = (t: Talk, seconds: number) =>
 
 
 const fmt = (date: string, opts: Intl.DateTimeFormatOptions) =>
-  new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { timeZone: 'UTC', ...opts });
+  new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', { timeZone: 'UTC', ...opts }).replace(/\bSept\b/, 'Sep');
 
 export const longDate = (d: string) => fmt(d, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 export const shortDate = (d: string) => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });

@@ -5,7 +5,7 @@ import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import TalkTile from '../components/TalkTile.astro';
 import TintedPhoto from '../components/TintedPhoto.astro';
-import SpeakerPhoto from '../components/SpeakerPhoto.astro';
+import SpeakerCard from '../components/SpeakerCard.astro';
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
@@ -19,13 +19,13 @@ const [latest] = talks;
 const recent = talks.slice(1, 7);
 const still = stillOf(latest);
 const night = [
-  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: galleryPhoto('2026-08-26', '04.jpg') },
+  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: galleryPhoto('2026-11-11', '02.jpg') },
   { time: '19:45', title: 'Three talks', body: 'Ten minutes each, on something the speaker built or broke. Product pitches get turned down.', photo: galleryPhoto('2026-11-11', '13.jpg') },
   { time: '20:15', title: 'Questions', body: 'Anyone can ask the speakers anything. It usually carries on over drinks.', photo: galleryPhoto('2026-11-11', '28.jpg') },
 ];
-const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
 ---
 <Shell title="Agentic Engineering, Lisbon" class="bg-soft-white text-panel-navy">
+  <main>
   <section class="relative isolate min-h-[100dvh] overflow-hidden bg-deep-navy text-soft-white md:min-h-[88dvh]">
     <img src="/assets/photos/events/lisbon-aug2026-room.jpg" alt="" fetchpriority="high" class="absolute inset-0 size-full object-cover" />
     <!-- The dither rises from the bottom, under the copy, and clears over the crowd. -->
@@ -52,7 +52,8 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
 
     <SiteNav overlay />
 
-    <div class="relative mx-auto grid min-h-[100dvh] max-w-7xl items-end gap-10 px-4 pt-24 pb-12 md:min-h-[88dvh] md:grid-cols-12 md:px-8 md:pb-16">
+    <!-- The skip link lands here, past the nav that sits over the hero. -->
+    <div id="main" class="relative mx-auto grid min-h-[100dvh] max-w-7xl items-end gap-10 px-4 pt-24 pb-12 md:min-h-[88dvh] md:grid-cols-12 md:px-8 md:pb-16">
       <div class="relative isolate md:col-span-7">
         <!-- A soft scrim behind the copy, so it reads over the brightest dither cells. -->
         <div aria-hidden="true" class="pointer-events-none absolute -inset-x-12 -inset-y-14 -z-10 bg-[radial-gradient(closest-side,rgba(5,7,30,0.8),transparent)]"></div>
@@ -83,46 +84,36 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
         <span aria-hidden="true" class="absolute bottom-5 left-5"><span class="grid size-16 place-items-center rounded-full bg-electric-blue/90 shadow-xl shadow-deep-navy/40 transition group-hover:scale-110"><span class="ml-1 border-y-[11px] border-l-[18px] border-y-transparent border-l-white"></span></span></span>
       </div>
       <div class="md:col-span-5">
-        <p class="font-mono text-[11px] uppercase tracking-wider text-electric-blue">{shortDate(latest.event.date)}</p>
-        <h3 class="mt-3 font-sans text-3xl font-extrabold leading-tight tracking-tight group-hover:text-electric-blue md:text-4xl">{latest.title}</h3>
-        <p class="mt-4 flex items-center gap-3 font-sans font-semibold"><Avatar name={latest.person.name} src={latest.person.photo} size={36} />{latest.person.name}</p>
+        <h3 class="font-sans text-3xl font-extrabold leading-tight tracking-tight group-hover:text-electric-blue md:text-4xl">{latest.title}</h3>
+        <p class="mt-4 flex items-center gap-3 font-sans font-semibold"><Avatar name={latest.person.name} src={latest.person.photo} size={36} />{latest.person.name}<span class="font-normal text-panel-navy/60">{shortDate(latest.event.date)}</span></p>
         <p class="mt-5 line-clamp-4 leading-relaxed text-panel-navy/75">{latest.summary}</p>
       </div>
     </a>
     <ul class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {recent.map((t, i) => <li class="reveal"><TalkTile talk={t} index={i} /></li>)}
+      {recent.map((t, i) => <li class:list={['reveal', i >= 3 && 'max-sm:hidden']}><TalkTile talk={t} index={i} /></li>)}
     </ul>
   </section>
 
   <section id="speakers" class="border-t border-panel-navy/[0.08] bg-white">
     <div class="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
-      <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">Speakers</h2>
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">Speakers</h2>
+        <Button variant="outline" href="/speakers">All speakers</Button>
+      </div>
+      <!-- Two rows on desktop; three on a phone, so the page stays short. -->
       <ul class="mt-12 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
-        {speakers.map((s, i) => (
-          <li class="reveal">
-            <a href={s.href} class="group block">
-              {s.photo
-                ? <SpeakerPhoto src={s.photo} index={i} class="rounded-2xl transition duration-300 group-hover:-translate-y-1" />
-                : <div class="relative aspect-square overflow-hidden rounded-2xl bg-deep-navy transition duration-300 group-hover:-translate-y-1">
-                      <Animation client:visible paused animation="drift" color="#1E2BE6" edge="#B5A6FF" cell={7} density={0.55} fade={fades[i % fades.length]} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
-                      <span aria-hidden="true" class="absolute inset-0 grid place-items-center font-sans text-4xl font-extrabold text-soft-white [text-shadow:0_0_6px_#05071E,0_0_18px_#05071E]">{s.name.split(' ').map((w) => w[0]).join('').slice(0, 2)}</span>
-                  </div>}
-              <p class="mt-3 font-sans font-bold leading-tight">{s.name}</p>
-              {s.title && <p class="mt-0.5 text-sm text-panel-navy/60">{s.title}</p>}
-            </a>
-          </li>
-        ))}
+        {speakers.slice(0, 12).map((s, i) => <li class:list={['reveal', i >= 6 && 'max-sm:hidden']}><SpeakerCard speaker={s} index={i} /></li>)}
       </ul>
     </div>
   </section>
 
   <section class="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
     <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">The format</h2>
-    <ol class="mt-14 grid gap-12 md:grid-cols-3 md:gap-6">
+    <ol class="mt-10 grid gap-8 md:mt-14 md:grid-cols-3 md:gap-6">
       {night.map((n, i) => (
         <li class:list={['reveal', i === 1 && 'md:mt-16', i === 2 && 'md:mt-32']}>
-          <TintedPhoto src={n.photo.img} alt={n.photo.alt} sizes="(min-width: 768px) 33vw, 100vw" class="aspect-[4/5] w-full rounded-2xl" />
-          <p class="mt-5 font-mono text-sm font-semibold text-electric-blue">{n.time}</p>
+          <TintedPhoto src={n.photo.img} alt={n.photo.alt} sizes="33vw" class="aspect-[4/5] w-full rounded-2xl max-md:hidden" />
+          <p class="font-mono text-sm font-semibold text-electric-blue md:mt-5">{n.time}</p>
           <p class="mt-1 font-sans text-2xl font-extrabold">{n.title}</p>
           <p class="mt-2 max-w-[38ch] leading-relaxed text-panel-navy/70">{n.body}</p>
         </li>
@@ -130,9 +121,9 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
     </ol>
   </section>
 
-  <section id="events" class="mx-auto max-w-7xl border-t border-panel-navy/[0.08] px-4 py-20 md:px-8">
-    <h2 class="font-sans text-2xl font-extrabold tracking-tight md:text-3xl">Previous meetups</h2>
-    <ul class="mt-10 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
+  <section id="events" class="mx-auto max-w-7xl border-t border-panel-navy/[0.08] px-4 py-24 md:px-8 md:py-32">
+    <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">Previous meetups</h2>
+    <ul class="mt-12 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
       {past.map((e) => {
         const n = talksAt(e).length;
         const cover = coverAt(e);
@@ -155,11 +146,11 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
     <div class="grid gap-10 rounded-2xl bg-deep-navy p-8 text-soft-white md:grid-cols-12 md:p-12">
       <div class="md:col-span-5">
         <h2 class="font-sans text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">Newsletter</h2>
-        <p class="mt-4 max-w-[40ch] leading-relaxed text-soft-white/75">Notes from every night, the next date as soon as it's set, and the odd essay. On Substack.</p>
+        <p class="mt-4 max-w-[40ch] leading-relaxed text-soft-white/75">Notes from every meetup, the next date as soon as it's set, and the odd essay. On Substack.</p>
         <!-- Substack's own sign-up endpoint; it confirms in a new tab. -->
         <form action={`${links.substack}/api/v1/free?nojs=true`} method="post" target="_blank" class="mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
           <label for="newsletter-email" class="sr-only">Email</label>
-          <input id="newsletter-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com" class="h-12 min-w-0 flex-1 rounded-full border border-white/15 bg-white/10 px-5 font-sans text-soft-white outline-none placeholder:text-soft-white/45 focus:border-periwinkle" />
+          <input id="newsletter-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com" class="h-12 w-full min-w-0 rounded-full border border-white/15 bg-white/10 px-5 font-sans text-base text-soft-white outline-none placeholder:text-soft-white/60 focus:border-periwinkle sm:flex-1" />
           <button type="submit" class="h-12 rounded-full bg-electric-blue px-6 font-sans font-semibold text-white transition hover:bg-bright-blue">Subscribe</button>
         </form>
       </div>
@@ -170,7 +161,7 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
               <a href={p.url} class="group flex items-start justify-between gap-6 py-5 first:pt-0">
                 <div>
                   <p class="font-mono text-[11px] uppercase tracking-wider text-periwinkle">{shortDate(p.date)}</p>
-                  <p class="mt-1.5 font-sans text-lg font-bold leading-snug group-hover:text-periwinkle">{p.title}</p>
+                  <p class="mt-1.5 font-sans text-lg font-bold leading-snug group-hover:text-periwinkle">{p.title.replace(/^Notes from Agentic Engineering\s+/, '')}</p>
                 </div>
                 <Icon name="ExternalLink" size={18} class="mt-6 shrink-0 text-soft-white/40" />
               </a>
@@ -185,13 +176,14 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
     <div class="mx-auto grid max-w-7xl gap-10 px-4 py-24 md:grid-cols-12 md:px-8">
       <h2 class="font-sans text-3xl font-extrabold leading-tight tracking-tight md:col-span-6 md:text-5xl">Get involved</h2>
       <div class="space-y-5 text-lg md:col-span-6">
-        <p>To speak, register for the next event and fill in the talk field. Ten minutes, real work, no pitches.</p>
-        <p>To host or sponsor a night, find us on <a href={links.telegram} class="underline underline-offset-4">Telegram</a> or read the <a href={links.sponsors} class="underline underline-offset-4">sponsor deck</a>.</p>
-        <Button variant="secondary" href={register} class="js-register">Register on Luma</Button>
+        <p>To speak, register for the next event and describe your talk in the talk field. Ten minutes, real work, no pitches.</p>
+        <p>To host or sponsor a meetup, find us on <a href={links.telegram} class="underline underline-offset-4">Telegram</a> or read the <a href={links.sponsors} class="underline underline-offset-4">sponsor deck</a>.</p>
+        <Button variant="secondary" href={register} class="js-register">{nextEvent?.free ? 'Register – Free' : 'Register'}</Button>
       </div>
     </div>
   </section>
 
-  <SiteFooter />
+  </main>
 
+  <SiteFooter />
 </Shell>

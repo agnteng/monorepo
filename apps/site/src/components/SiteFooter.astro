@@ -3,16 +3,16 @@ import SocialIcons from '@agnteng/brand/components/SocialIcons.astro';
 import { links } from '../lib/data';
 const site = [
   { label: 'Talks', href: '/talks' },
+  { label: 'Speakers', href: '/speakers' },
   { label: 'Events', href: '/#events' },
-  { label: 'Speakers', href: '/#speakers' },
   { label: 'Newsletter', href: '/#newsletter' },
 ];
 const elsewhere: { label: string; href: string; icon?: 'youtube' | 'substack' | 'luma' }[] = [
-  { label: 'youtube', href: links.youtube, icon: 'youtube' },
-  { label: 'substack', href: links.substack, icon: 'substack' },
-  { label: 'luma', href: links.luma, icon: 'luma' },
-  { label: 'telegram', href: links.telegram },
-  { label: 'sponsors', href: links.sponsors },
+  { label: 'YouTube', href: links.youtube, icon: 'youtube' },
+  { label: 'Substack', href: links.substack, icon: 'substack' },
+  { label: 'Luma', href: links.luma, icon: 'luma' },
+  { label: 'Telegram', href: links.telegram },
+  { label: 'Sponsors', href: links.sponsors },
 ];
 ---
 <footer class="w-full bg-deep-navy">
@@ -23,13 +23,28 @@ const elsewhere: { label: string; href: string; icon?: 'youtube' | 'substack' | 
     </div>
     <nav class="flex flex-col gap-4">
       <ul class="flex flex-wrap gap-5">
-        {site.map((i) => <li><a href={i.href} class="font-sans text-sm text-soft-white/80 hover:text-soft-white">{i.label}</a></li>)}
+        {site.map((i) => <li><a href={i.href} class="inline-flex min-h-6 items-center py-1 font-sans text-sm text-soft-white/80 hover:text-soft-white">{i.label}</a></li>)}
       </ul>
       <ul class="flex flex-wrap items-center gap-5">
         {elsewhere.map((i) => (
-          <li><a href={i.href} class="flex items-center gap-2 font-sans text-sm text-soft-white/60 transition-colors hover:text-periwinkle">{i.icon && <SocialIcons name={i.icon} size={16} />}{i.label}</a></li>
+          <li><a href={i.href} class="inline-flex min-h-6 items-center gap-2 py-1 font-sans text-sm text-soft-white/70 transition-colors hover:text-periwinkle">{i.icon && <SocialIcons name={i.icon} size={16} />}{i.label}</a></li>
         ))}
       </ul>
+      <button type="button" data-motion-toggle class="inline-flex min-h-6 w-fit items-center gap-2 py-1 font-sans text-sm text-soft-white/70 transition-colors hover:text-periwinkle">Pause animation</button>
     </nav>
   </div>
 </footer>
+<script is:inline>
+  {
+    // Every dither on the site holds still while paused (WCAG 2.2.2); remembered per visitor.
+    const toggle = document.querySelector('[data-motion-toggle]');
+    const label = () => (toggle.textContent = document.documentElement.dataset.motion === 'off' ? 'Play animation' : 'Pause animation');
+    label();
+    toggle.addEventListener('click', () => {
+      const off = document.documentElement.dataset.motion !== 'off';
+      off ? (document.documentElement.dataset.motion = 'off') : delete document.documentElement.dataset.motion;
+      try { localStorage.setItem('motion', off ? 'off' : 'on'); } catch {}
+      label();
+    });
+  }
+</script>
