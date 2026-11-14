@@ -31,7 +31,7 @@ const linkLists = ([
     <span data-pagefind-filter={`meetup:${eventName(e)}`}></span>
     <section class="pt-14 pb-10 md:pt-20">
       <a data-pagefind-ignore href={`/events/${eventSlug(e)}`} class="rise inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-electric-blue hover:underline">{eventName(e)}, {longDate(e.date)}</a>
-      <h1 class="rise mt-4 max-w-[24ch] font-sans text-3xl font-extrabold leading-[1.1] tracking-tight md:text-5xl" style="--i:1">{talk.title}</h1>
+      <h1 class="rise mt-4 font-sans text-3xl font-extrabold leading-[1.1] tracking-tight md:text-5xl" style="--i:1">{talk.title}</h1>
       <div class="rise mt-6 flex items-center gap-3" style="--i:2">
         <Avatar name={talk.person.name} src={talk.person.photo} size={48} />
         <p><span class="font-bold">{talk.person.name}</span>{talk.person.title && <span class="block text-sm text-panel-navy/60"> {talk.person.title}</span>}</p>
