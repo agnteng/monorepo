@@ -1,9 +1,11 @@
 ---
 // `overlay` sits on the hero's dither; otherwise the bar is deep navy.
 import Button from '@agnteng/brand/components/Button.astro';
-import { register } from '../lib/data';
+import { register, nextEvent, links } from '../lib/data';
 interface Props { overlay?: boolean }
 const { overlay = false } = Astro.props;
+const starts = nextEvent && (nextEvent.luma?.startAt ?? `${nextEvent.date}T23:59:00Z`);
+const luma = links.luma;
 const items = [
   { label: 'Talks', href: '/talks' },
   { label: 'Events', href: '/#events' },
@@ -22,7 +24,21 @@ const items = [
     </nav>
     <div class="flex items-center gap-5">
       <a href="/talks" class="font-sans text-sm text-soft-white/70 hover:text-soft-white md:hidden">Talks</a>
-      <Button variant="primary" href={register} class="!px-5 !py-2.5 !text-sm">Register</Button>
+      <Button variant="primary" href={register} class="js-register !px-5 !py-2.5 !text-sm">Register</Button>
     </div>
   </div>
 </header>
+<script is:inline define:vars={{ starts, luma }}>
+  // The site is rebuilt only on deploy: once the next event has started, every
+  // register link and the home page's next-event card point to the Luma calendar.
+  if (starts && Date.parse(starts) + 4 * 3600e3 < Date.now()) {
+    addEventListener('DOMContentLoaded', () => {
+      for (const a of document.querySelectorAll('a.js-register')) {
+        a.href = luma;
+        a.textContent = 'Follow on Luma';
+      }
+      const card = document.querySelector('[data-next-event]');
+      if (card) card.innerHTML = `<p class="text-sm font-semibold">The next date is on its way.</p><a class="mt-4 inline-flex rounded-full bg-electric-blue px-[26px] py-3.5 font-semibold text-white" href="${luma}">Follow on Luma</a>`;
+    });
+  }
+</script>

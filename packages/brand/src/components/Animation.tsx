@@ -282,12 +282,15 @@ export default function Animation({
       img.src = imgSrc;
     }
 
+    // Resizing clears the canvas; a still instance must repaint or it stays blank.
+    let painted = false;
     // Measure the LAYOUT box (clientWidth/Height), not getBoundingClientRect:
     // the layout box is immune to ancestor CSS transforms, so a zoomed/scaled
     // wrapper (e.g. the builder's pan/zoom stage) magnifies the rendered pixels
     // instead of re-sampling the field to a different resolution. For untrans-
     // formed consumers these are numerically identical.
     const size = (entry?: ResizeObserverEntry) => {
+      painted = false;
       const box = entry?.borderBoxSize?.[0];
       w = box ? Math.round(box.inlineSize) : canvas.clientWidth;
       h = box ? Math.round(box.blockSize) : canvas.clientHeight;
@@ -313,15 +316,13 @@ export default function Animation({
     let start = 0;
     let pauseStart = 0;
     let pausedAccum = 0;
-    let painted = false; // has a frame actually been committed to the canvas yet?
     const phase = phaseRef.current ?? 0; // random per-instance desync offset (s)
     const frame = (now: number) => {
       if (!start) start = now;
-      // freeze on the current frame while paused; resume without a time jump.
-      // Gated on `painted` so an instance that mounts already-paused (or whose
-      // image is still loading) still commits its first frame — otherwise it
-      // would stay blank forever with nothing to freeze on.
-      if (!reduce && pausedRef.current && painted) {
+      // Hold the current frame while paused or under reduced motion; resume
+      // without a time jump. Gated on `painted` so an instance still repaints
+      // after a resize, or once its image has loaded.
+      if ((reduce || pausedRef.current) && painted) {
         if (!pauseStart) pauseStart = now;
         raf = requestAnimationFrame(frame);
         return;
@@ -408,7 +409,7 @@ export default function Animation({
         }
         painted = true;
       }
-      if (!reduce) raf = requestAnimationFrame(frame);
+      raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
 

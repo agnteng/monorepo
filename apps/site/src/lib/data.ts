@@ -14,6 +14,8 @@ export type Event = {
   luma?: { apiId: string; url: string; startAt: string };
   speakers?: EventSpeaker[];
   recap?: string; // the night's Substack post
+  free?: boolean; // Luma has a free ticket
+  approval?: boolean; // the hosts approve each registration
 };
 
 type TalkFile = {
@@ -147,6 +149,7 @@ const fmt = (date: string, opts: Intl.DateTimeFormatOptions) =>
 
 export const longDate = (d: string) => fmt(d, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 export const shortDate = (d: string) => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
+export const cardDate = (d: string) => fmt(d, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 
 // Doors time in the event's city, from Luma's start.
 const zones: Record<string, string> = { Lisbon: 'Europe/Lisbon' };
