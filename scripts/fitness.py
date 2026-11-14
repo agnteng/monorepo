@@ -386,6 +386,8 @@ def get(url: str) -> tuple[int, bytes]:
         return r.status, r.read()
     except urllib.error.HTTPError as e:
         return e.code, b""
+    except (urllib.error.URLError, OSError):
+        return 0, b""  # no answer at all
 
 
 # ── talks search finds exactly what the content says ──
@@ -415,6 +417,38 @@ def check_live() -> None:
         fail("live", f"{s}/ is not serving the sponsor deck")
     if get(f"{s}/brand-guidelines/")[0] != 404:
         fail("live", f"{s} serves more than the sponsor deck")
+    if SITE_IS_LIVE:
+        check_live_site()
+
+
+# agnteng.com has no public address yet. Set this when it gets one, in the
+# same change, so every deploy after that is checked.
+SITE_IS_LIVE = False
+
+
+def check_live_site() -> None:
+    w = "https://agnteng.com"
+    for page in ("", "talks", "speakers", "robots.txt", "search.json"):
+        code, _ = get(f"{w}/{page}")
+        if code != 200:
+            fail("live", f"{w}/{page} answered {code}")
+    code, body = get(f"{w}/sitemap.xml")
+    locs = re.findall(r"<loc>([^<]+)</loc>", body.decode()) if code == 200 else []
+    talk = next((u for u in locs if "/talks/" in u), None)
+    if not talk:
+        fail("live", f"{w}/sitemap.xml lists no talks")
+    else:  # as a shared link would fetch it
+        code, body = get(talk)
+        if code != 200 or b'property="og:image"' not in body:
+            fail("live", f"{talk} answered {code} or has no share image")
+    # www is a redirect to the one address; urlopen follows it.
+    try:
+        r = urllib.request.urlopen(urllib.request.Request(
+            "https://www.agnteng.com/talks", headers={"User-Agent": "agnteng-fitness"}), timeout=20)
+        if r.url != f"{w}/talks":
+            fail("live", f"www.agnteng.com/talks ended at {r.url}, not {w}/talks")
+    except (urllib.error.URLError, OSError) as e:
+        fail("live", f"www.agnteng.com did not answer: {e}")
 
 
 def main() -> None:

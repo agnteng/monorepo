@@ -7,7 +7,7 @@ import Transcript from '../../components/Transcript.astro';
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import Avatar from '@agnteng/brand/components/Avatar.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { talks, talksAt, longDate, eventSlug, eventName, type Talk } from '../../lib/data';
+import { talks, talksAt, longDate, eventSlug, eventName, thumbnail, type Talk } from '../../lib/data';
 
 export function getStaticPaths() {
   return talks.map((talk) => ({ params: { id: talk.id }, props: { talk } }));
@@ -20,7 +20,7 @@ const linkLists = ([
   ['Mentioned in the talk', talk.mentioned],
 ] as const).filter(([, list]) => list.length > 0);
 ---
-<Shell title={`${talk.title}, ${talk.person.name} | Agentic Engineering`} description={talk.summary} class="bg-soft-white text-panel-navy">
+<Shell title={`${talk.title}, ${talk.person.name} | Agentic Engineering`} description={talk.summary} image={thumbnail(talk)} class="bg-soft-white text-panel-navy">
   <SiteNav />
   <main id="main" class="mx-auto max-w-5xl px-4 md:px-8">
     <section class="pt-14 pb-10 md:pt-20">
