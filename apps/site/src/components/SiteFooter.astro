@@ -25,7 +25,7 @@ const elsewhere: { label: string; href: string; icon: 'youtube' | 'substack' | '
       </ul>
       <ul class="flex flex-wrap items-center gap-5">
         {elsewhere.map((i) => (
-          <li><a href={i.href} class="inline-flex min-h-6 items-center gap-2 py-1 font-sans text-sm text-soft-white/70 transition-colors hover:text-periwinkle"><SocialIcons name={i.icon} size={16} />{/* Luma's mark already spells its name. */}<span class:list={[i.icon === 'luma' && 'sr-only']}>{i.label}</span></a></li>
+          <li><a href={i.href} class="inline-flex min-h-6 items-center gap-2 py-1 font-sans text-sm text-soft-white/70 transition-colors hover:text-periwinkle"><SocialIcons name={i.icon} size={16} />{i.label}</a></li>
         ))}
       </ul>
     </nav>
