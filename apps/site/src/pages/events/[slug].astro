@@ -63,8 +63,9 @@ const questions = questionsAt(e);
 
     <section class="border-t border-panel-navy/[0.08] py-16">
       <div class="flex flex-wrap items-center justify-between gap-6">
-        <p class="font-mono text-xl font-semibold">Next one is on Luma.</p>
+        <p class="font-mono text-xl font-semibold">{e.recap ? 'The night, in writing.' : 'More on Luma.'}</p>
         <div class="flex flex-wrap gap-3">
+          {e.recap && <Button variant="outline" href={e.recap}>Read the recap</Button>}
           {e.luma && <Button variant="outline" href={e.luma.url}>This event on Luma</Button>}
           <Button variant="primary" href={links.luma}>See upcoming events</Button>
         </div>

@@ -133,6 +133,8 @@ def check_events() -> None:
                 fail("events", f"{where}: needs a non-empty {k!r}")
         if not isinstance(e.get("number"), int):
             fail("events", f"{where}: needs an integer 'number'")
+        if "recap" in e and not str(e["recap"]).startswith("https://"):
+            fail("events", f"{where}: recap should be an https URL")
         luma = e.get("luma")
         if luma is not None:
             if not str(luma.get("apiId", "")).startswith("evt-"):

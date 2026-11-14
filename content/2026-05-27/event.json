@@ -1,0 +1,13 @@
+{
+  "date": "2026-05-27",
+  "city": "Lisbon",
+  "number": 1,
+  "venue": "The Nest by NEAR",
+  "tonight": "Wed 27 May 2026 · The Nest by NEAR",
+  "luma": {
+    "apiId": "evt-wdD1pccKBZUcuiT",
+    "url": "https://luma.com/j19cce2v",
+    "startAt": "2026-05-27T18:00:00.000Z"
+  },
+  "recap": "https://agnteng.substack.com/p/notes-from-the-first-agentic-engineering"
+}
