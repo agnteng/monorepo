@@ -28,6 +28,7 @@ export interface Template {
   frame: { w: number; h: number };
   chrome?: 'x' | 'linkedin' | 'substack' | 'luma' | 'telegram' | 'youtube';
   defaults: { logoAnchor: Anchor; logoScale: number; variant: Variant; mark: boolean };
+  logoMaxScale?: number; // logo-size slider maximum
   build(text: TemplateText, logo: TemplateLogo, extra: TemplateExtra): OverlaySpec;
 }
 
@@ -63,6 +64,19 @@ export const TEMPLATES: Template[] = [
   banner('banner-x', 'X header', 1500, 500, 'right', false, 'none', 'x'),
   banner('banner-linkedin', 'LinkedIn cover', 1584, 264, 'right', false, 'none', 'linkedin'),
   banner('banner-substack', 'Substack masthead', 1344, 256, 'right', false, 'none', 'substack'),
+  // Substack shows the wordmark a few dozen pixels tall in place of the
+  // publication name, hence the single-line lockup at near frame width.
+  {
+    id: 'banner-substack-wordmark',
+    group: 'banner',
+    name: 'Substack wordmark',
+    frame: { w: 1344, h: 256 },
+    defaults: { logoAnchor: 'center', logoScale: 0.8, variant: 'white', mark: false },
+    logoMaxScale: 0.9,
+    build: (_t, l) => ({
+      logo: { anchor: l.anchor, scale: l.scale, variant: l.variant, mark: l.mark, line: true },
+    }),
+  },
   banner('banner-luma', 'Luma calendar', 1400, 400, 'right', false, 'none', 'luma'),
   banner('banner-telegram', 'Telegram photo', 512, 512, 'center', true, 'none', 'telegram', {
     kind: 'circle',

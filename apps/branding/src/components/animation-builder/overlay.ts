@@ -14,6 +14,9 @@ export interface OverlayAssets {
   word: HTMLImageElement | null;
   markBlue: HTMLImageElement | null;
   wordBlue: HTMLImageElement | null;
+  // single-line wordmark, for frames too short for the two-line lockup
+  wordLine: HTMLImageElement | null;
+  wordLineBlue: HTMLImageElement | null;
 }
 
 export interface SpeakerFace {
@@ -25,7 +28,7 @@ export interface SpeakerFace {
 export interface OverlaySpec {
   gradient?: Grad;
   vignette?: boolean;
-  logo?: { anchor: Anchor; scale: number; variant: Variant; mark: boolean };
+  logo?: { anchor: Anchor; scale: number; variant: Variant; mark: boolean; line?: boolean };
   // textScale sizes the city pill + date line independently of the logo, so a
   // large lockup doesn't leave the type looking undersized. Defaults to 1.
   coverGroup?: { scale: number; variant: Variant; city: string; date: string; textScale?: number };
@@ -42,8 +45,10 @@ type Ctx = CanvasRenderingContext2D;
 type Spacing = Ctx & { letterSpacing?: string };
 const ok = (im: HTMLImageElement | null): im is HTMLImageElement =>
   !!im && im.complete && im.naturalWidth > 0;
-const pickLogo = (a: OverlayAssets, v: Variant) =>
-  v === 'blue' ? { mark: a.markBlue, word: a.wordBlue } : { mark: a.mark, word: a.word };
+const pickLogo = (a: OverlayAssets, v: Variant, line = false) =>
+  v === 'blue'
+    ? { mark: a.markBlue, word: line ? a.wordLineBlue : a.wordBlue }
+    : { mark: a.mark, word: line ? a.wordLine : a.word };
 
 export function roundRect(ctx: Ctx, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
@@ -84,12 +89,13 @@ function drawVignette(ctx: Ctx, W: number, H: number) {
   ctx.fillRect(0, 0, W, H);
 }
 
-// logo mark-only or mark + two-line wordmark lockup, placed at a 9-point anchor
-// (width-based lockup sizing from BannerBuilder 34-63)
+// logo mark-only or mark + wordmark lockup, placed at a 9-point anchor
+// (width-based lockup sizing from BannerBuilder 34-63). `line` swaps in the
+// single-line wordmark, with the mark-to-text proportions of LockupLine.
 // returns the drawn lockup's pixel height (0 if nothing was drawn), so
 // callers can lay out other elements relative to it
-export function drawLogo(ctx: Ctx, W: number, H: number, anchor: Anchor, scale: number, a: OverlayAssets, variant: Variant, markOnly: boolean): number {
-  const { mark, word } = pickLogo(a, variant);
+export function drawLogo(ctx: Ctx, W: number, H: number, anchor: Anchor, scale: number, a: OverlayAssets, variant: Variant, markOnly: boolean, line = false): number {
+  const { mark, word } = pickLogo(a, variant, line);
   if (!ok(mark)) return 0;
   const MAR = mark.naturalWidth / mark.naturalHeight;
   const { fx, fy } = anchorFactors(anchor);
@@ -105,14 +111,16 @@ export function drawLogo(ctx: Ctx, W: number, H: number, anchor: Anchor, scale: 
   }
   if (!ok(word)) return 0;
   const WAR = word.naturalWidth / word.naturalHeight;
-  const k = MAR + 0.22 + 0.92 * WAR;
+  // gap and wordmark height, as fractions of the mark height
+  const [gf, wf] = line ? [0.33, 0.89] : [0.22, 0.92];
+  const k = MAR + gf + wf * WAR;
   let mh = (W * scale) / k;
   const maxH = H * 0.6;
   if (mh > maxH) mh = maxH;
   const mw = mh * MAR;
-  const wh = mh * 0.92;
+  const wh = mh * wf;
   const ww = wh * WAR;
-  const g = mh * 0.22;
+  const g = mh * gf;
   const totalW = mw + g + ww;
   const x = padX + (W - totalW - 2 * padX) * fx;
   const y = padY + (H - mh - 2 * padY) * fy;
@@ -423,7 +431,7 @@ export function drawOverlay(
 ) {
   if (spec.gradient) drawGradient(ctx, W, H, spec.gradient);
   if (spec.vignette) drawVignette(ctx, W, H);
-  if (spec.logo) drawLogo(ctx, W, H, spec.logo.anchor, spec.logo.scale, assets, spec.logo.variant, spec.logo.mark);
+  if (spec.logo) drawLogo(ctx, W, H, spec.logo.anchor, spec.logo.scale, assets, spec.logo.variant, spec.logo.mark, spec.logo.line);
   if (spec.coverGroup) drawCoverGroup(ctx, W, H, spec.coverGroup, assets, fontsReady);
   if (spec.speakerCard) drawSpeakerCard(ctx, W, H, spec.speakerCard, assets, fontsReady);
   if (spec.speakerTrio) drawSpeakerTrio(ctx, W, H, spec.speakerTrio, assets, fontsReady);

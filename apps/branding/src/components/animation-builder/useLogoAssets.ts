@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import type { OverlayAssets } from './overlay';
 
-// Preload the logo SVGs (white + blue mark/wordmark) once, gated on load, for
+// Preload the logo SVGs once, gated on load, for
 // the overlay compositor. Mirrors BannerBuilder's asset-loading pattern.
 export function useLogoAssets(): OverlayAssets {
-  const [assets, setAssets] = useState<OverlayAssets>({ mark: null, word: null, markBlue: null, wordBlue: null });
+  const [assets, setAssets] = useState<OverlayAssets>({ mark: null, word: null, markBlue: null, wordBlue: null, wordLine: null, wordLineBlue: null });
   useEffect(() => {
     const srcs: Record<keyof OverlayAssets, string> = {
       mark: '/assets/logo/ae-mark-white.svg',
       word: '/assets/logo/ae-wordmark-white.svg',
       markBlue: '/assets/logo/ae-mark.svg',
       wordBlue: '/assets/logo/ae-wordmark.svg',
+      wordLine: '/assets/logo/ae-wordmark-line-white.svg',
+      wordLineBlue: '/assets/logo/ae-wordmark-line.svg',
     };
     const imgs = {} as OverlayAssets;
     const keys = Object.keys(srcs) as (keyof OverlayAssets)[];
