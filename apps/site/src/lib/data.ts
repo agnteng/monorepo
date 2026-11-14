@@ -114,6 +114,18 @@ export const speakers: Speaker[] = (() => {
 
 export const talksAt = (e: Event) => talks.filter((t) => t.event.date === e.date);
 
+// The night's gallery: web copies written by production's event_photos.py.
+const photoFiles = import.meta.glob<ImageMetadata>('@content/*/photos/*.jpg', { eager: true, import: 'default' });
+const photoLists = import.meta.glob<{ file: string; alt: string }[]>('@content/*/photos.json', { eager: true, import: 'default' });
+export type Photo = { img: ImageMetadata; alt: string };
+export const photosAt = (e: Event): Photo[] => {
+  const list = Object.entries(photoLists).find(([path]) => dateOf(path) === e.date)?.[1] ?? [];
+  return list.flatMap(({ file, alt }) => {
+    const img = Object.entries(photoFiles).find(([path]) => path.endsWith(`${e.date}/photos/${file}`))?.[1];
+    return img ? [{ img, alt }] : [];
+  });
+};
+
 export const questionsAt = (e: Event): Question[] =>
   Object.entries(questionFiles).find(([path]) => dateOf(path) === e.date)?.[1] ?? [];
 

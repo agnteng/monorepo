@@ -171,6 +171,49 @@ def check_talks() -> None:
             fail("talks", f"{where}: video.youtubeId is not a YouTube id")
 
 
+# ── event galleries (org ADR 0008) ──
+
+PHOTO_MAX_BYTES = 600_000
+PHOTO_MAX_EDGE = 1600
+# EXIF, XMP and IPTC can each carry a location.
+PHOTO_METADATA = (b"Exif\x00\x00", b"http://ns.adobe.com/xap/1.0/", b"Photoshop 3.0")
+
+
+def jpeg_size(data: bytes) -> tuple[int, int]:
+    """(width, height) from the first start-of-frame marker."""
+    i = 2
+    while i + 9 < len(data):
+        marker, length = data[i + 1], int.from_bytes(data[i + 2:i + 4], "big")
+        if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
+            return int.from_bytes(data[i + 7:i + 9], "big"), int.from_bytes(data[i + 5:i + 7], "big")
+        i += 2 + length
+    return 0, 0
+
+
+def check_photos() -> None:
+    listed = set()
+    for listing in sorted((ROOT / "content").glob("*/photos.json")):
+        where = listing.relative_to(ROOT)
+        photos = json.loads(listing.read_text())
+        listed |= {listing.parent / "photos" / p.get("file", "") for p in photos}
+        for p in photos:
+            f = listing.parent / "photos" / p.get("file", "")
+            if not f.is_file():
+                fail("photos", f"{where}: {p.get('file')!r} is missing")
+            elif not p.get("alt", "").strip():
+                fail("photos", f"{where}: {p['file']} needs alt text")
+    for f in sorted((ROOT / "content").glob("*/photos/[!.]*")):
+        where, data = f.relative_to(ROOT), f.read_bytes()
+        if f.suffix != ".jpg":
+            fail("photos", f"{where}: only .jpg web copies go here")
+        elif f not in listed:
+            fail("photos", f"{where}: not in photos.json, so it has no alt text")
+        elif len(data) > PHOTO_MAX_BYTES or max(jpeg_size(data)) > PHOTO_MAX_EDGE:
+            fail("photos", f"{where}: over {PHOTO_MAX_BYTES // 1000} KB or {PHOTO_MAX_EDGE}px; use event_photos.py")
+        elif any(m in data for m in PHOTO_METADATA):
+            fail("photos", f"{where}: still has EXIF, XMP or IPTC metadata (location); use event_photos.py")
+
+
 # ── rendered decks unchanged (refactors must not alter what's on screen) ──
 
 PAGES = ["", "brand-guidelines/", "sponsorship/", "slides/",
@@ -275,7 +318,8 @@ def main() -> None:
         checks = [("render", lambda: check_render(args.update))]
     else:
         checks = [("internal-names", check_internal_names), ("media", check_media),
-                  ("events", check_events), ("talks", check_talks)]
+                  ("events", check_events), ("talks", check_talks),
+                  ("photos", check_photos)]
     for name, fn in checks:
         before = len(FAILURES)
         fn()
