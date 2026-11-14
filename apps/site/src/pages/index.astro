@@ -9,15 +9,15 @@ import Animation from '@agnteng/brand/components/Animation.tsx';
 import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { nextEvent, past, talks, talksAt, coverAt, galleryPhoto, speakers, links, register, cardDate, shortDate, startTime, eventSlug, eventName } from '../lib/data';
+import { nextEvent, past, talks, talksAt, coverAt, galleryPhoto, speakers, links, register, shortDate, startTime, eventSlug, eventName } from '../lib/data';
 import { latestPosts } from '../lib/newsletter';
 
 const posts = await latestPosts();
 const recent = talks.slice(0, 3);
 const night = [
-  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: galleryPhoto('2026-08-26', '04.jpg') },
-  { time: '19:45', title: 'Three talks', body: 'Ten minutes each, on something the speaker built or broke. Product pitches get turned down.', photo: galleryPhoto('2026-11-11', '13.jpg') },
-  { time: '20:15', title: 'Questions', body: 'Anyone can ask the speakers anything. It usually carries on over drinks.', photo: galleryPhoto('2026-11-11', '28.jpg') },
+  { time: '19:00', title: 'Connect with others', body: 'Meet founders and engineers who are building with AI agents.', photo: galleryPhoto('2026-08-26', '04.jpg') },
+  { time: '19:45', title: 'Learn from experts', body: 'Three technical talks, ten minutes each, from engineers showing what they built.', photo: galleryPhoto('2026-11-11', '13.jpg') },
+  { time: '20:15', title: 'Ask your questions', body: 'An open Q&A with the speakers after the talks.', photo: galleryPhoto('2026-11-11', '28.jpg') },
 ];
 ---
 <Shell title="Agentic Engineering, Lisbon" class="bg-soft-white text-panel-navy">
@@ -64,8 +64,8 @@ const night = [
       {nextEvent && (
         <div data-next-event class="rise rounded-2xl bg-white p-6 text-panel-navy shadow-xl shadow-deep-navy/40 md:col-span-5 md:w-full md:max-w-sm md:justify-self-end" style="--i:3">
           <span class="rounded-full bg-electric-blue px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-white">Next event</span>
-          <p class="mt-5 font-sans text-2xl font-extrabold tracking-tight">{cardDate(nextEvent.date)}</p>
-          {startTime(nextEvent) && <p class="mt-1 flex items-center gap-2 text-sm font-semibold text-panel-navy/70"><Icon name="Clock" size={15} class="text-electric-blue" />{startTime(nextEvent)}</p>}
+          <p class="mt-5 font-sans text-3xl font-extrabold tracking-tight">{nextEvent.city}</p>
+          <p class="mt-1 text-sm font-semibold text-panel-navy/70">{[shortDate(nextEvent.date), startTime(nextEvent)].filter(Boolean).join(' · ')}</p>
           <Button variant="primary" href={register} class="js-register mt-6 w-full">{nextEvent.free ? 'Register – Free' : 'Register'}</Button>
         </div>
       )}
@@ -96,7 +96,7 @@ const night = [
   </section>
 
   <section class="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
-    <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">The format</h2>
+    <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">The meetup</h2>
     <ol class="mt-10 grid gap-8 md:mt-14 md:grid-cols-3 md:gap-6">
       {night.map((n, i) => (
         <li class:list={['reveal', i === 1 && 'md:mt-16', i === 2 && 'md:mt-32']}>
@@ -134,7 +134,7 @@ const night = [
     <div class="grid gap-10 rounded-2xl bg-deep-navy p-8 text-soft-white md:grid-cols-12 md:p-12">
       <div class="md:col-span-5">
         <h2 class="font-sans text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">Newsletter</h2>
-        <p class="mt-4 max-w-[40ch] leading-relaxed text-soft-white/75">Notes from every meetup, the next date as soon as it's set, and the odd essay. On Substack.</p>
+        <p class="mt-4 max-w-[40ch] leading-relaxed text-soft-white/75">Get a write-up of the talks after every meetup, and an email when the next one is announced.</p>
         <!-- Substack's own sign-up endpoint; it confirms in a new tab. -->
         <form action={`${links.substack}/api/v1/free?nojs=true`} method="post" target="_blank" class="mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
           <label for="newsletter-email" class="sr-only">Email</label>
