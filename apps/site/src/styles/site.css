@@ -8,6 +8,10 @@
   .talk-rail { --gutter: max(2rem, calc((100vw - 80rem) / 2 + 2rem)); }
 }
 
+/* Set by the script in talks/[id].astro. */
+.video-player.is-floating { position: fixed; inset: auto 1rem 1rem auto; z-index: 50; width: min(22rem, calc(100vw - 2rem)); height: auto; aspect-ratio: 16 / 9; box-shadow: 0 20px 40px -12px rgb(5 7 30 / 0.5); }
+.video-player.is-floating [data-video-close] { display: grid; }
+
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
 :focus-visible { outline: 2px solid var(--color-bright-blue); outline-offset: 3px; }
 

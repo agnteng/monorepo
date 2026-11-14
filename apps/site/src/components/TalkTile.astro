@@ -3,7 +3,6 @@
 // the dither field as its illustration when there isn't.
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import Avatar from '@agnteng/brand/components/Avatar.astro';
-import Icon from '@agnteng/brand/components/Icon.astro';
 import { thumbnail, shortDate, type Talk } from '../lib/data';
 interface Props { talk: Talk; index?: number }
 const { talk, index = 0 } = Astro.props;
@@ -20,11 +19,8 @@ const fade = (['right', 'left', 'radial', 'up', 'down'] as const)[index % 5];
   </div>
   <div class="flex flex-1 flex-col p-5">
     <h3 class="font-sans text-lg font-bold leading-snug tracking-tight text-panel-navy">{talk.title}</h3>
-    <p class="mt-3 flex items-center gap-2.5 font-sans text-sm text-panel-navy/60">
+    <p class="mt-auto flex items-center gap-2.5 pt-5 font-sans text-sm text-panel-navy/60">
       <span aria-hidden="true"><Avatar name={talk.person.name} src={talk.person.photo} size={28} /></span>{talk.person.name}
     </p>
-    <span class="mt-auto inline-flex items-center gap-2 pt-5 font-sans text-sm font-semibold text-electric-blue">
-      {talk.video ? <><Icon name="Eye" size={14} />Watch the recording</> : <><Icon name="BookOpen" size={14} />Read the talk</>}
-    </span>
   </div>
 </a>

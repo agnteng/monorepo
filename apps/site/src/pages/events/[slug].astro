@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import Shell from '../../layouts/Shell.astro';
 import SiteNav from '../../components/SiteNav.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
@@ -8,7 +9,7 @@ import Animation from '@agnteng/brand/components/Animation.tsx';
 import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { events, talksAt, questionsAt, photosAt, longDate, eventSlug, eventName, links, plural, type Event } from '../../lib/data';
+import { events, talksAt, questionsAt, photosAt, longDate, eventSlug, eventName, links, type Event } from '../../lib/data';
 
 export function getStaticPaths() {
   return events.filter((e) => talksAt(e).length).map((event) => ({ params: { slug: eventSlug(event) }, props: { event } }));
@@ -19,35 +20,36 @@ const questions = questionsAt(e);
 const photos = photosAt(e);
 // The header dithers a wide shot of the room when the gallery has one.
 const room = photos.find((p) => /room|audience/i.test(p.alt)) ?? photos[0];
+const header = room && (await getImage({ src: room.img, width: 1600, format: 'webp' })).src;
 ---
-<Shell title={`${eventName(e)}, ${longDate(e.date)} | Agentic Engineering`} description={`Agentic Engineering ${eventName(e)} at ${e.venue}: ${talks.map((t) => t.title).join(', ')}.`} class="bg-soft-white text-panel-navy">
+<Shell title={`${eventName(e)}, ${longDate(e.date)} | Agentic Engineering`} description={`Agentic Engineering ${eventName(e)}: ${talks.map((t) => t.title).join(', ')}.`} class="bg-soft-white text-panel-navy">
   <section class="relative isolate overflow-hidden bg-deep-navy text-soft-white">
     {room
-      ? <DuotoneField client:load src={room.img.src} animation="aurora" color="#1E2BE6" edge="#B5A6FF" bg="#05071E" cell={4} density={0.7} motion={40} contrast={1.25} edgeGlow={1} tone={0.7} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+      ? <>
+          <img src={header} alt="" class="absolute inset-0 size-full object-cover" />
+          <div class="absolute inset-0 [mask-image:linear-gradient(to_right,black_25%,transparent_75%)]">
+            <DuotoneField client:load src={header} animation="aurora" color="#1E2BE6" edge="#B5A6FF" bg="#05071E" cell={4} density={0.7} motion={40} contrast={1.25} edgeGlow={1} tone={0.7} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+          </div>
+        </>
       : <Animation client:load animation="aurora" color="#1E2BE6" edge="#ED4BA0" bg="#05071E" cell={6} density={0.6} motion={60} fade="left" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />}
-    <!-- Text side darker, so the date and venue read over the dither. -->
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-deep-navy/90 via-deep-navy/55 to-deep-navy/10"></div>
+    <!-- Text side darker, so the date reads over the dither. -->
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-deep-navy/80 via-deep-navy/40 to-transparent"></div>
     <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-deep-navy/70 via-transparent to-deep-navy/60"></div>
     <SiteNav overlay />
     <div class="relative mx-auto max-w-7xl px-4 pt-32 pb-16 md:px-8 md:pt-40 md:pb-24">
       <h1 class="rise font-sans text-5xl font-extrabold tracking-tight md:text-7xl">{eventName(e)}</h1>
-      <div class="rise mt-6 flex flex-col gap-2.5 font-sans text-sm font-medium text-soft-white" style="--i:1">
-        <span class="flex items-center gap-2.5"><Icon name="Calendar" size={16} class="text-periwinkle" />{longDate(e.date)}</span>
-        <span class="flex items-center gap-2.5"><Icon name="MapPin" size={16} class="text-periwinkle" />{e.venue}, {e.city}</span>
-        <span class="flex items-center gap-2.5"><Icon name="Users" size={16} class="text-periwinkle" />{plural(talks.length, 'talk')}{questions.length > 0 && `, ${plural(questions.length, 'question')}`}</span>
-      </div>
+      <p class="rise mt-6 flex items-center gap-2.5 font-sans text-sm font-medium text-soft-white" style="--i:1"><Icon name="Calendar" size={16} class="text-periwinkle" />{longDate(e.date)}</p>
     </div>
   </section>
 
   <main class="mx-auto max-w-7xl px-4 md:px-8">
     <section class="py-16 md:py-24">
-      <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-4xl">The talks</h2>
+      <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-4xl">Talks</h2>
       <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{talks.map((t, i) => <li class="reveal"><TalkTile talk={t} index={i} /></li>)}</ul>
     </section>
 
     {photos.length > 0 && (
-      <section class="border-t border-panel-navy/[0.08] py-16 md:py-24">
-        <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-4xl">The night</h2>
+      <section class="border-t border-panel-navy/[0.08] pb-16 md:pb-24">
         <Gallery photos={photos} />
       </section>
     )}
@@ -55,10 +57,7 @@ const room = photos.find((p) => /room|audience/i.test(p.alt)) ?? photos[0];
     {questions.length > 0 && (
       <section class="border-t border-panel-navy/[0.08] py-16 md:py-24">
         <div class="grid gap-10 md:grid-cols-12">
-          <div class="md:col-span-4">
-            <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-4xl">What the room asked</h2>
-            <p class="mt-4 max-w-[36ch] text-panel-navy/70">The Q&A after the talks, condensed from the recording.</p>
-          </div>
+          <h2 class="font-sans text-3xl font-extrabold tracking-tight md:col-span-4 md:text-4xl">Q&A</h2>
           <div class="divide-y divide-panel-navy/10 md:col-span-8">
             {questions.map((q) => (
               <details class="group py-1">
@@ -78,15 +77,10 @@ const room = photos.find((p) => /room|audience/i.test(p.alt)) ?? photos[0];
       </section>
     )}
 
-    <section class="border-t border-panel-navy/[0.08] py-16">
-      <div class="flex flex-wrap items-center justify-between gap-6">
-        <p class="font-sans text-xl font-extrabold">{e.recap ? 'The night, in writing.' : 'More on Luma.'}</p>
-        <div class="flex flex-wrap gap-3">
-          {e.recap && <Button variant="outline" href={e.recap}>Read the recap</Button>}
-          {e.luma && <Button variant="outline" href={e.luma.url}>This event on Luma</Button>}
-          <Button variant="primary" href={links.luma}>See upcoming events</Button>
-        </div>
-      </div>
+    <section class="flex flex-wrap gap-3 border-t border-panel-navy/[0.08] py-16">
+      {e.recap && <Button variant="outline" href={e.recap}>Read the recap</Button>}
+      {e.luma && <Button variant="outline" href={e.luma.url}>This event on Luma</Button>}
+      <Button variant="primary" href={links.luma}>See upcoming events</Button>
     </section>
   </main>
   <SiteFooter />

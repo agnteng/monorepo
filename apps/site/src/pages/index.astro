@@ -7,22 +7,23 @@ import TalkTile from '../components/TalkTile.astro';
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import DuotoneField from '@agnteng/brand/components/DuotoneField.tsx';
 import Button from '@agnteng/brand/components/Button.astro';
-import Pill from '@agnteng/brand/components/Pill.astro';
 import Icon from '@agnteng/brand/components/Icon.astro';
-import { nextEvent, past, talks, talksAt, photosAt, speakers, links, register, cardDate, shortDate, startTime, eventSlug, eventName, plural } from '../lib/data';
+import { nextEvent, past, talks, talksAt, photosAt, galleryPhoto, speakers, links, register, cardDate, shortDate, startTime, eventSlug, eventName, plural } from '../lib/data';
 import { latestPosts } from '../lib/newsletter';
 
 const posts = await latestPosts();
-const allFilmed = talks.every((t) => t.video);
 const night = [
-  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: '/assets/photos/community/slide2-group-photo.jpg', alt: 'People talking before the talks start' },
-  { time: '19:45', title: 'Three talks', body: 'Ten minutes each, on something the speaker built or broke. Product pitches get turned down.', photo: '/assets/photos/community/slide2-laptop-demo.jpg', alt: 'A speaker presenting with a live demo on screen' },
-  { time: '20:15', title: 'Questions', body: 'The room asks, the speakers answer. It usually carries on over drinks.', photo: '/assets/photos/events/lisbon-may2026.jpg', alt: 'A full room listening during the Q&A' },
+  { time: '19:00', title: 'Doors open', body: 'Drinks and introductions. Most people here are shipping something with agents.', photo: galleryPhoto('2026-11-11', '15.jpg') },
+  { time: '19:45', title: 'Three talks', body: 'Ten minutes each, on something the speaker built or broke. Product pitches get turned down.', photo: galleryPhoto('2026-11-11', '18.jpg') },
+  { time: '20:15', title: 'Questions', body: 'The room asks, the speakers answer. It usually carries on over drinks.', photo: galleryPhoto('2026-11-11', '28.jpg') },
 ];
 const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
 ---
 <Shell title="Agentic Engineering, Lisbon" class="bg-soft-white text-panel-navy">
   <section class="relative isolate min-h-[100dvh] overflow-hidden bg-deep-navy text-soft-white md:min-h-[88dvh]">
+    <img src="/assets/photos/events/lisbon-jul2026.jpg" alt="" fetchpriority="high" class="absolute inset-0 size-full object-cover object-bottom" />
+    <!-- The dither rises from the bottom, under the copy, and clears over the crowd. -->
+    <div class="absolute inset-0 [mask-image:linear-gradient(to_top,black_20%,transparent_70%)]">
     <DuotoneField
       client:load
       src="/assets/photos/events/lisbon-jul2026.jpg"
@@ -39,8 +40,9 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
       tone={0.7}
       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
     />
+    </div>
     <!-- Dark at the top (nav over the ceiling), clear across the crowd, navy under the copy. -->
-    <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg,rgba(5,7,30,0.85) 0%,rgba(5,7,30,0.2) 28%,rgba(5,7,30,0) 45%,rgba(5,7,30,0.55) 72%,#05071E 100%)"></div>
+    <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(180deg,rgba(5,7,30,0.8) 0%,rgba(5,7,30,0.15) 25%,rgba(5,7,30,0) 45%,rgba(5,7,30,0.45) 75%,#05071E 100%)"></div>
     <div class="pointer-events-none absolute inset-0 bg-deep-navy/50 md:hidden"></div>
 
     <SiteNav overlay />
@@ -49,10 +51,10 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
       <div class="relative isolate md:col-span-7">
         <!-- A soft scrim behind the copy, so it reads over the brightest dither cells. -->
         <div aria-hidden="true" class="pointer-events-none absolute -inset-x-12 -inset-y-14 -z-10 bg-[radial-gradient(closest-side,rgba(5,7,30,0.8),transparent)]"></div>
-        <h1 class="rise font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-balance md:text-6xl" style="--i:0">People building with agents, in one room.</h1>
-        <p class="rise mt-6 max-w-[46ch] text-lg font-medium leading-relaxed text-soft-white" style="--i:1">Three ten-minute talks on what actually shipped, then questions.{nextEvent && ` ${nextEvent.free ? 'Free, in' : 'In'} English, in ${nextEvent.city}.`}</p>
+        <h1 class="rise font-sans text-4xl font-extrabold leading-[1.05] tracking-tight text-balance md:text-6xl" style="--i:0">A meetup for engineers building with AI agents.</h1>
+        <p class="rise mt-6 max-w-[46ch] text-lg font-medium leading-relaxed text-soft-white" style="--i:1">Three ten-minute talks on real work, then questions.{nextEvent && ` ${nextEvent.free ? 'Free, in' : 'In'} English, in ${nextEvent.city}.`}</p>
         <p class="rise mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-soft-white/85" style="--i:2">
-          <span>{plural(past.length, 'night')} so far, {plural(talks.length, 'talk')}{allFilmed && ', every one on video'}</span>
+          <span>{plural(past.length, 'meetup')}, {plural(talks.length, 'talk')}</span>
           <a href="/talks" class="inline-flex items-center gap-1.5 font-semibold text-soft-white underline decoration-soft-white/40 underline-offset-4 hover:decoration-soft-white">Watch the talks<Icon name="ArrowRight" size={14} /></a>
         </p>
       </div>
@@ -74,11 +76,11 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
   </section>
 
   <section class="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
-    <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">How a night goes</h2>
+    <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">The format</h2>
     <ol class="mt-14 grid gap-12 md:grid-cols-3 md:gap-6">
       {night.map((n, i) => (
         <li class:list={['reveal', i === 1 && 'md:mt-16', i === 2 && 'md:mt-32']}>
-          <img src={n.photo} alt={n.alt} class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy" />
+          <Image src={n.photo.img} alt={n.photo.alt} widths={[480, 960]} sizes="(min-width: 768px) 33vw, 100vw" class="aspect-[4/5] w-full rounded-2xl object-cover" loading="lazy" />
           <p class="mt-5 font-mono text-sm font-semibold text-electric-blue">{n.time}</p>
           <p class="mt-1 font-sans text-2xl font-extrabold">{n.title}</p>
           <p class="mt-2 max-w-[38ch] leading-relaxed text-panel-navy/70">{n.body}</p>
@@ -89,7 +91,7 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
 
   <section id="talks" class="border-y border-panel-navy/[0.08] bg-white py-24 md:py-32">
     <div class="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-6 px-4 md:px-8">
-      <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">The talks</h2>
+      <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">Talks</h2>
       <div class="flex items-center gap-3">
         <div class="hidden gap-2 md:flex" data-rail-controls>
           <button type="button" data-rail="-1" aria-label="Previous talks" class="grid size-11 place-items-center rounded-full border-[1.5px] border-panel-navy/20 text-panel-navy transition hover:border-electric-blue hover:text-electric-blue disabled:pointer-events-none disabled:opacity-30"><Icon name="ArrowRight" size={18} class="rotate-180" /></button>
@@ -106,12 +108,11 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
   </section>
 
   <section id="events" class="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
-    <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">{plural(past.length, 'night')} so far</h2>
+    <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">Previous meetups</h2>
     <ul class="mt-12 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
       {past.map((e) => {
         const n = talksAt(e).length;
-        const photos = photosAt(e);
-        const cover = photos[0];
+        const cover = photosAt(e)[0];
         return (
           <li class="reveal">
             <a href={n ? `/events/${eventSlug(e)}` : e.luma?.url ?? links.luma} class="group block">
@@ -119,10 +120,9 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
                 {cover
                   ? <Image src={cover.img} alt={cover.alt} widths={[480, 960]} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" class="size-full object-cover transition duration-500 group-hover:scale-[1.03]" loading="lazy" />
                   : <Animation client:visible paused color="#1E2BE6" edge="#B5A6FF" cell={8} density={0.6} fade="radial" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />}
-                <span class="absolute left-3 top-3"><Pill>{eventName(e)}</Pill></span>
               </div>
-              <p class="mt-4 font-sans text-lg font-bold group-hover:text-electric-blue">{shortDate(e.date)}, {e.venue}</p>
-              <p class="mt-0.5 text-sm text-panel-navy/60">{n ? plural(n, 'talk') : 'Talks not online yet'}{photos.length > 0 && `, ${plural(photos.length, 'photo')}`}</p>
+              <p class="mt-4 font-sans text-lg font-bold group-hover:text-electric-blue">{eventName(e)}</p>
+              <p class="mt-0.5 text-sm text-panel-navy/60">{shortDate(e.date)}</p>
             </a>
           </li>
         );
@@ -132,7 +132,7 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
 
   <section id="speakers" class="border-t border-panel-navy/[0.08] bg-white">
     <div class="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
-      <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">Who has spoken</h2>
+      <h2 class="font-sans text-3xl font-extrabold tracking-tight md:text-5xl">Speakers</h2>
       <ul class="mt-12 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
         {speakers.map((s, i) => (
           <li class="reveal">
@@ -157,7 +157,7 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
   <section id="newsletter" class="mx-auto max-w-7xl px-4 py-24 md:px-8 md:py-32">
     <div class="grid gap-10 rounded-2xl bg-deep-navy p-8 text-soft-white md:grid-cols-12 md:p-12">
       <div class="md:col-span-5">
-        <h2 class="font-sans text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">The newsletter</h2>
+        <h2 class="font-sans text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">Newsletter</h2>
         <p class="mt-4 max-w-[40ch] leading-relaxed text-soft-white/75">Notes from every night, the next date as soon as it's set, and the odd essay. On Substack.</p>
         <Button variant="primary" href={`${links.substack}/subscribe`} class="mt-8">Subscribe</Button>
       </div>
@@ -181,7 +181,7 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
 
   <section id="involved" class="bg-electric-blue text-white">
     <div class="mx-auto grid max-w-7xl gap-10 px-4 py-24 md:grid-cols-12 md:px-8">
-      <h2 class="font-sans text-3xl font-extrabold leading-tight tracking-tight md:col-span-6 md:text-5xl">Bring something you built.</h2>
+      <h2 class="font-sans text-3xl font-extrabold leading-tight tracking-tight md:col-span-6 md:text-5xl">Get involved</h2>
       <div class="space-y-5 text-lg md:col-span-6">
         <p>To speak, register for the next event and fill in the talk field. Ten minutes, real work, no pitches.</p>
         <p>To host or sponsor a night, find us on <a href={links.telegram} class="underline underline-offset-4">Telegram</a> or read the <a href={links.sponsors} class="underline underline-offset-4">sponsor deck</a>.</p>

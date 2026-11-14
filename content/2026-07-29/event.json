@@ -12,15 +12,18 @@
   "speakers": [
     {
       "name": "Pia Steiner",
-      "title": "Chief Administrative Officer, Rier"
+      "title": "Chief Administrative Officer, Rier",
+      "photo": "/assets/speakers/pia-steiner.jpg"
     },
     {
       "name": "Sean Tierney",
-      "title": "Founder, Vibecode Lisboa"
+      "title": "Founder, Vibecode Lisboa",
+      "photo": "/assets/speakers/sean-tierney.jpg"
     },
     {
       "name": "Rachel Papirmeister",
-      "title": "Research Scientist in Neurosymbolic AI, Columbia University"
+      "title": "Research Scientist in Neurosymbolic AI, Columbia University",
+      "photo": "/assets/speakers/rachel-papirmeister.jpg"
     }
   ],
   "recap": "https://agnteng.substack.com/p/agentic-engineering-lisbon-2"
