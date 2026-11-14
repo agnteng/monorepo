@@ -21,3 +21,7 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
   .reveal { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 40%; }
 }
+
+/* One tint for every photo: a little less colour, pulled towards the brand's blue. */
+.photo-tint { filter: saturate(0.7) contrast(1.05); }
+.photo-tint-wash { background: linear-gradient(160deg, rgb(30 43 230 / 0.28), rgb(5 7 30 / 0.25)); mix-blend-mode: soft-light; }

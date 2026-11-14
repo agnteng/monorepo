@@ -53,7 +53,8 @@
   },
   {
     "file": "14.jpg",
-    "alt": "The audience listening"
+    "alt": "The audience listening",
+    "cover": true
   },
   {
     "file": "15.jpg",

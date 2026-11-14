@@ -20,6 +20,7 @@ interface Props {
   edgeGlow?: number;
   tone?: number;
   position?: ImagePosition;
+  paused?: boolean;
   onStatus?: (s: 'ok' | 'cors' | 'error') => void;
   style?: React.CSSProperties;
 }
@@ -40,6 +41,7 @@ export default function DuotoneField({
   edgeGlow = 1.3,
   tone = 0.5,
   position,
+  paused,
   onStatus,
   style,
 }: Props) {
@@ -55,6 +57,7 @@ export default function DuotoneField({
       motion={motion}
       shape={shape}
       fade={fade}
+      paused={paused}
       onStatus={onStatus}
       style={style}
     >

@@ -21,7 +21,8 @@
   },
   {
     "file": "06.jpg",
-    "alt": "The audience listening, some standing at the back"
+    "alt": "The audience listening, some standing at the back",
+    "cover": true
   },
   {
     "file": "07.jpg",

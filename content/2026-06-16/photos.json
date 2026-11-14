@@ -25,7 +25,8 @@
   },
   {
     "file": "07.jpg",
-    "alt": "The audience at Full Node in Berlin"
+    "alt": "The audience at Full Node in Berlin",
+    "cover": true
   },
   {
     "file": "08.jpg",
