@@ -1,8 +1,9 @@
 ---
 import '../styles/site.css';
 // `image` is what a shared link shows: a path on this site or a full URL.
+// Every page shows the montage; a talk shows its thumbnail.
 interface Props { title: string; description?: string; image?: string; class?: string }
-const { title, description = 'Agentic Engineering: a Lisbon meetup for people building software, infrastructure and companies with AI agents.', image = '/assets/photos/events/lisbon-aug2026-room.jpg', class: cls } = Astro.props;
+const { title, description = 'Agentic Engineering: a Lisbon meetup for people building software, infrastructure and companies with AI agents.', image = '/assets/photos/share.jpg', class: cls } = Astro.props;
 // No trailing slash, matching internal links and sitemap.xml.
 const canonical = new URL(Astro.url.pathname.replace(/(.)\/$/, '$1'), Astro.site).href;
 const shareImage = new URL(image, Astro.site).href;
