@@ -1,0 +1,27 @@
+{
+  "date": "2026-06-16",
+  "city": "Berlin",
+  "number": 1,
+  "venue": "Full Node",
+  "tonight": "Tue 16 June 2026 · Full Node",
+  "luma": {
+    "apiId": "evt-24RUm1un8jHbQPL",
+    "url": "https://luma.com/plocvj6x",
+    "startAt": "2026-06-16T17:00:00.000Z"
+  },
+  "speakers": [
+    {
+      "name": "Juan Cruz Fortunatti",
+      "title": "Agentic Engineer, Delivery Hero"
+    },
+    {
+      "name": "Federico Kunze Küllmer",
+      "title": "CEO, Moneda"
+    },
+    {
+      "name": "Jean-Loïc Mugnier",
+      "title": "CEO, IntetGuard"
+    }
+  ],
+  "recap": "https://agnteng.substack.com/p/notes-from-agentic-engineering-berlin"
+}

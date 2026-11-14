@@ -3,5 +3,25 @@
   "city": "Lisbon",
   "number": 2,
   "venue": "The Nest",
-  "tonight": "Wed 29 July 2026 · The Nest"
+  "tonight": "Wed 29 July 2026 · The Nest",
+  "luma": {
+    "apiId": "evt-CDZ2m81QOCkO2L9",
+    "url": "https://luma.com/hqd7vt0v",
+    "startAt": "2026-07-29T18:00:00.000Z"
+  },
+  "speakers": [
+    {
+      "name": "Pia Steiner",
+      "title": "Chief Administrative Officer, Rier"
+    },
+    {
+      "name": "Sean Tierney",
+      "title": "Founder, Vibecode Lisboa"
+    },
+    {
+      "name": "Rachel Papirmeister",
+      "title": "Research Scientist in Neurosymbolic AI, Columbia University"
+    }
+  ],
+  "recap": "https://agnteng.substack.com/p/agentic-engineering-lisbon-2"
 }

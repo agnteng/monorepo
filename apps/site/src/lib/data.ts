@@ -13,6 +13,7 @@ export type Event = {
   tonight: string;
   luma?: { apiId: string; url: string; startAt: string };
   speakers?: EventSpeaker[];
+  recap?: string; // the night's Substack post
 };
 
 type TalkFile = {
@@ -119,6 +120,7 @@ export const questionsAt = (e: Event): Question[] =>
 // /events/lisbon-5: the city and the meetup number, like the Luma slugs.
 export const eventSlug = (e: Event) => `${slugify(e.city)}-${e.number}`;
 export const eventName = (e: Event) => `${e.city} #${e.number}`;
+
 
 export const thumbnail = (t: Talk) =>
   t.video ? `https://i.ytimg.com/vi/${t.video.youtubeId}/maxresdefault.jpg` : undefined;
