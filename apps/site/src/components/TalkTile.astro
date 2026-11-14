@@ -22,6 +22,8 @@ const fade = (['right', 'left', 'radial', 'up', 'down'] as const)[index % 5];
   </div>
   <div class="flex flex-1 flex-col p-5">
     <h3 class="font-sans text-xl font-extrabold leading-snug tracking-tight text-panel-navy">{talk.title}</h3>
+    <!-- Filled by the talks search: where the words were said, linked to that moment. -->
+    <p data-snippet hidden class="search-excerpt mt-3 line-clamp-3 text-sm leading-relaxed text-panel-navy/75"></p>
     <p class="mt-auto flex items-center gap-2.5 pt-5 font-sans text-sm text-panel-navy/60">
       <span aria-hidden="true"><Avatar name={talk.person.name} src={talk.person.photo} size={28} /></span>{talk.person.name}
     </p>
