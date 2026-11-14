@@ -51,7 +51,6 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
       input.setSelectionRange(input.value.length, input.value.length);
     }
 
-    const esc = (v) => String(v ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
     let pagefind;
     const load = async () => {
       // Built with the site (`pagefind --site dist`).
@@ -112,7 +111,7 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
           const moment = d.sub_results.filter((r) => /#t-\d+$/.test(r.url))
             .sort((a, b) => (b.locations?.length ?? 0) - (a.locations?.length ?? 0))[0];
           return [path, moment
-            ? { url: moment.url, snippet: `<span class="font-mono text-electric-blue">${esc(moment.title)}</span> ${moment.excerpt.replace(/^\s*[\d:]+\.?\s*/, '')}` }
+            ? { url: moment.url, snippet: moment.excerpt.replace(/^\s*[\d:]+\.?\s*/, '') }
             : { url: d.url, snippet: d.excerpt }];
         }));
       } catch {
