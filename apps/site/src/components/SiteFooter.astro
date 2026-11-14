@@ -7,12 +7,10 @@ const site = [
   { label: 'Events', href: '/#events' },
   { label: 'Newsletter', href: '/#newsletter' },
 ];
-const elsewhere: { label: string; href: string; icon?: 'youtube' | 'substack' | 'luma' }[] = [
+const elsewhere: { label: string; href: string; icon: 'youtube' | 'substack' | 'luma' }[] = [
   { label: 'YouTube', href: links.youtube, icon: 'youtube' },
   { label: 'Substack', href: links.substack, icon: 'substack' },
   { label: 'Luma', href: links.luma, icon: 'luma' },
-  { label: 'Telegram', href: links.telegram },
-  { label: 'Sponsors', href: links.sponsors },
 ];
 ---
 <footer class="w-full bg-deep-navy">
@@ -27,7 +25,7 @@ const elsewhere: { label: string; href: string; icon?: 'youtube' | 'substack' | 
       </ul>
       <ul class="flex flex-wrap items-center gap-5">
         {elsewhere.map((i) => (
-          <li><a href={i.href} class="inline-flex min-h-6 items-center gap-2 py-1 font-sans text-sm text-soft-white/70 transition-colors hover:text-periwinkle">{i.icon && <SocialIcons name={i.icon} size={16} />}{i.label}</a></li>
+          <li><a href={i.href} class="inline-flex min-h-6 items-center gap-2 py-1 font-sans text-sm text-soft-white/70 transition-colors hover:text-periwinkle"><SocialIcons name={i.icon} size={16} />{/* Luma's mark already spells its name. */}<span class:list={[i.icon === 'luma' && 'sr-only']}>{i.label}</span></a></li>
         ))}
       </ul>
     </nav>
