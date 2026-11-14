@@ -115,7 +115,7 @@ const fades = ['right', 'left', 'radial', 'up', 'down'] as const;
             <a href={s.href} class="group block">
               {s.photo
                 ? <SpeakerPhoto src={s.photo} index={i} class="rounded-2xl transition duration-300 group-hover:-translate-y-1" />
-                : <div class="relative aspect-[3/4] overflow-hidden rounded-2xl bg-deep-navy transition duration-300 group-hover:-translate-y-1">
+                : <div class="relative aspect-square overflow-hidden rounded-2xl bg-deep-navy transition duration-300 group-hover:-translate-y-1">
                       <Animation client:visible paused animation="drift" color="#1E2BE6" edge="#B5A6FF" cell={7} density={0.55} fade={fades[i % fades.length]} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
                       <span aria-hidden="true" class="absolute inset-0 grid place-items-center font-sans text-4xl font-extrabold text-soft-white [text-shadow:0_0_6px_#05071E,0_0_18px_#05071E]">{s.name.split(' ').map((w) => w[0]).join('').slice(0, 2)}</span>
                   </div>}

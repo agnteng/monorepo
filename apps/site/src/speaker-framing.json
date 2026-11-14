@@ -1,0 +1,6 @@
+{
+  "about": "Where a speaker's face sits in its tile: tile width/height, face height and face centre height as fractions of the tile. Read by SpeakerPhoto.astro, scripts/fitness.py and production's extend_headshots.py.",
+  "tile": 1,
+  "face": 0.4,
+  "at": 0.42
+}

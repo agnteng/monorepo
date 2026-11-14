@@ -12,99 +12,99 @@
     ]
   },
   "andy-nik.jpg": {
-    "sha256": "006d7ab62c3d8dd4e2076ce6a3858cda85d6f57507a707dadd1358353bb92c34",
+    "sha256": "1e44640a69927b321cbf80b7a2bd35f3d2a57ff5d234485c21839e7d17d34576",
     "size": [
-      640,
-      640
+      767,
+      767
     ],
     "face": [
       0.499,
-      0.486,
-      0.444
+      0.418,
+      0.408
     ]
   },
   "david-mihal.jpg": {
-    "sha256": "682dc7f880c92862fcceeda2e6dd710f3505cf9d76b874a1e009e618c88a61c7",
+    "sha256": "f46ee891178fefb62a94b8942716d6634ced4fb18692a958b94e28e158e0a7e9",
     "size": [
-      640,
-      640
+      800,
+      799
     ],
     "face": [
-      0.512,
-      0.512,
-      0.66
+      0.501,
+      0.433,
+      0.364
     ]
   },
   "doris-hernandez-argueta.jpg": {
-    "sha256": "ca40a0b8abb3a3fae2c3bd464c44bc9118657c14162bb9bd6e9f09a93f551b07",
+    "sha256": "1cb4b39c62c02ba6cdf3aafc42b820ae385075e1b7d2c6b81604983a01dec4c4",
     "size": [
-      687,
-      687
+      712,
+      779
     ],
     "face": [
-      0.514,
-      0.427,
-      0.384
+      0.501,
+      0.385,
+      0.334
     ]
   },
   "federico-kunze-kullmer.jpg": {
-    "sha256": "f27192ba3c51559dfbcacb464414016877fb2ea57a3143b7e865e375e0438c6a",
+    "sha256": "d2ed6a5983aa343af81a5e13633986ff2a89bc97308219f0acf99510abbcf543",
     "size": [
-      600,
+      780,
       800
     ],
     "face": [
-      0.516,
-      0.52,
-      0.426
+      0.503,
+      0.444,
+      0.388
     ]
   },
   "harley-alexander.jpg": {
-    "sha256": "d60fab39c15a378d27426b39e3f1914cb9058788cedad54578eb697fcd6778d8",
+    "sha256": "bfde78bca448b750b512a848c64fe21c6a8685dd80341f4931cc9f787e8d0b23",
     "size": [
       800,
       800
     ],
     "face": [
-      0.522,
-      0.499,
-      0.491
+      0.502,
+      0.443,
+      0.382
     ]
   },
   "jean-loic-mugnier.jpg": {
-    "sha256": "eed038ab69bc3b2caa9450ec61e1d55bae59bcb43b458a9845fcf2aa4b4d42c6",
+    "sha256": "a76aa11c4ce6f68dc39563688ee0e262c924338a9d554ac5581df8a277fcec64",
     "size": [
       800,
-      800
+      799
     ],
     "face": [
-      0.549,
-      0.549,
-      0.634
+      0.505,
+      0.429,
+      0.383
     ]
   },
   "jeremy-healsmith.jpg": {
-    "sha256": "da9b3ff98b7bdb9eb5978bd9e29ff796a599bb835f8f04a03fac8b93f9287667",
+    "sha256": "60500f11759f7fb9cc1d5a2b05f1ca96d3454261a5a554bf4b4c0989cd5f2e5d",
     "size": [
       800,
-      800
+      799
     ],
     "face": [
-      0.481,
-      0.455,
-      0.472
+      0.498,
+      0.428,
+      0.356
     ]
   },
   "joel-dsilva.jpg": {
-    "sha256": "e2e10beb755c36e6dfa518811e977753f73ae857f2fcf1728a88adb7f07faaac",
+    "sha256": "dbffb04c1c3e00f16314178f2e0fec3b8557a85e91f9a2913b9662d264d8e549",
     "size": [
-      571,
-      571
+      598,
+      640
     ],
     "face": [
-      0.52,
-      0.477,
-      0.388
+      0.495,
+      0.422,
+      0.342
     ]
   },
   "juan-cruz-fortunatti.jpg": {
@@ -120,15 +120,15 @@
     ]
   },
   "misha-kolesnik.jpg": {
-    "sha256": "b4e9edc07c8c3c6d3da562c8f7896b0df9e3f0c9d16420ec427852b2614590a4",
+    "sha256": "31dfb0d042c713d7c358e93ddc035f776a97efbb1e10bc73f7f6280da35a6862",
     "size": [
-      400,
-      400
+      422,
+      448
     ],
     "face": [
-      0.461,
-      0.498,
-      0.382
+      0.489,
+      0.446,
+      0.361
     ]
   },
   "pia-steiner.jpg": {
@@ -144,15 +144,15 @@
     ]
   },
   "rachel-papirmeister.jpg": {
-    "sha256": "3ed038c13517b762740d4f6fb974323e8c724f2fe37c27393b45c61c29c6c8d6",
+    "sha256": "4bf03d9c7379fcbd96ceb5c468bfdb32927cbb35b0cd08f945a7ec9ad991ab7b",
     "size": [
-      460,
-      460
+      468,
+      498
     ],
     "face": [
-      0.48,
-      0.341,
-      0.369
+      0.492,
+      0.384,
+      0.348
     ]
   },
   "sacha-dumay.jpg": {
@@ -168,39 +168,39 @@
     ]
   },
   "sean-tierney.jpg": {
-    "sha256": "3cf3ec1b20a3b89b1b8b2a9320976919c0963ba97322a7fdcb916c08d3b911ea",
-    "size": [
-      460,
-      460
-    ],
-    "face": [
-      0.507,
-      0.489,
-      0.699
-    ]
-  },
-  "sebastien-couture.jpg": {
-    "sha256": "05633bebe53c88eceb5ce177da10d998eeab93d0681157fe718b7e4db27a7fac",
-    "size": [
-      400,
-      400
-    ],
-    "face": [
-      0.501,
-      0.424,
-      0.611
-    ]
-  },
-  "tim-haldorsson.jpg": {
-    "sha256": "66f88a42ffc215fc28b931d300b3a1d2c833abd0e77560d5947ab68154683df9",
+    "sha256": "088a26c3d5af8c3e4c70a2c918a861b3d40b2d72971fe82a6c5ac7fe3712ecb9",
     "size": [
       800,
       800
     ],
     "face": [
-      0.533,
-      0.486,
-      0.398
+      0.498,
+      0.433,
+      0.364
+    ]
+  },
+  "sebastien-couture.jpg": {
+    "sha256": "584af347c6c0cb48bc127e78267d078eb3783c88983a653e5241a84df36988cd",
+    "size": [
+      660,
+      659
+    ],
+    "face": [
+      0.506,
+      0.432,
+      0.374
+    ]
+  },
+  "tim-haldorsson.jpg": {
+    "sha256": "403cf159d55abfa66edac879925beb50535e525aa8aa64eac0041ac679c3cc2b",
+    "size": [
+      767,
+      800
+    ],
+    "face": [
+      0.502,
+      0.435,
+      0.365
     ]
   },
   "youssef-allali.jpg": {
