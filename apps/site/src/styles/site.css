@@ -25,3 +25,6 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 
 /* A speaker's photo cut to the person by a greyscale mask (white = keep), sized like the photo. */
 .speaker-mask { mask: var(--mask) center / cover no-repeat luminance; }
+/* Greyscale, then tinted by the wash. */
+.speaker-tint { filter: grayscale(1) contrast(1.1); }
+.speaker-tint-wash { background: var(--tint); mix-blend-mode: color; opacity: 0.75; }
