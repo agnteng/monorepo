@@ -22,7 +22,7 @@ const linkLists = ([
 ---
 <Shell title={`${talk.title}, ${talk.person.name} | Agentic Engineering`} description={talk.summary} class="bg-soft-white text-panel-navy">
   <SiteNav />
-  <main data-pagefind-body class="mx-auto max-w-5xl px-4 md:px-8">
+  <main id="main" data-pagefind-body class="mx-auto max-w-5xl px-4 md:px-8">
     <!-- What search shows with each result, and what it can filter on. -->
     <span data-pagefind-meta={`speaker:${talk.person.name}`}></span>
     <span data-pagefind-meta={`meetup:${eventName(e)}`}></span>

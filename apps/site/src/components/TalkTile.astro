@@ -21,7 +21,7 @@ const fade = (['right', 'left', 'radial', 'up', 'down'] as const)[index % 5];
       : <Animation client:visible color="#1E2BE6" edge="#B5A6FF" cell={9} density={0.6} fade={fade} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />}
   </div>
   <div class="flex flex-1 flex-col p-5">
-    <h3 class="font-sans text-lg font-bold leading-snug tracking-tight text-panel-navy">{talk.title}</h3>
+    <h3 class="font-sans text-xl font-extrabold leading-snug tracking-tight text-panel-navy">{talk.title}</h3>
     <p class="mt-auto flex items-center gap-2.5 pt-5 font-sans text-sm text-panel-navy/60">
       <span aria-hidden="true"><Avatar name={talk.person.name} src={talk.person.photo} size={28} /></span>{talk.person.name}
     </p>
