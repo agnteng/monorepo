@@ -50,7 +50,7 @@ export interface PastEvent {
 export const EVENTS: PastEvent[] = [
   { city: 'Lisbon', date: '27 May 2026', photo: '/assets/photos/events/lisbon-may2026.jpg' },
   { city: 'Berlin', date: '16 Jun 2026', photo: '/assets/photos/events/berlin-jun2026.jpg' },
-  { city: 'Lisbon', date: '29 Jul 2026', photo: '/assets/photos/events/lisbon-jul2026.webp' },
+  { city: 'Lisbon', date: '29 Jul 2026', photo: '/assets/photos/events/lisbon-jul2026.jpg' },
 ];
 
 // ── Slide 03: who is in the room, and what we track ────────────────────────

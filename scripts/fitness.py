@@ -212,6 +212,18 @@ def check_photos() -> None:
             fail("photos", f"{where}: over {PHOTO_MAX_BYTES // 1000} KB or {PHOTO_MAX_EDGE}px; use event_photos.py")
         elif any(m in data for m in PHOTO_METADATA):
             fail("photos", f"{where}: still has EXIF, XMP or IPTC metadata (location); use event_photos.py")
+    # Photos the site serves straight from the branding app (org ADR 0009).
+    public = ROOT / "apps" / "branding" / "public" / "assets"
+    for f in sorted([*public.glob("photos/**/*"), *public.glob("speakers/*")]):
+        if not f.is_file() or f.name.startswith("."):
+            continue
+        where, data = f.relative_to(ROOT), f.read_bytes()
+        if f.suffix != ".jpg":
+            fail("photos", f"{where}: photos are .jpg; convert with photos.py web")
+        elif len(data) > PHOTO_MAX_BYTES or max(jpeg_size(data)) > PHOTO_MAX_EDGE:
+            fail("photos", f"{where}: over {PHOTO_MAX_BYTES // 1000} KB or {PHOTO_MAX_EDGE}px; run photos.py")
+        elif any(m in data for m in PHOTO_METADATA):
+            fail("photos", f"{where}: still has EXIF, XMP or IPTC metadata; run photos.py optimize")
 
 
 # ── rendered decks unchanged (refactors must not alter what's on screen) ──
