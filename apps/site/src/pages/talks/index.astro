@@ -1,12 +1,11 @@
 ---
-// Every talk in one archive, newest first. Typing searches titles, speakers,
-// summaries and transcripts (Pagefind, built with the site); the meetup chips
-// narrow either view. ?q= and ?meetup= make both shareable.
+// Every talk in one archive, newest first. The nav's search box searches titles,
+// speakers, summaries and transcripts here (Pagefind, built with the site); the
+// meetup chips narrow either view. ?q= and ?meetup= make both shareable.
 import Shell from '../../layouts/Shell.astro';
 import SiteNav from '../../components/SiteNav.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import TalkTile from '../../components/TalkTile.astro';
-import Icon from '@agnteng/brand/components/Icon.astro';
 import { talks, events, talksAt, eventName } from '../../lib/data';
 const meetups = events.filter((e) => talksAt(e).length).sort((a, b) => b.date.localeCompare(a.date)).map(eventName);
 const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sans text-sm font-semibold text-panel-navy/75 transition hover:border-electric-blue hover:text-electric-blue aria-pressed:border-electric-blue aria-pressed:bg-electric-blue aria-pressed:text-white';
@@ -16,15 +15,8 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
   <main class="mx-auto max-w-7xl px-4 py-16 md:px-8 md:py-24">
     <h1 class="font-sans text-4xl font-extrabold tracking-tight md:text-6xl">Talks</h1>
 
-    <form action="/talks" role="search" class="mt-8 max-w-3xl" data-search-form>
-      <label for="search" class="sr-only">Search the talks</label>
-      <div class="relative">
-        <Icon name="Search" size={22} class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-panel-navy/45" />
-        <input id="search" name="q" type="search" autocomplete="off" spellcheck="false" placeholder={`Search ${talks.length} talks, speakers and transcripts`} class="w-full rounded-full border-[1.5px] border-panel-navy/15 bg-white py-4 pl-14 pr-5 font-sans text-lg shadow-sm outline-none transition placeholder:text-panel-navy/40 focus:border-electric-blue" />
-      </div>
-    </form>
 
-    <div class="mt-5 flex flex-wrap gap-2" role="group" aria-label="Meetup">
+    <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="Meetup">
       <button type="button" class={chip} data-meetup="" aria-pressed="true">All</button>
       {meetups.map((m) => <button type="button" class={chip} data-meetup={m} aria-pressed="false">{m}</button>)}
     </div>
@@ -48,7 +40,10 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
     const params = new URLSearchParams(location.search);
     let meetup = params.get('meetup') ?? '';
     input.value = params.get('q') ?? '';
-    if (location.hash === '#search' || params.has('q')) input.focus();
+    if (location.hash === '#search' || params.has('q')) {
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length);
+    }
     addEventListener('hashchange', () => location.hash === '#search' && input.focus());
 
     const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
@@ -64,7 +59,7 @@ const chip = 'rounded-full border-[1.5px] border-panel-navy/15 px-4 py-2 font-sa
       return `<li class="py-6"><a href="${esc(r.url)}" class="group grid gap-5 sm:grid-cols-[12rem_1fr]">
         ${r.meta.image ? `<img src="${esc(r.meta.image)}" alt="" loading="lazy" class="aspect-video w-full rounded-xl object-cover">` : '<span></span>'}
         <span>
-          <span class="block font-mono text-[11px] uppercase tracking-wider text-electric-blue">${esc(r.meta.meetup)} · ${esc(r.meta.date)}</span>
+          <span class="block font-mono text-[11px] uppercase tracking-wider text-electric-blue">${esc(r.meta.date)}</span>
           <span class="mt-1 block font-sans text-xl font-bold leading-snug group-hover:text-electric-blue">${esc(r.meta.title)}</span>
           <span class="mt-0.5 block text-sm text-panel-navy/60">${esc(r.meta.speaker)}</span>
           <span class="search-excerpt mt-3 block leading-relaxed text-panel-navy/80">${r.excerpt}</span>

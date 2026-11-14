@@ -7,48 +7,47 @@ interface Props { overlay?: boolean }
 const { overlay = false } = Astro.props;
 const starts = nextEvent && (nextEvent.luma?.startAt ?? `${nextEvent.date}T23:59:00Z`);
 const luma = links.luma;
-const items = [
-  { label: 'Talks', href: '/talks' },
-  { label: 'Events', href: '/#events' },
-  { label: 'Speakers', href: '/#speakers' },
-  { label: 'Newsletter', href: '/#newsletter' },
-];
 ---
 <header class:list={['z-20 w-full', overlay ? 'absolute inset-x-0 top-0' : 'border-b border-white/10 bg-deep-navy']}>
-  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
-    <a href="/" class="flex items-center gap-2.5">
+  <div class="mx-auto grid h-16 max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-4 md:grid-cols-[1fr_minmax(0,28rem)_1fr] md:gap-8 md:px-8">
+    <a href="/" class="flex items-center gap-2.5 justify-self-start">
       <img src="/assets/logo/ae-mark-white.svg" alt="" class="h-7 w-auto" />
-      <img src="/assets/logo/ae-wordmark-line-white.svg" alt="Agentic Engineering" class="h-4 w-auto sm:h-[18px]" />
+      <img src="/assets/logo/ae-wordmark-line-white.svg" alt="Agentic Engineering" class="h-[18px] w-auto max-sm:hidden" />
     </a>
-    <nav class="hidden items-center gap-7 md:flex">
-      {items.map((i) => <a href={i.href} class="font-sans text-sm text-soft-white/70 transition-colors hover:text-soft-white">{i.label}</a>)}
-    </nav>
-    <div class="flex items-center gap-5">
-      <a href="/talks#search" data-search-link aria-label="Search the talks" title="Search (/)" class="grid size-9 place-items-center rounded-full text-soft-white/75 transition hover:bg-white/10 hover:text-soft-white"><Icon name="Search" size={18} /></a>
-      <a href="/talks" class="font-sans text-sm text-soft-white/70 hover:text-soft-white md:hidden">Talks</a>
-      <Button variant="primary" href={register} class="js-register !px-5 !py-2.5 !text-sm">Register</Button>
-    </div>
+    <!-- One search box on every page. On /talks it searches in place; elsewhere it carries the search there. -->
+    <form action="/talks" role="search" data-search-form class="relative w-full">
+      <label for="search" class="sr-only">Search the talks</label>
+      <span aria-hidden="true" class="pointer-events-none absolute left-3.5 top-1/2 z-10 -translate-y-1/2 text-soft-white/70"><Icon name="Search" size={16} /></span>
+      <input id="search" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search talks" aria-keyshortcuts="Meta+K Control+K /" class="peer h-10 w-full rounded-full border border-white/15 bg-white/10 pl-10 pr-4 font-sans text-base text-soft-white outline-none backdrop-blur transition placeholder:text-soft-white/55 focus:border-periwinkle focus:bg-deep-navy/80 md:pr-14 md:text-sm" />
+      <kbd aria-hidden="true" data-kbd class="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] text-soft-white/60 peer-focus:hidden md:block">⌘K</kbd>
+    </form>
+    <Button variant="primary" href={register} class="js-register justify-self-end !px-5 !py-2.5 !text-sm">Register</Button>
   </div>
 </header>
 <script is:inline>
-  // Search from anywhere: the page's own search box if it has one, else /talks.
-  // "/" and Ctrl-K only outside text fields (Ctrl-K edits text on macOS); Cmd-K always.
-  const toSearch = (e) => {
+  {
     const box = document.getElementById('search');
-    if (!box) return;
-    e.preventDefault();
-    box.focus();
-  };
-  addEventListener('keydown', (e) => {
-    const el = document.activeElement;
-    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '') || el?.isContentEditable;
-    const plain = !e.metaKey && !e.ctrlKey && !e.altKey;
-    if ((e.key === '/' && plain && !typing) || (e.key === 'k' && (e.metaKey || (e.ctrlKey && !typing)))) {
-      e.preventDefault();
-      document.getElementById('search') ? toSearch(e) : (location.href = '/talks#search');
+    const searchPage = location.pathname.replace(/\/$/, '') === '/talks';
+    if (!/Mac|iPhone|iPad/.test(navigator.platform)) document.querySelector('[data-kbd]').textContent = 'Ctrl K';
+    // Cmd-K always; Ctrl-K and "/" only outside text fields, the search box included
+    // (Ctrl-K edits text on macOS, and "/" is a character people search for).
+    addEventListener('keydown', (e) => {
+      const el = document.activeElement;
+      const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '') || el?.isContentEditable;
+      const plain = !e.metaKey && !e.ctrlKey && !e.altKey;
+      if ((e.key === '/' && plain && !typing) || (e.key === 'k' && (e.metaKey || (e.ctrlKey && !typing)))) {
+        e.preventDefault();
+        if (searchPage) { box.focus(); box.select(); } else location.href = '/talks#search';
+      }
+    });
+    // Off /talks, a pause in typing (never mid-composition) carries the search there.
+    if (!searchPage) {
+      let wait;
+      const go = () => box.value.trim() && (location.href = `/talks?q=${encodeURIComponent(box.value)}`);
+      box.addEventListener('input', (e) => { clearTimeout(wait); if (!e.isComposing) wait = setTimeout(go, 400); });
+      box.addEventListener('compositionend', () => { clearTimeout(wait); wait = setTimeout(go, 400); });
     }
-  });
-  document.querySelector('[data-search-link]')?.addEventListener('click', toSearch);
+  }
 </script>
 <script is:inline define:vars={{ starts, luma }}>
   // The site is rebuilt only on deploy: once the next event has started, every
