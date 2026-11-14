@@ -3,7 +3,7 @@ import '../styles/site.css';
 // `image` is what a shared link shows: a path on this site or a full URL.
 interface Props { title: string; description?: string; image?: string; class?: string }
 const { title, description = 'Agentic Engineering: a Lisbon meetup for people building software, infrastructure and companies with AI agents.', image = '/assets/photos/events/lisbon-aug2026-room.jpg', class: cls } = Astro.props;
-// Without the trailing slash, as the site links to its own pages and as sitemap.xml lists them.
+// No trailing slash, matching internal links and sitemap.xml.
 const canonical = new URL(Astro.url.pathname.replace(/(.)\/$/, '$1'), Astro.site).href;
 const shareImage = new URL(image, Astro.site).href;
 ---

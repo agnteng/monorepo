@@ -434,13 +434,13 @@ def check_live_site() -> None:
             fail("live", f"{w}/{page} answered {code}")
     code, body = get(f"{w}/sitemap.xml")
     locs = re.findall(r"<loc>([^<]+)</loc>", body.decode()) if code == 200 else []
-    if not any("/talks/" in u for u in locs):
+    talk = next((u for u in locs if "/talks/" in u), None)
+    if not talk:
         fail("live", f"{w}/sitemap.xml lists no talks")
-    # A talk page, as a shared link would fetch it.
-    for u in [u for u in locs if "/talks/" in u][:1]:
-        code, body = get(u)
+    else:  # as a shared link would fetch it
+        code, body = get(talk)
         if code != 200 or b'property="og:image"' not in body:
-            fail("live", f"{u} answered {code} or has no share image")
+            fail("live", f"{talk} answered {code} or has no share image")
     # www is a redirect to the one address; urlopen follows it.
     try:
         r = urllib.request.urlopen(urllib.request.Request(
