@@ -12,15 +12,18 @@
   "speakers": [
     {
       "name": "Juan Cruz Fortunatti",
-      "title": "Agentic Engineer, Delivery Hero"
+      "title": "Agentic Engineer, Delivery Hero",
+      "photo": "/assets/speakers/juan-cruz-fortunatti.jpg"
     },
     {
       "name": "Federico Kunze Küllmer",
-      "title": "CEO, Moneda"
+      "title": "CEO, Moneda",
+      "photo": "/assets/speakers/federico-kunze-kullmer.jpg"
     },
     {
       "name": "Jean-Loïc Mugnier",
-      "title": "CEO, IntetGuard"
+      "title": "CEO, IntentGuard",
+      "photo": "/assets/speakers/jean-loic-mugnier.jpg"
     }
   ],
   "recap": "https://agnteng.substack.com/p/notes-from-agentic-engineering-berlin"

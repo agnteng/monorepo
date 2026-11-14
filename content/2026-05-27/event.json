@@ -9,5 +9,22 @@
     "url": "https://luma.com/j19cce2v",
     "startAt": "2026-05-27T18:00:00.000Z"
   },
-  "recap": "https://agnteng.substack.com/p/notes-from-the-first-agentic-engineering"
+  "recap": "https://agnteng.substack.com/p/notes-from-the-first-agentic-engineering",
+  "speakers": [
+    {
+      "name": "Misha Kolesnik",
+      "title": "Infrastructure engineer",
+      "photo": "/assets/speakers/misha-kolesnik.jpg"
+    },
+    {
+      "name": "Alex Lajarre",
+      "title": "Engineer and researcher, Butter",
+      "photo": "/assets/speakers/alex-lajarre.jpg"
+    },
+    {
+      "name": "Sebastien Couture",
+      "title": "Organiser, Agentic Engineering",
+      "photo": "/assets/speakers/sebastien-couture.jpg"
+    }
+  ]
 }

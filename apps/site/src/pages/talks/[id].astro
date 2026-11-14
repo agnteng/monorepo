@@ -32,9 +32,13 @@ const linkLists = ([
       </div>
     </section>
 
-    <div class="rise relative aspect-video overflow-hidden rounded-2xl bg-deep-navy" style="--i:3">
+    <!-- No .rise here: an animated transform would anchor the floating player to this box. -->
+    <div data-video-slot class="relative aspect-video rounded-2xl bg-deep-navy">
       {talk.video
-        ? <iframe class="absolute inset-0 size-full" src={`https://www.youtube-nocookie.com/embed/${talk.video.youtubeId}`} title={talk.title} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        ? <div data-video class="video-player absolute inset-0 overflow-hidden rounded-2xl bg-deep-navy">
+            <iframe class="absolute inset-0 size-full" src={`https://www.youtube-nocookie.com/embed/${talk.video.youtubeId}?enablejsapi=1`} title={talk.title} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <button type="button" data-video-close aria-label="Close the mini player" class="absolute right-2 top-2 hidden size-8 place-items-center rounded-full bg-deep-navy/85 text-soft-white hover:bg-deep-navy"><span aria-hidden="true" class="text-xl leading-none">×</span></button>
+          </div>
         : <>
             <Animation client:load color="#1E2BE6" edge="#B5A6FF" cell={10} density={0.6} fade="radial" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
             <p class="absolute inset-x-4 bottom-5 mx-auto w-fit rounded-full bg-deep-navy/90 px-4 py-2 text-center font-sans text-xs font-medium text-soft-white/85 md:text-sm">The recording isn't online yet. The write-up and transcript are below.</p>
@@ -63,10 +67,46 @@ const linkLists = ([
 
     {more.length > 0 && (
       <section class="border-t border-panel-navy/[0.08] py-16">
-        <h2 class="font-sans text-2xl font-extrabold">Also that night</h2>
+        <h2 class="font-sans text-2xl font-extrabold">More from {eventName(e)}</h2>
         <ul class="mt-8 grid gap-5 sm:grid-cols-2">{more.map((t, i) => <li><TalkTile talk={t} index={i} /></li>)}</ul>
       </section>
     )}
   </main>
   <SiteFooter />
+
+  <script is:inline>
+    // Once the video has started, scrolling it out of view docks it in the corner
+    // so the transcript can be read alongside. It undocks when the video ends or
+    // the mini player is closed, which pauses it.
+    const slot = document.querySelector('[data-video-slot]');
+    const box = slot?.querySelector('[data-video]');
+    if (box) {
+      const frame = box.querySelector('iframe');
+      const close = box.querySelector('[data-video-close]');
+      let started = false, offscreen = false, heard = false;
+      const update = () => box.classList.toggle('is-floating', started && offscreen);
+      // The YouTube embed reports its state once asked, and may not be ready to
+      // hear the first ask: repeat it until it answers. 1 is playing, 0 ended.
+      const ask = setInterval(() => {
+        if (heard) clearInterval(ask);
+        else frame.contentWindow.postMessage('{"event":"listening"}', '*');
+      }, 500);
+      setTimeout(() => clearInterval(ask), 15000);
+      addEventListener('message', (m) => {
+        if (m.source !== frame.contentWindow) return;
+        heard = true;
+        try {
+          const state = JSON.parse(m.data)?.info?.playerState;
+          if (state === 1) started = true;
+          if (state === 0) started = false;
+          update();
+        } catch {}
+      });
+      new IntersectionObserver(([e]) => { offscreen = e.intersectionRatio < 0.25; update(); }, { threshold: [0, 0.25] }).observe(slot);
+      close.addEventListener('click', () => {
+        frame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        started = false; update();
+      });
+    }
+  </script>
 </Shell>
