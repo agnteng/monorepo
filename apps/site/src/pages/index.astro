@@ -24,9 +24,9 @@ const night = [
   <main>
   <section class="relative isolate min-h-[100dvh] overflow-hidden bg-deep-navy text-soft-white md:min-h-[72dvh]">
     <!-- crossorigin matches the dither's request, so the download is reused. -->
-    <!-- The stage is taller than the hero on desktop and pinned to its bottom, so the
-         hero crops ceiling off the top of the photo and nothing off the crowd. -->
-    <div class="dither-stage absolute inset-x-0 bottom-0 h-full md:h-[88dvh] md:min-h-full">
+    <!-- Taller than the hero on desktop and pinned to its bottom, so the crop takes
+         ceiling, not crowd. -->
+    <div class="dither-stage absolute inset-x-0 bottom-0 h-full md:min-h-[88dvh]">
       <img src="/assets/photos/events/lisbon-aug2026-room.jpg" alt="" fetchpriority="high" crossorigin="anonymous" class="absolute inset-0 size-full object-cover" />
       <!-- The dither rises from the bottom, under the copy, and clears over the crowd. -->
       <div class="absolute inset-0 [mask-image:linear-gradient(to_top,black_20%,transparent_70%)]">
