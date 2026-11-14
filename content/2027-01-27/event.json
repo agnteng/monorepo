@@ -8,5 +8,7 @@
     "apiId": "evt-GuVc81DWSBITgHA",
     "url": "https://luma.com/ae-lisbon-6",
     "startAt": "2027-01-27T19:00:00.000Z"
-  }
+  },
+  "free": true,
+  "approval": true
 }

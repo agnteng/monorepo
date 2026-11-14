@@ -2,6 +2,12 @@
 
 @source "../";
 
+/* The talk rail scrolls edge to edge but snaps cards to the page grid. */
+.talk-rail { --gutter: 1rem; padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); scrollbar-width: thin; }
+@media (min-width: 768px) {
+  .talk-rail { --gutter: max(2rem, calc((100vw - 80rem) / 2 + 2rem)); }
+}
+
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
 :focus-visible { outline: 2px solid var(--color-bright-blue); outline-offset: 3px; }
 
