@@ -1,28 +1,16 @@
 ---
-// A night's photos, up to six: one lead photo with the rest around it. Each opens full size.
+// A night's photos in the order they were taken. Each opens full size.
 import { Image } from 'astro:assets';
 import type { Photo } from '../lib/data';
 interface Props { photos: Photo[] }
-const photos = Astro.props.photos.slice(0, 6);
-const n = photos.length;
-// 1: one wide photo. 2 or 4: an even grid. 3, 5, 6: the first is twice the size,
-// in a grid with exactly enough cells for the rest (3 and 6: three columns, 5: four).
-const lead = n === 3 || n >= 5;
-const cols = n === 1 ? 'grid-cols-1' : !lead ? 'grid-cols-2' : n === 5 ? 'grid-cols-2 md:grid-cols-4' : 'grid-cols-2 md:grid-cols-3';
+const { photos } = Astro.props;
 ---
-<ul class:list={['mt-8 grid gap-3', cols]}>
-  {photos.map((p, i) => {
-    const big = lead && i === 0;
-    return (
-      <li class:list={[
-        'reveal relative overflow-hidden rounded-2xl bg-panel-navy/10 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bright-blue',
-        big ? 'col-span-2 row-span-2 aspect-[4/3] md:aspect-auto' : n === 1 ? 'aspect-[16/9]' : 'aspect-[4/3]',
-        n === 6 && i === 5 && 'hidden md:block' /* phones show two per row: five keeps the rows even */,
-      ]}>
-        <a href={p.img.src} class="group block size-full focus:outline-none">
-          <Image src={p.img} alt={p.alt} widths={[480, 960, 1600]} sizes={big ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 50vw'} class="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-[1.03]" loading="lazy" />
-        </a>
-      </li>
-    );
-  })}
+<ul class="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3">
+  {photos.map((p) => (
+    <li class="reveal relative aspect-[4/3] overflow-hidden rounded-2xl bg-panel-navy/10 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-bright-blue">
+      <a href={p.img.src} class="group block size-full focus:outline-none">
+        <Image src={p.img} alt={p.alt} widths={[480, 960]} sizes="(min-width: 768px) 33vw, 50vw" class="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-[1.03]" loading="lazy" />
+      </a>
+    </li>
+  ))}
 </ul>

@@ -1,26 +1,78 @@
 [
   {
     "file": "01.jpg",
-    "alt": "A full room at The Nest by NEAR"
+    "alt": "People arriving and talking before the talks"
   },
   {
     "file": "02.jpg",
-    "alt": "Harley Alexander presenting: agents write 81% of PostHog's pull requests"
+    "alt": "People talking between the talks"
   },
   {
     "file": "03.jpg",
-    "alt": "A speaker presenting a slide about agents that trade"
+    "alt": "People talking after the talks"
   },
   {
     "file": "04.jpg",
-    "alt": "A speaker presenting: same prompt, on a closed internal system"
+    "alt": "A full room at The Nest by NEAR"
   },
   {
     "file": "05.jpg",
-    "alt": "Two people in the audience reacting to a talk"
+    "alt": "The audience seated and standing at the back"
   },
   {
     "file": "06.jpg",
-    "alt": "People talking between the talks"
+    "alt": "Youssef Allali speaking"
+  },
+  {
+    "file": "07.jpg",
+    "alt": "Stickers laid out on a table"
+  },
+  {
+    "file": "08.jpg",
+    "alt": "The room during a talk"
+  },
+  {
+    "file": "09.jpg",
+    "alt": "Youssef Allali presenting x402: four steps, one round trip"
+  },
+  {
+    "file": "10.jpg",
+    "alt": "The audience listening closely"
+  },
+  {
+    "file": "11.jpg",
+    "alt": "Two people in the audience reacting to a talk"
+  },
+  {
+    "file": "12.jpg",
+    "alt": "Two people seated by the window"
+  },
+  {
+    "file": "13.jpg",
+    "alt": "Youssef Allali presenting a slide about agents that trade"
+  },
+  {
+    "file": "14.jpg",
+    "alt": "Harley Alexander presenting: agents write 81% of PostHog's pull requests"
+  },
+  {
+    "file": "15.jpg",
+    "alt": "Harley Alexander speaking"
+  },
+  {
+    "file": "16.jpg",
+    "alt": "Harley Alexander presenting: unread is the new broken"
+  },
+  {
+    "file": "17.jpg",
+    "alt": "Joel D'Silva presenting: same prompt, on a closed internal system"
+  },
+  {
+    "file": "18.jpg",
+    "alt": "Joel D'Silva presenting the problem"
+  },
+  {
+    "file": "19.jpg",
+    "alt": "Joel D'Silva speaking beside his slide"
   }
 ]
