@@ -23,15 +23,8 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 /* Search hits, highlighted by Pagefind. */
 .search-excerpt mark { background: rgb(181 166 255 / 0.45); color: inherit; border-radius: 2px; padding-inline: 1px; }
 
-/* A speaker's photo cut to the person by a greyscale mask (white = keep), sized like the
-   photo, its edges faded so a photo that ends inside the tile dissolves. */
-.speaker-mask {
-  mask:
-    var(--mask) center / var(--mask-size, 100% 100%) no-repeat luminance,
-    linear-gradient(to bottom, transparent, #000 6%, #000 84%, transparent) alpha,
-    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent) alpha;
-  mask-composite: intersect;
-}
+/* A speaker's photo cut to the person by a greyscale mask (white = keep), sized like the photo. */
+.speaker-mask { mask: var(--mask) center / var(--mask-size, 100% 100%) no-repeat luminance; }
 /* Greyscale, then tinted by the wash. */
 .speaker-tint { filter: grayscale(1) contrast(1.1); }
 .speaker-tint-wash { background: var(--tint); mix-blend-mode: color; opacity: 0.75; }

@@ -211,6 +211,17 @@ def png_chunks(data: bytes) -> dict[bytes, bytes]:
     return chunks
 
 
+FRAMING = json.loads((ROOT / "apps" / "site" / "src" / "speaker-framing.json").read_text())
+
+
+def covers(size: list[int], face: list[float]) -> bool:
+    """Does a headshot fill its tile with the face at most 5% over size, as the site frames it?"""
+    (w, h), (cx, cy, fh) = size, face
+    at, aspect = FRAMING["at"], w / h
+    need = max(at / cy, (1 - at) / (1 - cy), FRAMING["tile"] / (2 * aspect * min(cx, 1 - cx)))
+    return need <= 1.05 * FRAMING["face"] / fh
+
+
 def check_photos() -> None:
     listed = set()
     for listing in sorted((ROOT / "content").glob("*/photos.json")):
@@ -258,6 +269,8 @@ def check_photos() -> None:
             fail("photos", f"{photo.relative_to(ROOT)}: face in sources.json should be [x, y, height] fractions; re-run speaker_masks.py")
         elif entry.get("size") != list(jpeg_size(photo.read_bytes())):
             fail("photos", f"{photo.relative_to(ROOT)}: size in sources.json doesn't match; re-run speaker_masks.py")
+        elif face and not covers(entry["size"], face):
+            fail("photos", f"{photo.relative_to(ROOT)}: ends inside its tile; run extend_headshots.py, then speaker_masks.py")
     for f in sorted(masks.glob("*")):
         if not f.is_file() or f.name.startswith(".") or f.name == "sources.json":
             continue
