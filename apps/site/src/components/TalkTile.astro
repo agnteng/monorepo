@@ -4,7 +4,7 @@
 import { Image } from 'astro:assets';
 import Animation from '@agnteng/brand/components/Animation.tsx';
 import Avatar from '@agnteng/brand/components/Avatar.astro';
-import { still as stillOf, thumbnail, shortDate, eventName, type Talk } from '../lib/data';
+import { still as stillOf, thumbnail, type Talk } from '../lib/data';
 interface Props { talk: Talk; index?: number }
 const { talk, index = 0 } = Astro.props;
 const local = stillOf(talk);
@@ -19,7 +19,6 @@ const fade = (['right', 'left', 'radial', 'up', 'down'] as const)[index % 5];
       : still
       ? <img src={still} alt="" class="size-full object-cover" loading="lazy" />
       : <Animation client:visible color="#1E2BE6" edge="#B5A6FF" cell={9} density={0.6} fade={fade} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />}
-    <span class="absolute bottom-3 right-3 rounded-full bg-deep-navy/80 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-soft-white/80">{eventName(talk.event)} · {shortDate(talk.event.date)}</span>
   </div>
   <div class="flex flex-1 flex-col p-5">
     <h3 class="font-sans text-lg font-bold leading-snug tracking-tight text-panel-navy">{talk.title}</h3>
