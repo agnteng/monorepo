@@ -1,7 +1,11 @@
 ---
 import '../styles/site.css';
-interface Props { title: string; description?: string; class?: string }
-const { title, description = 'Agentic Engineering: a Lisbon meetup for people building software, infrastructure and companies with AI agents.', class: cls } = Astro.props;
+// `image` is what a shared link shows: a path on this site or a full URL.
+interface Props { title: string; description?: string; image?: string; class?: string }
+const { title, description = 'Agentic Engineering: a Lisbon meetup for people building software, infrastructure and companies with AI agents.', image = '/assets/photos/events/lisbon-aug2026-room.jpg', class: cls } = Astro.props;
+// Without the trailing slash, as the site links to its own pages and as sitemap.xml lists them.
+const canonical = new URL(Astro.url.pathname.replace(/(.)\/$/, '$1'), Astro.site).href;
+const shareImage = new URL(image, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -10,6 +14,14 @@ const { title, description = 'Agentic Engineering: a Lisbon meetup for people bu
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:site_name" content="Agentic Engineering" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={shareImage} />
+    <meta name="twitter:card" content="summary_large_image" />
     <!-- No JS, no dither: show photos at once. -->
     <noscript><style is:inline>:root .dither-stage { opacity: 1; }</style></noscript>
     <link rel="icon" type="image/svg+xml" href="/assets/logo/ae-icon.svg" />

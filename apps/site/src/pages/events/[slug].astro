@@ -20,8 +20,10 @@ const questions = questionsAt(e);
 const photos = photosAt(e);
 const cover = coverAt(e);
 const header = cover && (await getImage({ src: cover.img, width: 1600, format: 'webp' })).src;
+// JPEG: not every link preview reads WebP.
+const share = cover ? (await getImage({ src: cover.img, width: 1200, format: 'jpg' })).src : undefined;
 ---
-<Shell title={`${eventName(e)}, ${longDate(e.date)} | Agentic Engineering`} description={`Agentic Engineering ${eventName(e)}: ${talks.map((t) => t.title).join(', ')}.`} class="bg-soft-white text-panel-navy">
+<Shell title={`${eventName(e)}, ${longDate(e.date)} | Agentic Engineering`} description={`Agentic Engineering ${eventName(e)}: ${talks.map((t) => t.title).join(', ')}.`} image={share} class="bg-soft-white text-panel-navy">
   <section class="relative isolate overflow-hidden bg-deep-navy text-soft-white">
     {cover
       ? <div class="dither-stage absolute inset-0">
